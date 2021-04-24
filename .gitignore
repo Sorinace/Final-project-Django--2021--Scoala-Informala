@@ -6,8 +6,8 @@ __pycache__
 db.sqlite3
 media
 
-# Am adaugat asta ca aici am parola de la BD
-psihotest/settings.py
+# Fisier cu parole, nu se urca pe GitHub!
+/secrets.json
 
 # Backup files # 
 *.bak 

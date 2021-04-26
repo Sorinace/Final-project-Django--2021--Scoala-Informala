@@ -4,7 +4,10 @@ The  final project from Python Django training, Scoala Informala  07.2021
 This document has the purpose of summarizing the main functionalities your application managed to achieve from a technical perspective. Feel free to extend this template to meet your needs and also choose any approach you want for documenting your solution.
 
 ## Problem statement
-*Good luck!*
+* The purpose of this program is to deliver a psychological test online.
+* The psychologist assigns a test to a patient, he will be notified by email.
+* The email will contain a link with a code so that the patient will access the test and the result will be recorded on that patient's account.
+* The psychologist will obtain the rated test and will be able to complete the patient's report when he has completed it. 
 
 ## Technical documentation
 ### Data and Domain model
@@ -15,11 +18,11 @@ In this section, please provide a brief overview of the design of your applicati
 
 ###  Implementation
 ##### Functionalities
-For each of the following functionalities, please tick the box if you implemented it and describe its input and output in your application:
+Implemented it and describe its input and output in your application:
 
 [x] Setting up the Python, Django and MongoDB  \
-[] Create a view  \
-[] Validator: ******* \
+[x] Create my first view  \
+[] Validator
 
 
 ##### Business rules

@@ -1,2 +1,14 @@
 <h1>Pagina mea!</h1>
-<p>{{ psihotest }}</p>
+
+<p>{{psihotest.text}}</p>
+<p>{{psihotest.story}}</p>
+<ul>
+{% for question in psihotest.questions %}
+<li>{{question.text}}</li>
+<ul>
+  {% for answer in question.answers %}
+    <li>{{answer.text}}</li>
+  {% endfor %}
+</ul>
+{% endfor %}
+</ul>

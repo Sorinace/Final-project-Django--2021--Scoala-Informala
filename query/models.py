@@ -28,32 +28,32 @@ class PsihoTest(models.Model):
     total_rules = []
     objects = models.DjongoManager()
 
-# e = PsihoTest.objects.create(
+#  e = PsihoTest.objects.create(
 #     text='test',
 #     story='This is how we supposed to feel this questionare ....',
 #     questions=[{
 #         'text': 'Ce faci?',
 #         'answers': [{
-#             'name': 'bine!',
+#             'text': 'bine!',
 #             'score': 1
 #           }, {
-#             'name': 'Foarte bine!',
+#             'text': 'Foarte bine!',
 #             'score': 2
 #           }, {
-#             'name': 'Excelent!',
+#             'text': 'Excelent!',
 #             'score': 3
 #           }
 #         ]
 #     }, {
 #       'text': 'Cum o mai duci?',
 #         'answers': [{
-#             'name': 'bine!',
+#             'text': 'bine!',
 #             'score': 1
 #           },{
-#             'name': 'Foarte bine!',
+#             'text': 'Foarte bine!',
 #             'score': 2
 #           }, {
-#             'name': 'Excelent!',
+#             'text': 'Excelent!',
 #             'score': 3
 #           }
 #         ]

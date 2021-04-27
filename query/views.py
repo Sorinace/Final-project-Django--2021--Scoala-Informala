@@ -35,4 +35,12 @@ def query(request):
     }]
     )
  
-  return render(request, 'query/index.html', {'psihotest': psihotest})
+  return render(request, 'query/query.html', {'psihotest': psihotest})
+
+def home(request):
+  return render(request, 'base.html')
+
+import datetime
+def about(request):
+    time = datetime.datetime.now()
+    return render(request, 'about.html',{'time': time})

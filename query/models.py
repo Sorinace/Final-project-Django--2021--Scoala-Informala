@@ -1,7 +1,5 @@
 from djongo import models
 
-# into admin.py I added for registration of model in admin panel
-
 class Answer(models.Model):
     text = models.CharField(max_length=255)
     score = models.IntegerField
@@ -25,40 +23,15 @@ class PsihoTest(models.Model):
     questions = models.ArrayField( 
             model_container = Question
         )
-    total_rules = []
+    total_rules = models.JSONField()
     objects = models.DjongoManager()
 
-#  e = PsihoTest.objects.create(
-#     text='test',
-#     story='This is how we supposed to feel this questionare ....',
-#     questions=[{
-#         'text': 'Ce faci?',
-#         'answers': [{
-#             'text': 'bine!',
-#             'score': 1
-#           }, {
-#             'text': 'Foarte bine!',
-#             'score': 2
-#           }, {
-#             'text': 'Excelent!',
-#             'score': 3
-#           }
-#         ]
-#     }, {
-#       'text': 'Cum o mai duci?',
-#         'answers': [{
-#             'text': 'bine!',
-#             'score': 1
-#           },{
-#             'text': 'Foarte bine!',
-#             'score': 2
-#           }, {
-#             'text': 'Excelent!',
-#             'score': 3
-#           }
-#         ]
-#     }]
-#     )
-
-# g = PsihoTest.objects.get(text='test')
-# assert e == g
+class AssignedTest(models.Model):
+    _id = models.ObjectIdField()
+    psihotest = models.CharField(max_length=100)
+    text = models.CharField(max_length=100)
+    email = models.EmailField()
+    data = models.DateField() # YYYY-MM-DD
+    message = models.TextField()
+    answer = models.JSONField()
+    objects = models.DjongoManager()

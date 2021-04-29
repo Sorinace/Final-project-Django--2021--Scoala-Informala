@@ -7,7 +7,7 @@ from bson import ObjectId
 @csrf_exempt
 def query(request):
   # e = PsihoTest.objects.create(
-  #   text='test',
+  #   text='PsihoTest',
   #   story='This is how we supposed to feel this questionare ....',
   #   questions=[{
   #       'text': 'Ce faci?',
@@ -35,26 +35,26 @@ def query(request):
   #           'score': 3
   #         }
   #       ]
-  #   }]
+  #   }],
+  #   total_rules = []
   #   )
   
   # e = AssignedTest.objects.create(
   #   psihotest = psihotest._id,
-  #   text = 'Nicu Alexandru',
-  #   email = 'email@email.com',
+  #   text = 'Ticu',
+  #   email = 'email2@email.com',
   #   data = '2021-05-25',
-  #   message = 'Ceva ce vreau sa transmit ... daca e cazul',
+  #   message = 'Ceva ce vreau sa transmit ... daca NU e cazul',
   #   answer = []
   # )
 
-  assigned = AssignedTest.objects.get(text = 'Nicu Alexandru')
+  assigned = AssignedTest.objects.get(text = 'Ticu')
   psihotest = PsihoTest.objects.get(_id= ObjectId(assigned.psihotest))
-
-
   if request.method == 'GET':
+    print(psihotest.text)
     return render(request, 'query/query.html', {'psihotest': psihotest})
   elif request.method == 'POST':
-    return HttpResponse(psihotest.questions)
+    return HttpResponse([psihotest.questions, assigned.text])
 def home(request):
   return render(request, 'base.html')
 

@@ -87,16 +87,23 @@ WSGI_APPLICATION = 'psihotest.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+import mongoengine
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': get_secret('NAME') ,
-        'HOST': get_secret('HOST'),
-        'USER': get_secret('USER'),
-        'PASSWORD': get_secret('DB_PASSWORD'),
-    }
-}
+mongoengine.connect(
+    db=get_secret('NAME'),
+    host=get_secret('HOST'),
+    username=get_secret('USER'),
+    password=get_secret('DB_PASSWORD')
+)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': get_secret('HOST') ,
+#         # 'HOST': get_secret('HOST'),
+#         # 'USER': get_secret('USER'),
+#         # 'PASSWORD': get_secret('DB_PASSWORD'),
+#     }
+# }
 
 
 # Password validation

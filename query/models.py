@@ -1,37 +1,24 @@
-from djongo import models
+from mongoengine import *
 
-class Answer(models.Model):
-    text = models.CharField(max_length=255)
-    score = models.IntegerField
+class Answer(EmbeddedDocument):
+    text = StringField(required=True)
+    score =IntField(required=True)
 
-    class Meta:
-        abstract = True
+class Question(EmbeddedDocument):
+    text = StringField(required=True)
+    answers = EmbeddedDocumentListField(Answer)
 
-class Question(models.Model):
-    text = models.CharField(max_length=500)
-    answers = models.ArrayField( 
-            model_container = Answer
-        )
+class PsihoTest(Document):
+    text = StringField(required=True, max_length=100)
+    story = StringField(required=True)
+    questions = EmbeddedDocumentListField(Question)
+    total_score = ListField(ListField(IntField()))
 
-    class Meta:
-        abstract = True
 
-class PsihoTest(models.Model):
-    _id = models.ObjectIdField()
-    text = models.CharField(max_length=100)
-    story = models.TextField()
-    questions = models.ArrayField( 
-            model_container = Question
-        )
-    total_rules = models.JSONField()
-    objects = models.DjongoManager()
-
-class AssignedTest(models.Model):
-    _id = models.ObjectIdField()
-    psihotest = models.CharField(max_length=100)
-    text = models.CharField(max_length=100)
-    email = models.EmailField()
-    data = models.DateField() # YYYY-MM-DD
-    message = models.TextField()
-    answer = models.JSONField()
-    objects = models.DjongoManager()
+class AssignedTest(Document):
+    psihotest = ReferenceField(PsihoTest, reverse_delete_rule=CASCADE)
+    name = StringField(required=True)
+    email = StringField(required=True)
+    data =  DateTimeField(required=True) # Uses the python-dateutil library
+    message = StringField()
+    answer = ListField(IntField())

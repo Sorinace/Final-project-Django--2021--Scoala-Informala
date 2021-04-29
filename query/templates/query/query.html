@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block body_block %}
   <h1>Pagina mea!</h1>
-  <p>{{psihotest.text}}</p>
-  <p>{{psihotest.story}}</p>
+  <p>Text: {{psihotest.text}}</p>
+  <p>Story: {{psihotest.story}}</p>
   <ul>
   {% for question in psihotest.questions %}
   <li>{{question.text}}</li>

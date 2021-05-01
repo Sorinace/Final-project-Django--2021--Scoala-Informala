@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import PsihoTest, AssignedTest
-from django.views.decorators.csrf import csrf_exempt
-from bson import ObjectId
+from django.views.decorators.csrf import csrf_exempt 
+# from bson import ObjectId
 
 @csrf_exempt
 def query(request):
-  # e = PsihoTest.objects.create(
+  # e = PsihoTest(
   #   text='PsihoTest',
   #   story='This is how we supposed to feel this questionare ....',
   #   questions=[{
@@ -36,25 +36,25 @@ def query(request):
   #         }
   #       ]
   #   }],
-  #   total_rules = []
-  #   )
+  #   total_score = []
+  #   ).save()
   
-  # e = AssignedTest.objects.create(
+  # e = AssignedTest(
   #   psihotest = psihotest._id,
-  #   text = 'Ticu',
+  #   name = 'Ticu',
   #   email = 'email2@email.com',
   #   data = '2021-05-25',
   #   message = 'Ceva ce vreau sa transmit ... daca NU e cazul',
   #   answer = []
-  # )
+  # ).save()
 
-  assigned = AssignedTest.objects.get(text = 'Ticu')
-  psihotest = PsihoTest.objects.get(_id= ObjectId(assigned.psihotest))
+  # assigned = AssignedTest.objects.get(name = 'Ticu') 
+  psihotest =  PsihoTest.objects.get(text='PsihoTest')
+
   if request.method == 'GET':
-    print(psihotest.text)
     return render(request, 'query/query.html', {'psihotest': psihotest})
   elif request.method == 'POST':
-    return HttpResponse([psihotest.questions, assigned.text])
+    return HttpResponse([psihotest.questions])
 def home(request):
   return render(request, 'base.html')
 

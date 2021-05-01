@@ -31,6 +31,8 @@ Please highlight all the validations and mechanisms you identified as necessary 
 
 ##### 3rd party libraries (if applicable)
 Please give a brief review of the 3rd party libraries you used and how/ why you've integrated them into your project.
+- mongoengine - conexion with MongoDB
+- pip install pylint-django - corect the mongoengine error wit object
 
 
 ##### Environment

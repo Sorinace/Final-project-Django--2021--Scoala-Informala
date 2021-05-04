@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PsihoTest</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="styles.css" type="text/css"> -->
+  </head>
+<body>
+  <center>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <ul class="nav navbar-nav">
+          <li><a class="navbar-brand" href="{% url 'home' %}">HomePage</a></li>
+          <li><a class="navbar-link" href="{% url 'query' %}">Query</a></li>
+          <li><a class="navbar-link" href="{% url 'about' %}">About</a></li>
+          <li><a class="navbar-link" href="{% url 'admin:index' %}">Admin</a></li>
+        </ul>
+      </div>
+    </nav>
+  </center>
+    <div class="container">
+      <h1>Pagina Psiho Test</h1>
+      {% block content %}
+      <h1>Aceasta este pagina de pornire</h1>
+      <h2> - we are in the block of home page - </h2>
+      {% endblock %}
+</body>
+</html>

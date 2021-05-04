@@ -48,8 +48,9 @@ def query(request):
   #   answer = []
   # ).save()
 
-  # assigned = AssignedTest.objects.get(name = 'Ticu') 
-  psihotest =  PsihoTest.objects.get(text='PsihoTest')
+  assigned = AssignedTest.objects.get(name = 'Ticu') 
+  print(assigned.message)
+  psihotest =  assigned.psihotest
 
   if request.method == 'GET':
     return render(request, 'query/query.html', {'psihotest': psihotest})

@@ -1,3 +1,4 @@
+from django.db import models
 from mongoengine import * 
 
 class Answer(EmbeddedDocument):
@@ -14,6 +15,9 @@ class PsihoTest(Document):
   questions = EmbeddedDocumentListField(Question)
   total_score = ListField(ListField(IntField()))
 
+  def __str__(self):
+        return self.text
+
 
 class AssignedTest(Document):
   psihotest = ReferenceField(PsihoTest, reverse_delete_rule=CASCADE)
@@ -22,3 +26,9 @@ class AssignedTest(Document):
   data =  DateTimeField(required=True) # Uses the python-dateutil library
   message = StringField()
   answer = ListField(IntField())
+  
+  def __str__(self):
+        return self.name
+
+class Nothing(models.Model):
+  pass

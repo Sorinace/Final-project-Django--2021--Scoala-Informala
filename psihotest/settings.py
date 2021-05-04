@@ -14,8 +14,11 @@ import os
 from django.core.exceptions import ImproperlyConfigured
 from pathlib import Path
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
 # Add the password and Key in setting
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 with open(os.path.join(BASE_DIR, 'secrets.json')) as secrets_file:
     secrets = json.load(secrets_file)
 
@@ -25,10 +28,6 @@ def get_secret(setting, secrets=secrets):
         return secrets[setting]
     except KeyError:
         raise ImproperlyConfigured("Set the {} setting".format(setting))
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -47,6 +46,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    # 'mongoengine.django.mongo_auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -69,7 +69,7 @@ ROOT_URLCONF = 'psihotest.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,6 +88,8 @@ WSGI_APPLICATION = 'psihotest.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 import mongoengine
+from mongoengine import *
+
 
 mongoengine.connect(
     db=get_secret('NAME'),
@@ -95,15 +97,24 @@ mongoengine.connect(
     username=get_secret('USER'),
     password=get_secret('DB_PASSWORD')
 )
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': get_secret('HOST') ,
-#         # 'HOST': get_secret('HOST'),
-#         # 'USER': get_secret('USER'),
-#         # 'PASSWORD': get_secret('DB_PASSWORD'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.dummy',
+        # 'NAME': get_secret('HOST') ,
+        # 'HOST': get_secret('HOST'),
+        # 'USER': get_secret('USER'),
+        # 'PASSWORD': get_secret('DB_PASSWORD'),
+    }
+}
+
+# AUTHENTICATION_BACKENDS = (
+#     'mongoengine.django.auth.MongoEngineBackend',
+#  )
+
+# SESSION_ENGINE = 'mongoengine.django.sessions'
+
+# AUTH_USER_MODEL=('mongo_auth.MongoUser')
+# MONGOENGINE_USER_DOCUMENT = 'MyAwesomeApp.app.models.CustomUser'
 
 
 # Password validation

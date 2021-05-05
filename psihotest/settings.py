@@ -92,7 +92,7 @@ DATABASES = {
         'HOST': get_secret('HOST'),
         'USER': get_secret('USER'),
         'PASSWORD': get_secret('DB_PASSWORD'),
-        'PORT': 5432
+        'PORT': 5433
     }
 }
 

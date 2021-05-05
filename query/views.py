@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 # from bson import ObjectId
 
 @csrf_exempt
-def query(request):
+def query(request, id):
   # psihotest = PsihoTest(
   #   text='PsihoTest',
   #   story='This is how we supposed to feel this questionare ....',
@@ -48,12 +48,13 @@ def query(request):
   #   answer = []
   # ).save()
 
-  # assigned = AssignedTest.objects.get(name = 'Ticu') 
-  psihotest = PsihoTest.objects.get(text='Exemplu de test')
+  assigned = AssignedTest.objects.get(id=id) 
+  psihotest = PsihoTest.objects.get(id=assigned.psihotest.id)
   print(psihotest.questions.all())
 
   if request.method == 'GET':
-    return render(request, 'query/query.html', {'psihotest': psihotest})
+    print (id)
+    return render(request, 'query/query.html', {'psihotest': psihotest, 'id': assigned.psihotest.id})
   elif request.method == 'POST':
     return HttpResponse([psihotest.questions])
 def home(request):

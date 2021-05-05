@@ -3,11 +3,12 @@
   <h1>Pagina mea!</h1>
   <p>Text: {{psihotest.text}}</p>
   <p>Story: {{psihotest.story}}</p>
+  <p>ID: {{id}}</p>
   <ul>
-  {% for question in psihotest.questions %}
+  {% for question in psihotest.questions.all %}
   <li>{{question.text}}</li>
   <ul>
-    {% for answer in question.answers %}
+    {% for answer in question.answers.all %}
       <li>{{answer.text}}</li>
     {% endfor %}
   </ul>

@@ -26,7 +26,7 @@ class PsihoTest(models.Model):
 
 
 class AssignedTest(models.Model):
-  psihotest = models.ForeignKey(PsihoTest, on_delete=models.SET_NULL)
+  psihotest = models.ForeignKey(PsihoTest, on_delete=models.CASCADE)
   name = models.CharField(max_length=100)
   email = models.EmailField()
   data =  models.DateField() 
@@ -34,4 +34,4 @@ class AssignedTest(models.Model):
   answer = ArrayField(models.IntegerField(), null=True, blank=True)
 
   def __str__(self):
-        return f"Quiz was assigned to the {self.name}, and isvalid until {self.data} "
+        return f"Quiz was assigned to the {self.name}, and is valid until {self.data} "

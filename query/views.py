@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def query(request):
-  # e = PsihoTest(
+  # psihotest = PsihoTest(
   #   text='PsihoTest',
   #   story='This is how we supposed to feel this questionare ....',
   #   questions=[{
@@ -49,7 +49,8 @@ def query(request):
   # ).save()
 
   # assigned = AssignedTest.objects.get(name = 'Ticu') 
-  psihotest =  PsihoTest.objects.get(text='PsihoTest')
+  psihotest = PsihoTest.objects.get(text='Exemplu de test')
+  print(psihotest.questions.all())
 
   if request.method == 'GET':
     return render(request, 'query/query.html', {'psihotest': psihotest})

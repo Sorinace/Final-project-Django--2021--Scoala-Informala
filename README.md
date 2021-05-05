@@ -1,13 +1,14 @@
 # Final-project-Django--2021--Scoala-Informala
 The  final project from Python Django training, Scoala Informala  07.2021
-- to be update - 
-This document has the purpose of summarizing the main functionalities your application managed to achieve from a technical perspective. Feel free to extend this template to meet your needs and also choose any approach you want for documenting your solution.
+- This application creates a platform for applying the quizzing and evaluating them
 
 ## Problem statement
-* The purpose of this program is to deliver a psychological test online.
-* The psychologist assigns a test to a patient, he will be notified by email.
-* The email will contain a link with a code so that the patient will access the test and the result will be recorded on that patient's account.
-* The psychologist will obtain the rated test and will be able to complete the patient's report when he has completed it. 
+* The purpose of this app is to deliver a quiz online.
+* A registered user will upload the quiz to the system (DB)
+* A registered user will assign the quiz to one or more people 
+* The person will receive an email with a link to perform the quiz assigned
+* After completing the quiz the result will be stored on the server, where it can be consulted by the registered user who assigned it to you.
+* The registered user will obtain the rated quiz
 
 ## Technical documentation
 ### Data and Domain model
@@ -20,8 +21,8 @@ In this section, please provide a brief overview of the design of your applicati
 ##### Functionalities
 Implemented it and describe its input and output in your application:
 
-[x] Setting up the Python, Django and MongoDB  \
-[x] Create my first view  \
+[x] Setting up the Python, Django and ProgeSQL  \
+[] Create my first view  \
 [] Validator
 
 
@@ -31,8 +32,6 @@ Please highlight all the validations and mechanisms you identified as necessary 
 
 ##### 3rd party libraries (if applicable)
 Please give a brief review of the 3rd party libraries you used and how/ why you've integrated them into your project.
-- mongoengine - conexion with MongoDB
-- pip install pylint-django - corect the mongoengine error wit object
 
 
 ##### Environment
@@ -40,8 +39,8 @@ Please fill in the following table with the technologies you used in order to wo
 | Name | Choice |
 | ------ | ------ |
 | Operating system (OS) | Windows 10 |
-| Database  | MongoDB 4.4.5 |
-| Framework| Django 3.1 |
+| Database  | ProgreSQL 13.2 |
+| Framework| Django 3.2 |
 | Python | 3.9 |
 | IDE | Visual Studio Code |
 

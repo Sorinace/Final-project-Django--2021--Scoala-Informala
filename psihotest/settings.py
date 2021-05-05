@@ -14,8 +14,10 @@ import os
 from django.core.exceptions import ImproperlyConfigured
 from pathlib import Path
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 # Add the password and Key in setting
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 with open(os.path.join(BASE_DIR, 'secrets.json')) as secrets_file:
     secrets = json.load(secrets_file)
 
@@ -25,10 +27,6 @@ def get_secret(setting, secrets=secrets):
         return secrets[setting]
     except KeyError:
         raise ImproperlyConfigured("Set the {} setting".format(setting))
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -51,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'query',
+    'query.apps.QueryConfig',
 ]
 
 MIDDLEWARE = [
@@ -84,26 +82,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'psihotest.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-import mongoengine
 
-mongoengine.connect(
-    db=get_secret('NAME'),
-    host=get_secret('HOST'),
-    username=get_secret('USER'),
-    password=get_secret('DB_PASSWORD')
-)
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': get_secret('HOST') ,
-#         # 'HOST': get_secret('HOST'),
-#         # 'USER': get_secret('USER'),
-#         # 'PASSWORD': get_secret('DB_PASSWORD'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': get_secret('NAME') ,
+        'HOST': get_secret('HOST'),
+        'USER': get_secret('USER'),
+        'PASSWORD': get_secret('DB_PASSWORD'),
+        'PORT': 5432
+    }
+}
 
 
 # Password validation

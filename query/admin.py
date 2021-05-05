@@ -3,5 +3,5 @@ from .models import PsihoTest, AssignedTest
 
 # Register your models here.
 
-# admin.site.register(PsihoTest)
-# admin.site.register(AssignedTest)
+admin.site.register(PsihoTest)
+admin.site.register(AssignedTest)

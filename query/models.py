@@ -32,6 +32,8 @@ class AssignedTest(models.Model):
   data =  models.DateField() 
   message = models.CharField(max_length=200, null=True, blank=True)
   answer = ArrayField(models.IntegerField(), null=True, blank=True)
+  
+  objects = None # For the error in View, when i call the objects
 
   def __str__(self):
         return f"Quiz was assigned to the {self.name}, and is valid until {self.data} "

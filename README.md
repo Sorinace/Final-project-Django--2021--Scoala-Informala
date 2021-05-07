@@ -22,6 +22,7 @@ In this section, please provide a brief overview of the design of your applicati
 Implemented it and describe its input and output in your application:
 
 [x] Setting up the Python, Django and ProgeSQL  \
+[x] Install djangorestframework -  for REST API
 [] Create my first view  \
 [] Validator
 

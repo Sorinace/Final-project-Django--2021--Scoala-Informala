@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'query.apps.QueryConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -92,7 +93,7 @@ DATABASES = {
         'HOST': get_secret('HOST'),
         'USER': get_secret('USER'),
         'PASSWORD': get_secret('DB_PASSWORD'),
-        'PORT': 5433
+        'PORT': 5432
     }
 }
 

@@ -30,7 +30,7 @@ class AssignedTest(models.Model):
   name = models.CharField(max_length=100)
   email = models.EmailField()
   data =  models.DateField() 
-  message = models.CharField(max_length=200)
+  message = models.CharField(max_length=200, null=True, blank=True)
   answer = ArrayField(models.IntegerField(), null=True, blank=True)
 
   def __str__(self):

@@ -5,6 +5,7 @@
 __pycache__
 db.sqlite3
 media
+requirements.txt
 
 # Fisier cu parole, nu se urca pe GitHub!
 /secrets.json

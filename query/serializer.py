@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import PsihoTest, AssignedTest, Answer, Question
+from .models import PsihoTest, AssignedTest, Answer, Question, AnswerTest
 
 class AnswerSerializer(serializers.ModelSerializer):
 
@@ -29,5 +29,10 @@ class AssignedTestSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'email', 'data', 'message', 'psihotest')
 
 
+class AnswerTestSerializer(serializers.ModelSerializer):
+  
+  class Meta:
+        model = AnswerTest
+        fields = ('question', 'choose')
 
 

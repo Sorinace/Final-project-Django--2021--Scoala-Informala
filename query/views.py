@@ -17,11 +17,9 @@ def saveAnswer(answers):
         choose = Answer.objects.get(id=ans['choose']))
       print(score)
       score.save()
-      print('Salvat ...')
       assigned.answer.add(score)
-      print('Adaugat ...')
-  except:
-    return False
+  except Exception as e:
+    return e
   return True
 
 # @csrf_exempt
@@ -38,7 +36,8 @@ def answer(request):
     answers = json.loads(request.body.decode("utf-8"))
     saveAnswer(answers)
     
-  except:
+  except Exception as e:
+    print(f"Type: {type(e)}")
     return Response(False)
   return Response(True)
 

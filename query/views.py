@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
-from .forms import AnswerSet
+from .email import emailAssignedTest
 from .serializer import PsihoTestSerializer, AssignedTestSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json
-from django.core.mail import send_mail
 
 # from django.views.decorators.csrf import csrf_exempt 
 
@@ -25,16 +24,16 @@ def saveAnswer(answers):
 
 # @csrf_exempt
 @api_view(['GET'])
-def query_id(request, id='1'):
+def query_api(request, id='1'):
   if request.method == 'GET':
     assigned = AssignedTest.objects.get(id=id)
     serializer = AssignedTestSerializer(assigned)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def query(request):
-  psihotest = PsihoTest.objects.get(id='1')
-  return render(request, 'query/query.html', {'psihotest': psihotest, 'id':1})
+def query(request, id='1'):
+  psihotest = PsihoTest.objects.get(id=id)
+  return render(request, 'query/query.html', {'psihotest': psihotest, 'id': id})
 
 @api_view(['POST'])
 def answer_api(request):
@@ -69,12 +68,6 @@ def home(request):
 
 import datetime
 def about(request):
-  send_mail(
-    'Subiect',
-    'Here is the message.',
-    'sorin@cosmos.com',
-    ['sorinace@gmail.com'],
-    fail_silently=False,
-  )
+  emailAssignedTest('sorinace@gmail.com', 'http://localhost:8000/query/1')
   time = datetime.datetime.now()
   return render(request, 'about.html',{'time': time})

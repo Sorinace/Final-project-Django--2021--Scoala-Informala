@@ -22,7 +22,8 @@ class PsihoTest(models.Model):
   story = models.TextField()
   questions = models.ManyToManyField(Question)
   total_score = ArrayField(ArrayField(models.IntegerField()), null=True, blank=True)
-
+  
+  objects = None # For the error:Class '<class name>' has no 'objects' memberpylint(no-member) in View
   def __str__(self):
         return f"Quiz name is: {self.text} " 
 

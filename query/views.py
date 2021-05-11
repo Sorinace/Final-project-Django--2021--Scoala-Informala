@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
+from .forms import AnswerSet
 from .serializer import PsihoTestSerializer, AssignedTestSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -15,7 +16,6 @@ def saveAnswer(answers):
     for ans in answers['answers']:
       score = AnswerTest(question = Question.objects.get(id=ans['question']),
         choose = Answer.objects.get(id=ans['choose']))
-      print(score)
       score.save()
       assigned.answer.add(score)
   except Exception as e:
@@ -24,14 +24,19 @@ def saveAnswer(answers):
 
 # @csrf_exempt
 @api_view(['GET'])
-def query(request, id='1'):
+def query_id(request, id='1'):
   if request.method == 'GET':
     assigned = AssignedTest.objects.get(id=id)
     serializer = AssignedTestSerializer(assigned)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def query(request):
+  psihotest = PsihoTest.objects.get(id='1')
+  return render(request, 'query/query.html', {'psihotest': psihotest, 'id':1})
+
 @api_view(['POST'])
-def answer(request):
+def answer_api(request):
   try:
     answers = json.loads(request.body.decode("utf-8"))
     saveAnswer(answers)
@@ -41,10 +46,27 @@ def answer(request):
     return Response(False)
   return Response(True)
 
+@api_view(['POST'])
+def answer(request):
+  item = {}
+  answers= {}
+  answer=[]
+  for i in request.POST:
+    if i == 'id':
+      answers['id'] = int(request.POST[i])
+    elif i != 'csrfmiddlewaretoken':
+      item['question'] = int(i)
+      item['choose'] = int(request.POST[i])
+      answer.append(item)
+      item = {}
+  answers["answers"] = answer
+  saveAnswer(answers)
+  return render(request, 'save.html')
+
 def home(request):
   return render(request, 'base.html')
 
 import datetime
 def about(request):
-    time = datetime.datetime.now()
-    return render(request, 'about.html',{'time': time})
+  time = datetime.datetime.now()
+  return render(request, 'about.html',{'time': time})

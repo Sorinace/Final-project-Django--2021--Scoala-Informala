@@ -1,18 +1,29 @@
 {% extends "base.html" %}
 {% block body_block %}
-  <h1>Pagina mea!</h1>
+  <h3>Va rog sa raspundeti la intrebarile de mai jos:</h3>
   <p>Text: {{psihotest.text}}</p>
   <p>Story: {{psihotest.story}}</p>
-  <p>ID: {{id}}</p>
-  <p>Q1: {{questions}}</p>
-  <ul>
-  {% for question in psihotest.questions.all %}
-  <li>{{question.text}}</li>
-  <ul>
-    {% for answer in question.answers.all %}
-      <li>{{answer.text}}</li>
+  <form action="/answer/" method="post">
+    {% csrf_token %}
+    <div style="display: none;>
+      <p><label for="id">ID:</label>
+        <input type="text" name="id" value={{id}}></p>
+    </div>
+    <ol>
+    {% for question in psihotest.questions.all %}
+    <li>{{question.text}}</li>
+    <ul>
+      {% for answer in question.answers.all %}
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name={{question.id}} value={{answer.id}}>
+          <label class="form-check-label" for="inlineCheckbox3">
+            {{answer.text}}
+          </label>
+        </div>
+      {% endfor %}
+    </ul>
     {% endfor %}
-  </ul>
-  {% endfor %}
-  </ul> 
+    </ol> 
+    <input type="submit" value="Trimite">
+ </form>
 {% endblock %}

@@ -5,7 +5,7 @@
   <p>Story: {{psihotest.story}}</p>
   <form action="/answer/" method="post">
     {% csrf_token %}
-    <div style="display: none;>
+    <div style="display: none;">
       <p><label for="id">ID:</label>
         <input type="text" name="id" value={{id}}></p>
     </div>

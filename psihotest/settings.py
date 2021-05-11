@@ -98,6 +98,13 @@ DATABASES = {
 }
 
 
+# email settings:
+EMAIL_HOST = get_secret('EMAIL_HOST') 
+EMAIL_HOST_USER = get_secret('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = get_secret('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 

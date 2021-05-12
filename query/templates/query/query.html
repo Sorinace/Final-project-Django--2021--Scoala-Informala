@@ -1,29 +1,42 @@
 {% extends "base.html" %}
 {% block body_block %}
+<div class="alert alert-success">
   <h3>Va rog sa raspundeti la intrebarile de mai jos:</h3>
-  <p>Text: {{psihotest.text}}</p>
-  <p>Story: {{psihotest.story}}</p>
+</div> 
+<div class="alert alert-success"> 
+  <h3> {{psihotest.text}}</h3>
+  <p>   {{psihotest.story}}</p>
+</div>
+<div class="questions">
   <form action="/answer/" method="post">
     {% csrf_token %}
-    <div style="display: none;">
+    <div style="display: none;"><!--  hidden data -->
       <p><label for="id">ID:</label>
         <input type="text" name="id" value={{id}}></p>
     </div>
-    <ol>
-    {% for question in psihotest.questions.all %}
-    <li>{{question.text}}</li>
-    <ul>
-      {% for answer in question.answers.all %}
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name={{question.id}} value={{answer.id}}>
-          <label class="form-check-label" for="inlineCheckbox3">
-            {{answer.text}}
-          </label>
+    <div class="card" style="width: 50%;">
+      <ol>
+      {% for question in psihotest.questions.all %}
+        <div class="card-header">
+          <li >{{question.text}}</li>
         </div>
+        <ul class="list-group list-group-flush">
+          {% for answer in question.answers.all %}
+            <div class="form-check list-group-item">
+              <input class="form-check-input" type="radio" name={{question.id}} value={{answer.id}}>
+              <label class="form-check-label">
+                {{answer.text}}
+              </label>
+            </div>
+          {% endfor %}
+          <br/>
+        </ul>
       {% endfor %}
-    </ul>
-    {% endfor %}
-    </ol> 
-    <input type="submit" value="Trimite">
+      </ol>   
+    </div>
+    <div class="btn_center">
+      <input class="btn btn-primary" type="submit" value="Trimite">
+    </div>
  </form>
+</div>
 {% endblock %}

@@ -10,14 +10,13 @@ import json
 # from django.views.decorators.csrf import csrf_exempt 
 
 def saveAnswer(answers):
-  # score = AnswerTest
   try:
     assigned = AssignedTest.objects.get(id=answers['id'])
     for ans in answers['answers']:
-      score = AnswerTest(question = Question.objects.get(id=ans['question']),
-        choose = Answer.objects.get(id=ans['choose']))
+      score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
       score.save()
       assigned.answer.add(score)
+      # print(score)
   except Exception as e:
     return e
   return True
@@ -32,7 +31,8 @@ def query_api(request, id='1'):
 
 @api_view(['GET'])
 def query(request, id='1'):
-  psihotest = PsihoTest.objects.get(id=id)
+  assigned = AssignedTest.objects.get(id=id)
+  psihotest = assigned.psihotest 
   return render(request, 'query/query.html', {'psihotest': psihotest, 'id': id})
 
 @api_view(['POST'])
@@ -60,6 +60,7 @@ def answer(request):
       answer.append(item)
       item = {}
   answers["answers"] = answer
+  # print(answers)
   saveAnswer(answers)
   return render(request, 'save.html')
 
@@ -68,6 +69,6 @@ def home(request):
 
 import datetime
 def about(request):
-  emailAssignedTest('sorinace@gmail.com', 'http://localhost:8000/query/1')
+  # emailAssignedTest('sorinace@gmail.com', 'http://localhost:8000/query/2')
   time = datetime.datetime.now()
   return render(request, 'about.html',{'time': time})

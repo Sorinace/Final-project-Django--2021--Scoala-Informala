@@ -3,11 +3,14 @@ from django.contrib.postgres.fields import ArrayField
 
 class Answer(models.Model):
   text = models.CharField(max_length=200)
-  score =models.IntegerField()
+  score = models.IntegerField()
   objects = None # For the error:Class '<class name>' has no 'objects' memberpylint(no-member) in View
-
+  
+  class Meta:
+    ordering = ['-text']
+  
   def __str__(self):
-    return f"Answer is: {self.text} with score {self.score}" 
+    return f"{self.id} - {self.text} with score = {self.score}" 
 
 class Question(models.Model):
   text = models.CharField(max_length=200)
@@ -15,7 +18,7 @@ class Question(models.Model):
   objects = None # For the error:Class '<class name>' has no 'objects' memberpylint(no-member) in View
   
   def __str__(self):
-    return f"Qestion is: {self.text} " 
+    return f"{self.id} - {self.text} " 
 
 class PsihoTest(models.Model):
   text = models.CharField(max_length=100)
@@ -25,16 +28,16 @@ class PsihoTest(models.Model):
   
   objects = None # For the error:Class '<class name>' has no 'objects' memberpylint(no-member) in View
   def __str__(self):
-        return f"Quiz name is: {self.text} " 
+        return f"{self.id} - {self.text} " 
 
 class AnswerTest(models.Model):
-  question = models.ForeignKey(Question,  on_delete=models.DO_NOTHING, null=True, blank=True)
-  choose = models.ForeignKey(Answer,  on_delete=models.DO_NOTHING, null=True, blank=True)
+  question = models.ForeignKey(Question, on_delete=models.DO_NOTHING, null=True, blank=True)
+  choose = models.ForeignKey(Answer, on_delete=models.DO_NOTHING, null=True, blank=True)
 
   objects = None # For the error:Class '<class name>' has no 'objects' memberpylint(no-member) in View
   
   def __str__(self):
-    return f"{self.question}, {self.choose} " 
+    return f"{self.id} - {self.question}, {self.choose} " 
 
 
 class AssignedTest(models.Model):
@@ -48,4 +51,4 @@ class AssignedTest(models.Model):
   objects = None # For the error:Class '<class name>' has no 'objects' memberpylint(no-member) in View
 
   def __str__(self):
-        return f"Quiz was assigned to the {self.name}, and is valid until {self.data} "
+        return f"{self.id} - Quiz was assigned to the {self.name}, and is valid until {self.data} "

@@ -1,0 +1,20 @@
+.card-header {
+    font-size:2em;
+    color: rgb(0, 217, 255);
+}
+
+.questions {
+    margin-left:10%;
+    margin-right: auto
+}
+
+.btn_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.form-check-label {
+    font-size:1.3em;
+}

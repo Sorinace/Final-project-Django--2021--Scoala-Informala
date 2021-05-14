@@ -1,13 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse,JsonResponse, HttpResponseRedirect
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
 from .email import emailAssignedTest
 from .serializer import PsihoTestSerializer, AssignedTestSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json
-
-# from django.views.decorators.csrf import csrf_exempt 
+from .forms import AssignPsihoTest
 
 def saveAnswer(answers):
   try:
@@ -21,7 +20,6 @@ def saveAnswer(answers):
     return e
   return True
 
-# @csrf_exempt
 @api_view(['GET'])
 def query_api(request, id='1'):
   if request.method == 'GET':
@@ -33,7 +31,41 @@ def query_api(request, id='1'):
 def query(request, id='1'):
   assigned = AssignedTest.objects.get(id=id)
   psihotest = assigned.psihotest 
-  return render(request, 'query/query.html', {'psihotest': psihotest, 'id': id})
+  return render(request, 'query.html', {'psihotest': psihotest, 'id': id})
+
+@api_view(['GET', 'POST'])
+def asign(request):
+  if request.method == 'POST':
+    bau = 'Reintoarcerea ...'
+    # create a form instance and populate it with data from the request:
+    form = AssignPsihoTest(request.POST)
+    # check whether it's valid:
+    if form.is_valid():
+      # process the data in form.cleaned_data as required
+      asignTest = AssignedTest()
+      asignTest.psihotest = PsihoTest.objects.get(text=form.cleaned_data['psihotest'])
+      asignTest.name =  form.cleaned_data['name']
+      asignTest.email =  form.cleaned_data['email']
+      asignTest.data = form.cleaned_data['data']
+      asignTest.message = form.cleaned_data['message']
+      print(asignTest)
+      try:
+      #   asignTest.save()
+        emailAssignedTest( asignTest.email, f"http://localhost:8000/query/{asignTest.id}", asignTest.data, asignTest.message)
+      except Exception as e:
+        return e
+
+      # redirect to a new URL:
+      return HttpResponseRedirect('/about/')
+    else:
+      print('NU merge?')
+      print(form)
+    # if a GET (or any other method) we'll create a blank form
+    
+  else:
+    form = AssignPsihoTest()
+    bau = 'Sorin'
+  return render(request, 'asign.html', {'cucu': bau, 'form': form})
 
 @api_view(['POST'])
 def answer_api(request):
@@ -69,6 +101,6 @@ def home(request):
 
 import datetime
 def about(request):
-  # emailAssignedTest('sorinace@gmail.com', 'http://localhost:8000/query/2')
+  # emailAssignedTest('sorinace@gmail.com', 'http://localhost:8000/query/2', data, mesaj)
   time = datetime.datetime.now()
   return render(request, 'about.html',{'time': time})

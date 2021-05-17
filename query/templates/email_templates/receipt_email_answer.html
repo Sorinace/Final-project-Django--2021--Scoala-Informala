@@ -1,6 +1,11 @@
-<h3>Testul trimis spre {{answer.name}} a fost finalizat.</h3>
-{% for item in answer.answers %}
-<h4>item.question</h4>
-<h5>item.choose</h5>
+
+<h3>Testul trimis spre {{name}} a fost finalizat.</h3>
+
+<h1>Total: {{total}}</h1>
+
+{% for item in answer %}
+  <h4>{{ item.question.text }}</h4>
+  <h5>{{ item.choose.text }} - {{ item.choose.score }}</h5>
 {% endfor %}
-{{answer.answers}}
+
+

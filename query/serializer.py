@@ -21,18 +21,17 @@ class PsihoTestSerializer(serializers.ModelSerializer):
         model = PsihoTest
         fields = ('id', 'text', 'story', 'questions')
 
-class AssignedTestSerializer(serializers.ModelSerializer):
-    psihotest = PsihoTestSerializer()
-
-    class Meta:
-        model = AssignedTest
-        fields = ('id', 'name', 'email', 'data', 'message', 'psihotest')
-
-
 class AnswerTestSerializer(serializers.ModelSerializer):
   
   class Meta:
         model = AnswerTest
         fields = ('question', 'choose')
 
+class AssignedTestSerializer(serializers.ModelSerializer):
+    psihotest = PsihoTestSerializer()
+    answer = AnswerTestSerializer()
+
+    class Meta:
+        model = AssignedTest
+        fields = ('id', 'name', 'email', 'data', 'message', 'psihotest', 'answer')
 

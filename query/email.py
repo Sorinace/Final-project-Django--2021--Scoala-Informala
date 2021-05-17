@@ -4,26 +4,6 @@ from django.core.mail import EmailMultiAlternatives
 from smtplib import SMTPException
 from rest_framework import serializers
 
-
-def emailAssignedTest(email, addres, data, mesaj):
-  send_mail(
-    'Va fost atribuit un test',
-    # message
-    f"""
-    Buna ziua,
-        Va rog sa completati testul de la adresa {addres}
-        Testul expira in {data}.
-        {mesaj}
-    O zi frumoasa,
-    Diana Avram 
-    """,
-    'Diana Avram',
-    [email], # 'psiholigia@gmail.com'
-    fail_silently=False,
-  )
-
-
-
 def sendEmail(request, subject, email, from_us, addres, data, message):
     replay = "sorinace@gmail.com"
 
@@ -46,13 +26,18 @@ def sendEmail(request, subject, email, from_us, addres, data, message):
 def sendEmailAnswer(request, answer):
     replay = "sorinace@gmail.com"
 
-    context = ({"answer": answer, }) 
+    total = 0
+    for item in answer.answer.all():
+        total += int(item.choose.score)
+
+    context = ({"answer": answer.answer.all(), "name": answer.name, "total": total}) 
+
     text_content = render_to_string('receipt_email_answer.txt', context, request=request)
     html_content = render_to_string('receipt_email_answer.html', context, request=request)
     
     try:
         #I used EmailMultiAlternatives because I wanted to send both text and html
-        emailMessage = EmailMultiAlternatives(subject='Raspuns la test', body=text_content, from_email='Server', to=['sorinace@gmail.com',], reply_to=[replay,])
+        emailMessage = EmailMultiAlternatives(subject='Raspuns la test', body=text_content, from_email='Testing WEB Server', to=['sorinace@gmail.com',], reply_to=[replay,])
         emailMessage.attach_alternative(html_content, "text/html")
         emailMessage.send(fail_silently=False)
     except SMTPException as e:

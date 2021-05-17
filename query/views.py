@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse, HttpResponseRedirect
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
-from .email import emailAssignedTest, sendEmail, sendEmailAnswer
-from .serializer import PsihoTestSerializer, AssignedTestSerializer
+from .email import sendEmail, sendEmailAnswer
+from .serializer import AssignedTestSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json

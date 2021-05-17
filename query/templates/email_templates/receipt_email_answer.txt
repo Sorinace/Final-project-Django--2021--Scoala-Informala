@@ -1,0 +1,4 @@
+Buna ziua,
+A facut testul {{assigned.name}}
+
+O zi minunata!

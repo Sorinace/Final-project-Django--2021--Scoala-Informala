@@ -1,21 +1,21 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse, HttpResponseRedirect
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
-from .email import emailAssignedTest
+from .email import emailAssignedTest, sendEmail, sendEmailAnswer
 from .serializer import PsihoTestSerializer, AssignedTestSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json
 from .forms import AssignPsihoTest
 
-def saveAnswer(answers):
+def saveAnswer(request, answers):
   try:
     assigned = AssignedTest.objects.get(id=answers['id'])
     for ans in answers['answers']:
       score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
       score.save()
       assigned.answer.add(score)
-      # print(score)
+    sendEmailAnswer(request, assigned)
   except Exception as e:
     return e
   return True
@@ -51,7 +51,8 @@ def asign(request):
       print(asignTest)
       try:
       #   asignTest.save()
-        emailAssignedTest( asignTest.email, f"http://localhost:8000/query/{asignTest.id}", asignTest.data, asignTest.message)
+        sendEmail(request, 'Atribuire test', asignTest.email, 'Diana Avram', f"http://localhost:8000/query/{asignTest.id}", asignTest.data, asignTest.message)
+        # emailAssignedTest( asignTest.email, f"http://localhost:8000/query/{asignTest.id}", asignTest.data, asignTest.message)
       except Exception as e:
         return e
 
@@ -93,7 +94,7 @@ def answer(request):
       item = {}
   answers["answers"] = answer
   # print(answers)
-  saveAnswer(answers)
+  saveAnswer(request, answers)
   return render(request, 'save.html')
 
 def home(request):
@@ -103,4 +104,5 @@ import datetime
 def about(request):
   # emailAssignedTest('sorinace@gmail.com', 'http://localhost:8000/query/2', data, mesaj)
   time = datetime.datetime.now()
+  # sendEmail(request, 'Atribuire test','sorinace@gmail.com', 'Diana Avram', 'http://localhost:8000/query/2', time, "mesaj catre TARA")
   return render(request, 'about.html',{'time': time})

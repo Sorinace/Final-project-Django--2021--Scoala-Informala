@@ -1,23 +1,29 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse, HttpResponseRedirect
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
+from .forms import AssignPsihoTest
 from .email import sendEmail, sendEmailAnswer
 from .serializer import AssignedTestSerializer
+from .errors import MyException, incomplet
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json
-from .forms import AssignPsihoTest
+
+from django.contrib import messages #import messages
 
 def saveAnswer(request, answers):
   try:
     assigned = AssignedTest.objects.get(id=answers['id'])
-    for ans in answers['answers']:
-      score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
-      score.save()
-      assigned.answer.add(score)
-    sendEmailAnswer(request, assigned)
-  except Exception as e:
-    return e
+    if(len(answers['answers']) == len(assigned.psihotest.questions.all())):
+      for ans in answers['answers']:
+        score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
+        score.save()
+        assigned.answer.add(score)
+      sendEmailAnswer(request, assigned)
+    else:
+      incomplet()
+  except MyException:
+    return incomplet()
   return True
 
 @api_view(['GET'])
@@ -31,12 +37,17 @@ def query_api(request, id='1'):
 def query(request, id='1'):
   assigned = AssignedTest.objects.get(id=id)
   psihotest = assigned.psihotest 
+  # messages.success(request, "Test valid!" )
+  # check if the test is completed or not
+  if (len(assigned.answer.all()) > 0):
+    messages.info(request, 'Acest test a fost deja completat!')
+    psihotest = None
+    id = None
   return render(request, 'query.html', {'psihotest': psihotest, 'id': id})
 
 @api_view(['GET', 'POST'])
 def asign(request):
   if request.method == 'POST':
-    bau = 'Reintoarcerea ...'
     # create a form instance and populate it with data from the request:
     form = AssignPsihoTest(request.POST)
     # check whether it's valid:
@@ -91,8 +102,11 @@ def answer(request):
       answer.append(item)
       item = {}
   answers["answers"] = answer
-  # print(answers)
-  saveAnswer(request, answers)
+  try:
+    saveAnswer(request, answers)
+  except MyException as e:
+    print(e)
+    messages.info(request, e)
   return render(request, 'save.html')
 
 def home(request):

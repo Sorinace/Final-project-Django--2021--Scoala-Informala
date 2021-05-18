@@ -1,8 +1,18 @@
 {% extends "base.html" %}
 {% block body_block %}
-<div class="alert alert-primary" role="alert">
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div class="alert alert-danger" >
+      <h3><strong>Eroare:</strong></h3>
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    </div>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="alert alert-info" role="alert">
   <h3>Va rog sa raspundeti la intrebarile de mai jos:</h3>
-</div> 
+</div>
 <div class="alert alert-warning" role="alert"> 
   <h3> {{psihotest.text}}</h3>
   <p>
@@ -44,4 +54,5 @@
   </div>
  </form>
 </div>
+{% endif %}
 {% endblock %}

@@ -10,7 +10,7 @@ class Answer(models.Model):
     ordering = ['-text']
   
   def __str__(self):
-    return f"{self.id} - {self.text} with score = {self.score}" 
+    return f"{self.id} - {self.text} cu punctajul = {self.score}" 
 
 class Question(models.Model):
   text = models.CharField(max_length=200)
@@ -51,4 +51,4 @@ class AssignedTest(models.Model):
   objects = None # For the error:Class '<class name>' has no 'objects' memberpylint(no-member) in View
 
   def __str__(self):
-        return f"{self.id} - Quiz was assigned to the {self.name}, and is valid until {self.data} "
+        return f"{self.id} - {self.psihotest.text} - a fost atribuit lui {self.name}, si este valid pana in {self.data} "

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block body_block %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div class="alert alert-danger" >
+      <h3><strong>Eroare:</strong></h3>
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    </div>
+    {% endfor %}
+</ul>
+{% else %}
+
+<div >
+      {% for item in assigned %}
+        <div class="form-check list-group-item">
+          <input class="form-check-input" type="radio" name={{item}}>
+          <label class="form-check-label">
+            {{item}}
+          </label>
+        </div>
+      {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

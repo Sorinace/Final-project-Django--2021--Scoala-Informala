@@ -7,6 +7,5 @@ urlpatterns = [
   path('about/', views.about, name = 'about'),
   path('answer/', views.answer, name = 'answer'),
   path('asign/', views.asign, name = 'asign'),
-  path('api/query/<str:id>', views.query_api, name = 'query_api'), 
-  path('api/answer/', views.answer_api, name = 'answer_api'), 
+  path('asigned/', views.asigned, name = 'asigned'),
   ]

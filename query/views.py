@@ -1,14 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse,JsonResponse, HttpResponseRedirect
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
 from .forms import AssignPsihoTest
 from .email import sendEmail, sendEmailAnswer
-from .serializer import AssignedTestSerializer
-from .errors import MyException, incomplet
+from .errors import MyException, notValid, notCopleted, notSaved, toLate
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
-import json
-
+import datetime
 from django.contrib import messages #import messages
 
 def saveAnswer(request, answers):
@@ -21,29 +17,29 @@ def saveAnswer(request, answers):
         assigned.answer.add(score)
       sendEmailAnswer(request, assigned)
     else:
-      incomplet()
+      return notCopleted()
   except MyException:
-    return incomplet()
+    return notCopleted()
   return True
 
 @api_view(['GET'])
-def query_api(request, id='1'):
-  if request.method == 'GET':
-    assigned = AssignedTest.objects.get(id=id)
-    serializer = AssignedTestSerializer(assigned)
-    return Response(serializer.data)
-
-@api_view(['GET'])
 def query(request, id='1'):
-  assigned = AssignedTest.objects.get(id=id)
-  psihotest = assigned.psihotest 
-  # messages.success(request, "Test valid!" )
-  # check if the test is completed or not
-  if (len(assigned.answer.all()) > 0):
-    messages.info(request, 'Acest test a fost deja completat!')
-    psihotest = None
-    id = None
+  try:
+    assigned = AssignedTest.objects.get(id=id)
+    psihotest = assigned.psihotest 
+    # check if the test is completed or not
+    if (len(assigned.answer.all()) > 0):
+      messages.info(request, 'Acest test a fost deja completat!')
+      psihotest = None
+      id = None
+    elif(assigned.data < datetime.date.today()):
+      toLate()
+  except  Exception as e:
+    messages.info(request, e)
   return render(request, 'query.html', {'psihotest': psihotest, 'id': id})
+
+def home(request):
+  return render(request, 'base.html')
 
 @api_view(['GET', 'POST'])
 def asign(request):
@@ -61,32 +57,25 @@ def asign(request):
       asignTest.message = form.cleaned_data['message']
       print(asignTest)
       try:
-      #   asignTest.save()
-        sendEmail(request, 'Atribuire test', asignTest.email, 'Diana Avram', f"http://localhost:8000/query/{asignTest.id}", asignTest.data, asignTest.message)
-        # emailAssignedTest( asignTest.email, f"http://localhost:8000/query/{asignTest.id}", asignTest.data, asignTest.message)
+        asignTest.save()
+        if (asignTest.id):
+          sendEmail(request, 'Atribuire test', asignTest.email, 'Diana Avram', f"http://localhost:8000/query/{asignTest.id}", asignTest.data, asignTest.message)
+        else:
+          notSaved()
       except Exception as e:
         return e
-      # redirect to a new URL:
-      return HttpResponseRedirect('/about/')
+      return render(request, 'save.html')
     else:
-      print('NU merge?') # raise a error the form is not valid
-      print(form)
-    # if a GET (or any other method) we'll create a blank form
-    
+      notValid()    
+  # if is GET
   else:
     form = AssignPsihoTest()
   return render(request, 'asign.html', {'form': form})
 
-@api_view(['POST'])
-def answer_api(request):
-  try:
-    answers = json.loads(request.body.decode("utf-8"))
-    saveAnswer(answers)
-    
-  except Exception as e:
-    print(f"Type: {type(e)}")
-    return Response(False)
-  return Response(True)
+@api_view(['GET'])
+def asigned(request):
+  assigned = AssignedTest.objects.all()
+  return render(request, 'asigned.html', {'assigned': assigned})
 
 @api_view(['POST'])
 def answer(request):
@@ -109,12 +98,7 @@ def answer(request):
     messages.info(request, e)
   return render(request, 'save.html')
 
-def home(request):
-  return render(request, 'base.html')
 
-import datetime
 def about(request):
-  # emailAssignedTest('sorinace@gmail.com', 'http://localhost:8000/query/2', data, mesaj)
   time = datetime.datetime.now()
-  # sendEmail(request, 'Atribuire test','sorinace@gmail.com', 'Diana Avram', 'http://localhost:8000/query/2', time, "mesaj catre TARA")
   return render(request, 'about.html',{'time': time})

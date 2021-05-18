@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
 {% block body_block %}
 {% load static %}
-    <h1>Atribuie test!</h1>
+    <h1 class="test">Atribuie test!</h1>
     <img src = "{% static 'images/image2.jpg' %}">
-    <h2>Django is the best framework, said {{cucu}}</h2>
+    <div >
     <form action="/asign/" method="post">
         {% csrf_token %}
-        {{ form.as_ul  }}
-        <input type="submit" value="Atribuie">
+        <table>
+            <tr>
+                {{ form.as_table }}
+            </tr>
+        </table>
+        <div class="btn_center">
+            <input class="btn btn-primary" type="submit" value="Atribuie">
+        </div>
+    </div>
     </form>
 
 {% endblock %}

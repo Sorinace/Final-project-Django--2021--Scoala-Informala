@@ -18,3 +18,24 @@
 .form-check-label {
     font-size:1.3em;
 }
+
+th {
+    padding: 3px;
+}
+
+td {
+    width: 70%;
+}
+
+#id_message, #id_name, #id_email,#id_psihotest {
+    width: 100%;
+}
+
+table {
+    border-spacing: 5px;
+    width: 80%
+}
+
+.card {
+    width: 50%;
+}

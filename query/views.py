@@ -55,18 +55,16 @@ def asign(request):
         # emailAssignedTest( asignTest.email, f"http://localhost:8000/query/{asignTest.id}", asignTest.data, asignTest.message)
       except Exception as e:
         return e
-
       # redirect to a new URL:
       return HttpResponseRedirect('/about/')
     else:
-      print('NU merge?')
+      print('NU merge?') # raise a error the form is not valid
       print(form)
     # if a GET (or any other method) we'll create a blank form
     
   else:
     form = AssignPsihoTest()
-    bau = 'Sorin'
-  return render(request, 'asign.html', {'cucu': bau, 'form': form})
+  return render(request, 'asign.html', {'form': form})
 
 @api_view(['POST'])
 def answer_api(request):

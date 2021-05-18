@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% block body_block %}
-<div class="alert alert-success">
+<div class="alert alert-primary" role="alert">
   <h3>Va rog sa raspundeti la intrebarile de mai jos:</h3>
 </div> 
-<div class="alert alert-success"> 
+<div class="alert alert-warning" role="alert"> 
   <h3> {{psihotest.text}}</h3>
-  <p>   {{psihotest.story}}</p>
+  <p>
+      {% autoescape off %}
+      {{psihotest.story}}
+      {% endautoescape %} 
+    </p>
 </div>
 <div class="questions">
   <form action="/answer/" method="post">
@@ -14,7 +18,7 @@
       <p><label for="id">ID:</label>
         <input type="text" name="id" value={{id}}></p>
     </div>
-    <div class="card" style="width: 50%;">
+    <div class="card">
       <ol>
       {% for question in psihotest.questions.all %}
         <div class="card-header">
@@ -33,10 +37,11 @@
         </ul>
       {% endfor %}
       </ol>   
-    </div>
+    
     <div class="btn_center">
       <input class="btn btn-primary" type="submit" value="Trimite">
     </div>
+  </div>
  </form>
 </div>
 {% endblock %}

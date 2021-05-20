@@ -5,9 +5,9 @@ import datetime
 class AssignPsihoTest(forms.Form):
     tests = []
     # incarc denumirea testelor
-    psTests = PsihoTest.objects.all()
-    for item in psTests:
-        tests.append(item.text)
+    # psTests = PsihoTest.objects.all()
+    # for item in psTests:
+    #     tests.append(item.text)
     
     psihotest = forms.ChoiceField(label='Se atribuie testul', choices=tuple([(name, name) for name in tests]))
     name = forms.CharField(label='Pentru ', max_length=100) 

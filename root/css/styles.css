@@ -1,3 +1,9 @@
+* {
+    background-color: #FFF1C1;
+    color: #1e2420;
+    border-color: #a64942;
+}
+
 .card-header {
     font-size:2em;
     color: rgb(0, 217, 255);

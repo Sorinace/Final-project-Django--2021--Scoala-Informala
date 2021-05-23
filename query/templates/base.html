@@ -10,12 +10,12 @@
   <center>
     <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
-        <ul class="nav ">
-          <li><a class="active" href="{% url 'home' %}">Acasa</a></li>
-          <li><a class="" href="{% url 'asigned' %}">In lucru</a></li>
-          <li><a class="" href="{% url 'asign' %}">Atribuie</a></li>
-          <li><a class="" href="{% url 'about' %}">Despre</a></li>
-          <li style="float:right"><a class="" href="{% url 'admin:index' %}">Admin</a></li>
+        <ul id="nav" class="nav">
+          <li><a id="home" class="" href="{% url 'home' %}">Acasa</a></li>
+          <li><a id="asigned"class="" href="{% url 'asigned' %}">In lucru</a></li>
+          <li><a id="asign"class="" href="{% url 'asign' %}">Atribuie</a></li>
+          <li><a id="about"class="" href="{% url 'about' %}">Despre</a></li>
+          <li style="float:right"><a id="admin" class="" href="{% url 'admin:index' %}">Admin</a></li>
         </ul>
       </div>
     </nav>
@@ -23,7 +23,7 @@
     <div class="container">
       {% block body_block %}
       <div class="shadow">
-        <h1 class="test">Aceasta este o platforrma de testare</h1>
+        <h1 class="test">Aceasta este o platforma de testare</h1>
         <h3>Cum functioneaza?</h3>
         <div> <ul>
           <li>Platforma permite sa atribuiti un test pentru o persoana pe baza adresei de e-mail. </li>
@@ -38,15 +38,9 @@
 
     <script>
       // Add active class to the current button (highlight it)
-      var header = document.getElementById("nav");
-      var btns = header.getElementsByClassName("btn");
-      for (var i = 0; i < btns.length; i++) {
-        btns[i].addEventListener("click", function() {
-        var current = document.getElementsByClassName("active");
-        current[0].className = current[0].className.replace(" active", "");
-        this.className += " active";
-        });
-      }
+      let active_page = location.pathname.split("/")[1];
+      if (active_page == "") active_page = "home"
+      document.getElementById(active_page).classList.add("active");
       </script>
 </body>
 </html>

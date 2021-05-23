@@ -57,19 +57,20 @@ img {
 }
 
 .shadow {
-    /* height: 300px; */
+    margin: 0 auto;
     padding: 21px;
     background-color: white;
     box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12);
 }
 
+/* intrebari */
 .card-header {
-    font-size:2em;
-    color: rgb(0, 217, 255);
+    font-size:1.5em;
+    color: #89302c;
 }
 
 .questions {
-    margin-left:10%;
+    /* margin-left:10%; */
     margin-right: auto
 }
 
@@ -81,7 +82,7 @@ img {
 }
 
 .form-check-label {
-    font-size:1.3em;
+    font-size:1em;
 }
 /* Formular de atribuire */
 
@@ -98,10 +99,12 @@ td {
 }
 
 table {
+    margin: 0 auto;
     border-spacing: 5px;
     width: 80%
 }
 
 .card {
-    width: 50%;
+    width: 80%;
+    margin: 0 auto;
 }

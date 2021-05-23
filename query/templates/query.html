@@ -10,49 +10,49 @@
     {% endfor %}
 </ul>
 {% else %}
-<div class="alert alert-info" role="alert">
-  <h3>Va rog sa raspundeti la intrebarile de mai jos:</h3>
-</div>
-<div class="alert alert-warning" role="alert"> 
-  <h3> {{psihotest.text}}</h3>
-  <p>
-      {% autoescape off %}
-      {{psihotest.story}}
-      {% endautoescape %} 
-    </p>
-</div>
-<div class="questions">
-  <form action="/answer/" method="post">
-    {% csrf_token %}
-    <div style="display: none;"><!--  hidden data -->
-      <p><label for="id">ID:</label>
-        <input type="text" name="id" value={{id}}></p>
-    </div>
-    <div class="card">
-      <ol>
-      {% for question in psihotest.questions.all %}
-        <div class="card-header">
-          <li >{{question.text}}</li>
-        </div>
-        <ul class="list-group list-group-flush">
-          {% for answer in question.answers.all %}
-            <div class="form-check list-group-item">
-              <input class="form-check-input" type="radio" name={{question.id}} value={{answer.id}}>
-              <label class="form-check-label">
-                {{answer.text}}
-              </label>
-            </div>
-          {% endfor %}
-          <br/>
-        </ul>
-      {% endfor %}
-      </ol>   
-    
-    <div class="btn_center">
-      <input class="btn btn-primary" type="submit" value="Trimite">
-    </div>
+<div class="shadow">
+    <h3>Va rog sa raspundeti la intrebarile de mai jos:</h3>
+  <div class="alert alert-warning" role="alert"> 
+    <h3> {{psihotest.text}}</h3>
+    <p>
+        {% autoescape off %}
+        {{psihotest.story}}
+        {% endautoescape %} 
+      </p>
   </div>
- </form>
+  <div class="questions">
+    <form action="/answer/" method="post">
+      {% csrf_token %}
+      <div style="display: none;"><!--  hidden data -->
+        <p><label for="id">ID:</label>
+          <input type="text" name="id" value={{id}}></p>
+      </div>
+      <div class="card">
+        <ol>
+        {% for question in psihotest.questions.all %}
+          <div class="card-header">
+            <li >{{question.text}}</li>
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for answer in question.answers.all %}
+              <div class="form-check list-group-item">
+                <input class="form-check-input" type="radio" name={{question.id}} value={{answer.id}}>
+                <label class="form-check-label">
+                  {{answer.text}}
+                </label>
+              </div>
+            {% endfor %}
+            <br/>
+          </ul>
+        {% endfor %}
+        </ol>   
+      
+      <div class="btn_center">
+        <input class="btn btn-primary" type="submit" value="Trimite">
+      </div>
+    </div>
+  </form>
+  </div>
 </div>
 {% endif %}
 {% endblock %}

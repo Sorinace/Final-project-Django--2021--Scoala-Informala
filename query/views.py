@@ -1,11 +1,14 @@
+import datetime
+
+from rest_framework.decorators import api_view
+from django.contrib import messages #import messages
 from django.shortcuts import render
+from django.urls import resolve
+
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
 from .forms import AssignPsihoTest
 from .email import sendEmail, sendEmailAnswer
 from .errors import MyException, notValid, notCopleted, notSaved, toLate
-from rest_framework.decorators import api_view
-import datetime
-from django.contrib import messages #import messages
 
 def saveAnswer(request, answers):
   try:
@@ -55,11 +58,12 @@ def asign(request):
       asignTest.email =  form.cleaned_data['email']
       asignTest.data = form.cleaned_data['data']
       asignTest.message = form.cleaned_data['message']
-      print(asignTest)
+      base = "{0}://{1}".format(request.scheme, request.get_host())
       try:
         asignTest.save()
         if (asignTest.id):
-          sendEmail(request, 'Atribuire test', asignTest.email, 'Diana Avram', f"http://localhost:8000/query/{asignTest.id}", asignTest.data, asignTest.message)
+          pass
+          sendEmail(request, 'Atribuire test', asignTest.email, 'Diana Avram', f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)
         else:
           notSaved()
       except Exception as e:
@@ -100,5 +104,4 @@ def answer(request):
 
 
 def about(request):
-  time = datetime.datetime.now()
-  return render(request, 'about.html',{'time': time})
+  return render(request, 'about.html')

@@ -11,7 +11,11 @@
     {% endfor %}
 </ul>
 {% else %}
+  <div class="shadow">
     <img src = "{% static 'images/image1.jpg' %}">
-    <h3>Salavat cu succes!<br>Va multumim!</h3>
+    <div class="card">
+      <h3>Salvat cu succes!<br>Va multumim!</h3>
+    </div>
+  </div>
 {% endif %}
 {% endblock %}

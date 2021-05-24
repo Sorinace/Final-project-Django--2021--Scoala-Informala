@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block body_block %}
+{% if user.is_authenticated %}
 {% load static %}
     <div class="shadow">
         <h3 class="test">Atribuie test!</h3>
@@ -19,4 +20,10 @@
         </form>
     </div>
     <br/>
+{% else %}
+  <div class="shadow">
+    <h3>Pentru a putea atribui teste, trebuie sa fiti inregistrati</h3>
+    <a class="login" href="{% url 'login' %}">Log In</a>
+  </div>
+{% endif %}   
 {% endblock %}

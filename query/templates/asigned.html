@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block body_block %}
+{% if user.is_authenticated %}
 {% if messages %}
   <ul class="messages">
       {% for message in messages %}
@@ -22,6 +23,12 @@
             </label>
           </div>
         {% endfor %}
+  </div>
+{% endif %}
+{% else %}
+  <div class="shadow">
+    <h3>Pentru a putea vedea testele deja atribuite, trebuie sa fiti inregistrati</h3>
+    <a class="login" href="{% url 'login' %}">Log In</a>
   </div>
 {% endif %}
 {% endblock %}

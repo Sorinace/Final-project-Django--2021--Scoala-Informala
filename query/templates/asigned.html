@@ -15,9 +15,14 @@
   <div class="shadow">
     <h3>Aceste teste au fost atribuite:</h3>
     <img src = "{% static 'images/image3.jpg' %}">
+      <div class="flex-container">
+        <button onclick="check()" class="btn_submit">Sterge</button> 
+        <button onclick="check()" class="btn_submit">Modifica</button> 
+      </div>
+    
         {% for item in assigned %}
           <div class="form-check list-group-item">
-            <input class="form-check-input" type="radio" name="teste">
+            <input class="form-check-input" type="radio" name="teste" value={{item.id}}>
             <label class="form-check-label">
               {{item}}
             </label>
@@ -31,4 +36,17 @@
     <a class="login" href="{% url 'login' %}">Log In</a>
   </div>
 {% endif %}
+<script>
+  // Get the selected item
+  function check() {
+    let items = document.getElementsByClassName("form-check-input");
+    // console.log(items)
+    for (item in items){
+      if (items[item].checked == true) {
+        console.log(items[item].value);
+      }
+    }
+  }
+  // let selected_item
+  </script>
 {% endblock %}

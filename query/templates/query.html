@@ -2,14 +2,16 @@
 {% block body_block %}
 {% load static %}
 {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <div class="alert alert-danger" >
-      <h3><strong>Eroare:</strong></h3>
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    </div>
-    {% endfor %}
-</ul>
+<div class="shadow">
+  <ul class="messages">
+      {% for message in messages %}
+      <div class="alert alert-danger" >
+        <h3><strong>Eroare:</strong></h3>
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      </div>
+      {% endfor %}
+  </ul>
+</div>
 {% else %}
 <div class="shadow">
     <h3>Va rog sa raspundeti la intrebarile de mai jos:</h3>
@@ -32,6 +34,7 @@
       <div class="card">
         <ol>
         {% for question in psihotest.questions.all %}
+        <div class="shadow">
           <div class="card-header">
             <li >{{question.text}}</li>
           </div>
@@ -46,11 +49,12 @@
             {% endfor %}
             <br/>
           </ul>
+        </div>
         {% endfor %}
         </ol>   
       
       <div class="btn_center">
-        <input class="btn btn-primary" type="submit" value="Trimite">
+        <input class="btn_submit" type="submit" value="Trimite">
       </div>
     </div>
   </form>

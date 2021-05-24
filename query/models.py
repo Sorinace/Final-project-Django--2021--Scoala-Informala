@@ -51,4 +51,6 @@ class AssignedTest(models.Model):
   objects = None # For the error:Class '<class name>' has no 'objects' memberpylint(no-member) in View
 
   def __str__(self):
-        return f"{self.id} - {self.psihotest.text} - a fost atribuit lui {self.name}, si este valid pana in {self.data} "
+        return f"{self.psihotest.text} - a fost atribuit lui {self.name}, si este valid pana in {self.data} "
+  class Meta:
+    ordering = ['-data']

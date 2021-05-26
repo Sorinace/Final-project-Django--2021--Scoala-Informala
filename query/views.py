@@ -2,7 +2,7 @@ import datetime
 
 from rest_framework.decorators import api_view
 from django.contrib import messages #import messages
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
 from .forms import AssignPsihoTest
@@ -61,8 +61,7 @@ def asign(request):
       try:
         asignTest.save()
         if (asignTest.id):
-          pass
-          sendEmail(request, 'Atribuire test', asignTest.email, 'Diana Avram', f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)
+          sendEmail(request, 'Atribuire test', asignTest.email, f"{request.user.first_name} {request.user.last_name}", f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)
         else:
           notSaved()
       except Exception as e:
@@ -89,6 +88,7 @@ def asigned(request):
     if (int(request.POST['assign']) > 0):
       assigned = []
       assigned.append( AssignedTest.objects.get(id=request.POST['assign']) )
+      print(f"{request.user.first_name} {request.user.last_name}")
       print(assigned)
   else:
     assigned = AssignedTest.objects.all()

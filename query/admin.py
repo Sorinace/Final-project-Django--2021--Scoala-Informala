@@ -25,7 +25,7 @@ class AssignedC(admin.ModelAdmin):
     list_filter = ('data', 'name', 'email')
 
     def completat(self, obj):
-        return 'Nu' if obj.answer else 'Da'
+        return 'Da' if obj.answer.all() else 'Nu'
 
 class PsihoC(admin.ModelAdmin):
     # exclude = ('score', )

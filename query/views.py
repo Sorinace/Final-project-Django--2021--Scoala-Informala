@@ -3,7 +3,6 @@ import datetime
 from rest_framework.decorators import api_view
 from django.contrib import messages #import messages
 from django.shortcuts import render
-from django.urls import resolve
 
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
 from .forms import AssignPsihoTest
@@ -76,10 +75,23 @@ def asign(request):
     form = AssignPsihoTest()
   return render(request, 'asign.html', {'form': form})
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def asigned(request):
-  assigned = AssignedTest.objects.all()
-  return render(request, 'asigned.html', {'assigned': assigned})
+  if request.method == 'POST':
+    # for i in request.POST:
+    print(request.POST)
+    assigned = []
+    if ('assign' in request.POST):
+      assign = request.POST['assign']
+    else:
+      assign = 'Nu ai selectat nimic'
+    text_option = ['Nu ai ales nimic', 'Modifica', 'Sterge']
+    text = f"{text_option[int(request.POST['option'])]} - {assign}"
+    assigned = AssignedTest.objects.all()#get(id='1')
+  else:
+    assigned = AssignedTest.objects.all()
+    text = ''
+  return render(request, 'asigned.html', {'assigned': assigned, 'text': text})
 
 @api_view(['POST'])
 def answer(request):

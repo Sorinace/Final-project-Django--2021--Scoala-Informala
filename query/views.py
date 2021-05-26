@@ -85,7 +85,7 @@ def asigned(request):
       assign = request.POST['assign']
     else:
       assign = 'Nu ai selectat nimic'
-    text_option = ['Nu ai ales nimic', 'Modifica', 'Sterge']
+    text_option = ['Nu ai ales nimic', 'Modifica', 'Sterge', 'Retrimite e-mail']
     text = f"{text_option[int(request.POST['option'])]} - {assign}"
     assigned = AssignedTest.objects.all()#get(id='1')
   else:

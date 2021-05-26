@@ -80,14 +80,16 @@ def asigned(request):
   if request.method == 'POST':
     # for i in request.POST:
     print(request.POST)
-    assigned = []
     if ('assign' in request.POST):
       assign = request.POST['assign']
     else:
       assign = 'Nu ai selectat nimic'
     text_option = ['Nu ai ales nimic', 'Modifica', 'Sterge', 'Retrimite e-mail']
     text = f"{text_option[int(request.POST['option'])]} - {assign}"
-    assigned = AssignedTest.objects.all()#get(id='1')
+    if (int(request.POST['assign']) > 0):
+      assigned = []
+      assigned.append( AssignedTest.objects.get(id=request.POST['assign']) )
+      print(assigned)
   else:
     assigned = AssignedTest.objects.all()
     text = ''

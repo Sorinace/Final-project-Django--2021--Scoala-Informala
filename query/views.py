@@ -50,18 +50,20 @@ def asign(request):
     form = AssignPsihoTest(request.POST)
     # check whether it's valid:
     if form.is_valid():
-      # process the data in form.cleaned_data as required
-      asignTest = AssignedTest()
+      # process the data in form.cleaned_data as require
+      if (int(request.POST['id']) < 1):
+        asignTest = AssignedTest()
+      else:
+        asignTest = get_object_or_404(AssignedTest, id=request.POST['id'])
       asignTest.psihotest = PsihoTest.objects.get(text=form.cleaned_data['psihotest'])
       asignTest.name =  form.cleaned_data['name']
       asignTest.email =  form.cleaned_data['email']
       asignTest.data = form.cleaned_data['data']
       asignTest.message = form.cleaned_data['message']
-      base = "{0}://{1}".format(request.scheme, request.get_host())
       try:
         asignTest.save()
         if (asignTest.id):
-          pass
+          base = "{0}://{1}".format(request.scheme, request.get_host())
           sendEmail(request, 'Atribuire test', asignTest.email, 'Diana Avram', f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)
         else:
           notSaved()
@@ -73,7 +75,8 @@ def asign(request):
   # if is GET
   else:
     form = AssignPsihoTest()
-  return render(request, 'asign.html', {'form': form})
+    title = 'Atribuie test!'
+  return render(request, 'asign.html', {'form': form, 'title': title, 'model': None, 'id': -1})
 
 @api_view(['GET', 'POST'])
 def asigned(request):
@@ -84,8 +87,13 @@ def asigned(request):
       if (int(request.POST['assign']) > 0):
         assigned = []
         assigned.append( AssignedTest.objects.get(id=request.POST['assign']) )
-        if (request.POST['option'] == '2'):
-          return render(request, 'asigned-delete.html', { 'assigned': assigned[0], 'id': request.POST['assign']})
+        if (request.POST['option'] == '1'):
+          form = AssignPsihoTest()
+          model = get_object_or_404(AssignedTest, id=request.POST['assign'])
+          title = 'Modifica atribuire test!'
+          return render(request, 'asign.html', {'form': form, 'title': title, 'model': model, 'id': request.POST['assign']})
+        elif (request.POST['option'] == '2'):
+          return render(request, 'asigned-delete.html', { 'assigned': assigned[0], 'id': int(request.POST['assign'])})
     else:
       text = ''
 
@@ -97,10 +105,7 @@ def asigned(request):
 @api_view(['POST'])
 def asigned_delete(request):
   remove = get_object_or_404(AssignedTest, id=request.POST['id'])
-  # remove.delete()
-  # text = ''
-  # assigned = AssignedTest.objects.all()
-  # return render(request, 'asigned.html', {'assigned': assigned, 'text': text})
+  remove.delete()
   return redirect('asigned')
 
 @api_view(['POST'])

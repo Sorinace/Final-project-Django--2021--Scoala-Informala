@@ -3,11 +3,14 @@
 {% if user.is_authenticated %}
 {% load static %}
     <div class="shadow">
-        <h3 class="test">Atribuie test!</h3>
+        <h3 class="test">{{ title }}</h3>
         <img src = "{% static 'images/image5.jpg' %}">
         <div >
         <form action="/asign/" method="post">
             {% csrf_token %}
+            <div style="display: none;"><!--  hidden data -->
+                <input type="text" name="id" value={{id}}></p>
+            </div>
             <table>
                 <tr>
                     {{ form.as_table }}
@@ -26,4 +29,14 @@
     <a class="login" href="{% url 'login' %}">Log In</a>
   </div>
 {% endif %}   
+<script>
+    // add data to form
+    document.getElementById('id_psihotest').value = "{{ model.psihotest.text }}";
+    document.getElementById('id_name').value = "{{ model.name }}";
+    document.getElementById('id_email').value = "{{ model.email }}";
+    document.getElementById('id_message').value = "{{ model.message }}";
+    document.getElementById('id_data_month').value = "{{ model.data.month }}";
+    document.getElementById('id_data_day').value = "{{ model.data.day }}";
+    document.getElementById('id_data_year').value = "{{ model.data.year }}";
+</script>
 {% endblock %}

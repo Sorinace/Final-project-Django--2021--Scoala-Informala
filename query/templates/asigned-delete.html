@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div class="alert alert-danger" >
+      <h3><strong>Eroare:</strong></h3>
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    </div>
+    {% endfor %}
+</ul>
+{% else %}
+  <div class="shadow">
+    <img src = "{% static 'images/delete.jpg' %}">
+    <div class="card">
+      <form action="/asigned/delete/" method="POST"> 
+        {% csrf_token %}
+        <div style="display: none;"><!--  hidden data -->
+          <input type="text" name="id" value={{id}}></p>
+        </div>
+        <h3>Vrei sa stergi?<br></h3>
+        <h4><em>{{ assigned }}</em> </h4>
+        <div class="flex-container">
+          <input class="btn_submit" type="submit" value="Da"/> <a class="btn_submit" href="{% url 'asigned' %}">Nu</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endif %}
+
+{% endblock %}

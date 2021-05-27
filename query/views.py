@@ -2,7 +2,7 @@ import datetime
 
 from rest_framework.decorators import api_view
 from django.contrib import messages #import messages
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
 from .forms import AssignPsihoTest
@@ -50,18 +50,21 @@ def asign(request):
     form = AssignPsihoTest(request.POST)
     # check whether it's valid:
     if form.is_valid():
-      # process the data in form.cleaned_data as required
-      asignTest = AssignedTest()
+      # process the data in form.cleaned_data as require
+      if (int(request.POST['id']) < 1):
+        asignTest = AssignedTest()
+      else:
+        asignTest = get_object_or_404(AssignedTest, id=request.POST['id'])
       asignTest.psihotest = PsihoTest.objects.get(text=form.cleaned_data['psihotest'])
       asignTest.name =  form.cleaned_data['name']
       asignTest.email =  form.cleaned_data['email']
       asignTest.data = form.cleaned_data['data']
       asignTest.message = form.cleaned_data['message']
-      base = "{0}://{1}".format(request.scheme, request.get_host())
       try:
         asignTest.save()
         if (asignTest.id):
-          sendEmail(request, 'Atribuire test', asignTest.email, f"{request.user.first_name} {request.user.last_name}", f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)
+          base = "{0}://{1}".format(request.scheme, request.get_host())
+          sendEmail(request, 'Atribuire test', asignTest.email, 'Diana Avram', f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)
         else:
           notSaved()
       except Exception as e:
@@ -72,28 +75,38 @@ def asign(request):
   # if is GET
   else:
     form = AssignPsihoTest()
-  return render(request, 'asign.html', {'form': form})
+    title = 'Atribuie test!'
+  return render(request, 'asign.html', {'form': form, 'title': title, 'model': None, 'id': -1})
 
 @api_view(['GET', 'POST'])
 def asigned(request):
   if request.method == 'POST':
-    # for i in request.POST:
-    print(request.POST)
-    if ('assign' in request.POST):
-      assign = request.POST['assign']
+    if ('assign' in request.POST and 'option' in request.POST):
+      text_option = ['Nu ai ales nimic', 'Modifica', 'Sterge', 'Retrimite e-mail']
+      text = f"{text_option[int(request.POST['option'])]} - {request.POST['assign']}"
+      if (int(request.POST['assign']) > 0):
+        assigned = []
+        assigned.append( AssignedTest.objects.get(id=request.POST['assign']) )
+        if (request.POST['option'] == '1'):
+          form = AssignPsihoTest()
+          model = get_object_or_404(AssignedTest, id=request.POST['assign'])
+          title = 'Modifica atribuire test!'
+          return render(request, 'asign.html', {'form': form, 'title': title, 'model': model, 'id': request.POST['assign']})
+        elif (request.POST['option'] == '2'):
+          return render(request, 'asigned-delete.html', { 'assigned': assigned[0], 'id': int(request.POST['assign'])})
     else:
-      assign = 'Nu ai selectat nimic'
-    text_option = ['Nu ai ales nimic', 'Modifica', 'Sterge', 'Retrimite e-mail']
-    text = f"{text_option[int(request.POST['option'])]} - {assign}"
-    if (int(request.POST['assign']) > 0):
-      assigned = []
-      assigned.append( AssignedTest.objects.get(id=request.POST['assign']) )
-      print(f"{request.user.first_name} {request.user.last_name}")
-      print(assigned)
+      text = ''
+
   else:
-    assigned = AssignedTest.objects.all()
     text = ''
+  assigned = AssignedTest.objects.all()
   return render(request, 'asigned.html', {'assigned': assigned, 'text': text})
+
+@api_view(['POST'])
+def asigned_delete(request):
+  remove = get_object_or_404(AssignedTest, id=request.POST['id'])
+  remove.delete()
+  return redirect('asigned')
 
 @api_view(['POST'])
 def answer(request):

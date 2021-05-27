@@ -28,7 +28,6 @@
     <form action="/answer/" method="post">
       {% csrf_token %}
       <div style="display: none;"><!--  hidden data -->
-        <p><label for="id">ID:</label>
           <input type="text" name="id" value={{id}}></p>
       </div>
       <div class="card">

@@ -2,7 +2,7 @@ import datetime
 
 from rest_framework.decorators import api_view
 from django.contrib import messages #import messages
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
 from .forms import AssignPsihoTest
@@ -78,22 +78,30 @@ def asign(request):
 @api_view(['GET', 'POST'])
 def asigned(request):
   if request.method == 'POST':
-    # for i in request.POST:
-    print(request.POST)
-    if ('assign' in request.POST):
-      assign = request.POST['assign']
+    if ('assign' in request.POST and 'option' in request.POST):
+      text_option = ['Nu ai ales nimic', 'Modifica', 'Sterge', 'Retrimite e-mail']
+      text = f"{text_option[int(request.POST['option'])]} - {request.POST['assign']}"
+      if (int(request.POST['assign']) > 0):
+        assigned = []
+        assigned.append( AssignedTest.objects.get(id=request.POST['assign']) )
+        if (request.POST['option'] == '2'):
+          return render(request, 'asigned-delete.html', { 'assigned': assigned[0], 'id': request.POST['assign']})
     else:
-      assign = 'Nu ai selectat nimic'
-    text_option = ['Nu ai ales nimic', 'Modifica', 'Sterge', 'Retrimite e-mail']
-    text = f"{text_option[int(request.POST['option'])]} - {assign}"
-    if (int(request.POST['assign']) > 0):
-      assigned = []
-      assigned.append( AssignedTest.objects.get(id=request.POST['assign']) )
-      print(assigned)
+      text = ''
+
   else:
-    assigned = AssignedTest.objects.all()
     text = ''
+  assigned = AssignedTest.objects.all()
   return render(request, 'asigned.html', {'assigned': assigned, 'text': text})
+
+@api_view(['POST'])
+def asigned_delete(request):
+  remove = get_object_or_404(AssignedTest, id=request.POST['id'])
+  # remove.delete()
+  # text = ''
+  # assigned = AssignedTest.objects.all()
+  # return render(request, 'asigned.html', {'assigned': assigned, 'text': text})
+  return redirect('asigned')
 
 @api_view(['POST'])
 def answer(request):

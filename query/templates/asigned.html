@@ -15,7 +15,6 @@
   <div class="shadow">
     <h3>Aceste teste au fost atribuite:</h3>
     <img src = "{% static 'images/image3.jpg' %}">
-    <h3>{{text}}</h3>
       <form action="/asigned/" method="post">
       {% csrf_token %}
       {% for item in assigned %}
@@ -49,16 +48,9 @@
 {% endif %}
 <script>
   // Get the selected item
-  function check() {
-    let items = document.getElementsByClassName("form-check-input");
-    // console.log(items)
-    for (item in items){
-      if (items[item].checked == true) {
-        console.log(items[item].value)
-      }
-    }
-  }
-
+if ("{{text}}") {
+  alert("{{text}}");
+}
   
   // let selected_item
   </script>

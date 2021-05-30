@@ -82,8 +82,8 @@ def asign(request):
 def asigned(request):
   if request.method == 'POST':
     if ('assign' in request.POST and 'option' in request.POST):
-      text_option = ['Nu ai ales nimic', 'Modifica', 'Sterge', 'Retrimite e-mail']
-      text = f"{text_option[int(request.POST['option'])]} - {request.POST['assign']}"
+      text_option = ['Nu ai selectat nimic', 'Modifica', 'Sterge', 'Retrimite e-mail']
+      text = f"{text_option[int(request.POST['option'])]} pentru ID: {request.POST['assign']}"
       if (int(request.POST['assign']) > 0):
         assigned = []
         assigned.append( AssignedTest.objects.get(id=request.POST['assign']) )
@@ -97,7 +97,7 @@ def asigned(request):
         elif (request.POST['option'] == '3'):
            base = "{0}://{1}".format(request.scheme, request.get_host())
            asignTest = get_object_or_404(AssignedTest, id=request.POST['assign'])
-           sendEmail(request, 'Nu uita, ai un test atribuit', asignTest.email, 'Diana Avram', f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)
+           sendEmail(request, 'Nu uita, ai un test atribuit', asignTest.email, f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)
            text = f"Email trimis pentru {asignTest.name}, la adresa {asignTest.email}"
     else:
       text = ''

@@ -3,8 +3,10 @@ from django.core.mail import EmailMultiAlternatives
 from smtplib import SMTPException
 from rest_framework import serializers
 
-def sendEmail(request, subject, email, from_us, addres, data, message):
-    replay = "sorinace@gmail.com"
+def sendEmail(request, subject, email, addres, data, message):
+    replay = request.user.email
+
+    from_us = f"{request.user.first_name} {request.user.last_name}"
 
     context = ({"addres":addres, "data": data, "message": message}) #Note I used a normal tuple instead of  Context({"username": "Gilbert"}) because Context is deprecated. When I used Context, I got an error > TypeError: context must be a dict rather than Context
 
@@ -23,7 +25,7 @@ def sendEmail(request, subject, email, from_us, addres, data, message):
         raise serializers.ValidationError(error)
 
 def sendEmailAnswer(request, answer):
-    replay = "sorinace@gmail.com"
+    replay = request.user.email
 
     total = 0
     for item in answer.answer.all():

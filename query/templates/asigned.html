@@ -17,10 +17,15 @@
     <img src = "{% static 'images/image3.jpg' %}">
     <h3>{{text}}</h3>
       <form action="/asigned/" method="post">
-        <div class="flex-container">
-          <input class="btn_submit" type="submit" value="Aplica">
-        </div>
-        {% csrf_token %}
+      {% csrf_token %}
+      {% for item in assigned %}
+          <div class="assign">
+            <input class="form-check-input" type="radio" name="assign" value={{item.id}}>
+            <label class="form-check-label">
+              {{item}}
+            </label>
+          </div>
+        {% endfor %}
         <div class="operation-select">
           <select name="option">
             <option value="0">Selecteaza optiunea:</option>
@@ -29,14 +34,9 @@
             <option value="3">Retrimite e-mail</option>
           </select>
         </div>
-        {% for item in assigned %}
-          <div class="form-check list-group-item">
-            <input class="form-check-input" type="radio" name="assign" value={{item.id}}>
-            <label class="form-check-label">
-              {{item}}
-            </label>
-          </div>
-        {% endfor %}
+        <div class="flex-container">
+          <input class="btn_submit" type="submit" value="Aplica">
+        </div>
         </form>
 
   </div>

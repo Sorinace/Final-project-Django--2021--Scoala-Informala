@@ -14,8 +14,18 @@ h3 {
     color: #89302c
 }
 .align {
-    margin-left: 10%;
+    margin-left: 30px;
     font-size: 15px;
+}
+
+/* atribuiri */
+.assign {
+    position: relative;
+    display: block;
+    padding: 2px 15px;
+    margin-left: 30px;
+    color:#89302c;
+    font-size: 1em;
 }
 
 /* navigation bar */
@@ -89,22 +99,25 @@ img {
 }
 
 .form-check-label {
-    font-size:1em;
+    font-size:1em;   
 }
+
 /* Formular de atribuire */
 
 th {
     padding: 5px 0 5px 0;
+    font-size: 1em;
+    width: 150px;
 }
 
 td {
-    width: 80%;
+    max-width: 800px;
 }
 
 #id_message, #id_name, #id_email,#id_psihotest {
     background-color:whitesmoke;
     color:#89302c;
-    font-size: 17px;
+    font-size: 1em;
     width: 100%;
     height: 30px;
 }
@@ -112,7 +125,7 @@ td {
 #id_data_month, #id_data_day, #id_data_year {
     background-color: whitesmoke;
     color:#89302c;
-    font-size: 17px;
+    font-size:1em;
     width: 33.33%;
     height: 30px;
     text-align: center;
@@ -121,7 +134,7 @@ td {
 table {
     margin: 0 auto;
     border-spacing: 5px;
-    width: 75%
+    width: 100%
 }
 
 .card {
@@ -165,9 +178,9 @@ table {
 .operation-select {
     position: relative;
     font-family: Arial;
-    font-size: 17px;
-    width:100%;
-    margin: 10px 0 10px 0;
+    font-size: 1em;
+    max-width:1000px;
+    margin: 10px 0 10px 30px;
 }
   
 .operation-select  select{

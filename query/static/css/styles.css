@@ -29,6 +29,10 @@ h3 {
 }
 
 /* navigation bar */
+.navbar {
+    min-height: 10px;
+}
+
 .nav .ul {
     list-style-type: none;
     margin: 0;
@@ -46,18 +50,14 @@ h3 {
     color: white;
     text-align: center;
     font-size:1em;
-    padding: 10px 30px;
+    /* padding: 10px 30px; */
     text-decoration: none;
 }
   
-.nav li a:hover {
-    background-color: #89302c;
-}
   
-.nav .active {
-    /* background-color: #89302c; */
+.nav li a:hover, .nav .active {
     font-size: 1.2em;
-    border-bottom: 3px solid #FFF1C1;
+    background-color: #89302c;
 }
 
 .navbar {

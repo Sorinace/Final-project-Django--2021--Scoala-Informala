@@ -94,9 +94,14 @@ def asigned(request):
           return render(request, 'asign.html', {'form': form, 'title': title, 'model': model, 'id': request.POST['assign']})
         elif (request.POST['option'] == '2'):
           return render(request, 'asigned-delete.html', { 'assigned': assigned[0], 'id': int(request.POST['assign'])})
+        elif (request.POST['option'] == '3'):
+           base = "{0}://{1}".format(request.scheme, request.get_host())
+           asignTest = get_object_or_404(AssignedTest, id=request.POST['assign'])
+           sendEmail(request, 'Nu uita, ai un test atribuit', asignTest.email, 'Diana Avram', f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)
+           text = f"Email trimis pentru {asignTest.name}, la adresa {asignTest.email}"
     else:
       text = ''
-
+      
   else:
     text = ''
   assigned = AssignedTest.objects.all()

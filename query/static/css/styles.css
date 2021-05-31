@@ -13,9 +13,14 @@ body {
 h3 {
     color: #89302c
 }
+
 .align {
     margin-left: 30px;
-    font-size: 15px;
+    font-size: 1em;
+}
+
+.align-li {
+    font-size: 1em;
 }
 
 /* atribuiri */
@@ -23,7 +28,7 @@ h3 {
     position: relative;
     display: block;
     padding: 2px 15px;
-    margin-left: 30px;
+    margin-left: 15px;
     color:#89302c;
     font-size: 1em;
 }
@@ -31,6 +36,9 @@ h3 {
 /* navigation bar */
 .navbar {
     min-height: 10px;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
 .nav .ul {
@@ -71,11 +79,13 @@ img {
     margin-bottom: 15px;
     max-width: 100%;
     height: auto;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12);
+
 }
 
 .shadow {
-    margin: 15px auto;
-    padding: 40px;
+    margin: 50px auto;
+    padding: 1px 40px 20px 40px;
     background-color: white;
     border-radius: 13px;
     box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12);
@@ -95,7 +105,6 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
 }
 
 .form-check-label {

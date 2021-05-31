@@ -2,6 +2,7 @@ import datetime
 
 from rest_framework.decorators import api_view
 from django.contrib import messages #import messages
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
@@ -105,7 +106,10 @@ def asigned(request):
   else:
     text = ''
   assigned = AssignedTest.objects.all()
-  return render(request, 'asigned.html', {'assigned': assigned, 'text': text})
+  paginator = Paginator(assigned, 5) 
+  page_number = request.GET.get('page')
+  page_obj = paginator.get_page(page_number)
+  return render(request, 'asigned.html', {'page_obj': page_obj, 'text': text})
 
 @api_view(['POST'])
 def asigned_delete(request):

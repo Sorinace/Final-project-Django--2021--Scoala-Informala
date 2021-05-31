@@ -197,7 +197,14 @@ table {
     width: 100%;
 }
 
-#login_right {
-    width: 300px;
+.pagination {
+    color:#89302c;
+    margin: 5px;
+    position: relative;
+    display: block;
+    text-align: center;
+}
 
+.step-links a {
+    color:#89302c;
 }

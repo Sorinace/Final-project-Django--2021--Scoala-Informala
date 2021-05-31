@@ -53,23 +53,23 @@
         <div class="pagination">
           <span class="step-links">
               {% if page_obj.has_previous %}
-                  <!-- <a href="?page=1">&laquo; prima</a> -->
                   <a href="?page={{ page_obj.previous_page_number }}">&laquo; anteriora | </a>
               {% endif %}
       
               <span class="current">
-                  Pagina {{ page_obj.number }} din {{ page_obj.paginator.num_pages }}.
+                  Intrebarea {{ page_obj.number }} din {{ page_obj.paginator.num_pages }}.
               </span>
       
               {% if page_obj.has_next %}
                   <a href="?page={{ page_obj.next_page_number }}"> | urmatoarea &raquo;</a>
-                  <!-- <a href="?page={{ page_obj.paginator.num_pages }}">ultima &raquo;</a> -->
               {% endif %}
           </span>
         </div>
+        {% if not page_obj.has_next %}
         <div class="btn_center">
           <input class="btn_submit" type="submit" value="Trimite">
         </div>
+        {% endif %}
       </div>
   </form>
 </div>

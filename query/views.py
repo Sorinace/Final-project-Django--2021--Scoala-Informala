@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
 from .forms import AssignPsihoTest
 from .email import sendEmail, sendEmailAnswer
-from .errors import MyException, notValid, notCopleted, notSaved, toLate
+from .errors import MyException, notValid, notCopleted, notSaved, toLate, done
 
 def saveAnswer(request, answers):
   try:
@@ -29,17 +29,19 @@ def saveAnswer(request, answers):
 def query(request, id='1'):
   try:
     assigned = AssignedTest.objects.get(id=id)
-    psihotest = assigned.psihotest 
+    psihotest = assigned.psihotest
     # check if the test is completed or not
-    if (len(assigned.answer.all()) > 0):
-      messages.info(request, 'Acest test a fost deja completat!')
-      psihotest = None
-      id = None
-    elif(assigned.data < datetime.date.today()):
+    if(assigned.data < datetime.date.today()):
       toLate()
+    elif (len(assigned.answer.all()) > 0):
+      done()
+    paginator = Paginator(psihotest.questions.all(), 1) 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'query.html', {'page_obj': page_obj, 'story': psihotest.story, 'name': psihotest.text, 'id': id})
   except  Exception as e:
     messages.info(request, e)
-  return render(request, 'query.html', {'psihotest': psihotest, 'id': id})
+  return render(request, 'query.html', {'page_obj': None, 'story': '', 'name': '', 'id': id})
 
 def home(request):
   return render(request, 'base.html')

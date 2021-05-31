@@ -17,14 +17,13 @@
     <h3>Va rog sa raspundeti la intrebarile de mai jos:</h3>
     <img src = "{% static 'images/quiz.jpg' %}">
   <div class="alert alert-warning" role="alert"> 
-    <h3> {{psihotest.text}}</h3>
+    <h3> {{name}}</h3>
     <p>
         {% autoescape off %}
-        {{psihotest.story}}
+        {{story}}
         {% endautoescape %} 
       </p>
   </div>
-  <div class="questions">
     <form action="/answer/" method="post">
       {% csrf_token %}
       <div style="display: none;"><!--  hidden data -->
@@ -32,7 +31,7 @@
       </div>
       <div class="card">
         <ol>
-        {% for question in psihotest.questions.all %}
+        {% for question in page_obj %}
         <div class="shadow">
           <div class="card-header">
             <li >{{question.text}}</li>
@@ -51,13 +50,28 @@
         </div>
         {% endfor %}
         </ol>   
+        <div class="pagination">
+          <span class="step-links">
+              {% if page_obj.has_previous %}
+                  <!-- <a href="?page=1">&laquo; prima</a> -->
+                  <a href="?page={{ page_obj.previous_page_number }}">&laquo; anteriora | </a>
+              {% endif %}
       
-      <div class="btn_center">
-        <input class="btn_submit" type="submit" value="Trimite">
+              <span class="current">
+                  Pagina {{ page_obj.number }} din {{ page_obj.paginator.num_pages }}.
+              </span>
+      
+              {% if page_obj.has_next %}
+                  <a href="?page={{ page_obj.next_page_number }}"> | urmatoarea &raquo;</a>
+                  <!-- <a href="?page={{ page_obj.paginator.num_pages }}">ultima &raquo;</a> -->
+              {% endif %}
+          </span>
+        </div>
+        <div class="btn_center">
+          <input class="btn_submit" type="submit" value="Trimite">
+        </div>
       </div>
-    </div>
   </form>
-  </div>
 </div>
 {% endif %}
 {% endblock %}

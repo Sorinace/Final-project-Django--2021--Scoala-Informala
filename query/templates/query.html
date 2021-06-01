@@ -30,9 +30,9 @@
           <input type="text" name="id" value={{id}}></p>
       </div>
       <div class="card">
-        <ol>
+        <ul>
         {% for question in page_obj %}
-        <div class="shadow">
+        <div class="shadow move_right">
           <div class="card-header">
             <li >{{question.text}}</li>
           </div>
@@ -49,7 +49,7 @@
           </ul>
         </div>
         {% endfor %}
-        </ol>   
+        </ul>   
         <div class="pagination">
           <span class="step-links">
               {% if page_obj.has_previous %}

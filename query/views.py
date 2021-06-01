@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
 from .forms import AssignPsihoTest
-from .email import sendEmail, sendEmailAnswer
+from .email import sendEmail, sendEmailAnswer, sendEmailRemainder
 from .errors import MyException, notValid, notCopleted, notSaved, toLate, done
 
 def saveAnswer(request, answers):
@@ -45,6 +45,7 @@ def query(request, id='1'):
   return render(request, 'query.html', {'page_obj': None, 'story': '', 'name': '', 'id': id})
 
 def home(request):
+  sendEmailRemainder()
   return render(request, 'base.html')
 
 @api_view(['GET', 'POST'])

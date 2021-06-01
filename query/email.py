@@ -49,14 +49,14 @@ def sendEmailAnswer(request, answer):
 def sendEmailRemainder():
     replay = 'sorinace@gmail.com'
 
-    context = ({"answer": 'Test pentru schedule zilnic la 8 am', "name": 'Sorin', "total": 'test'}) 
+    context = ({"addres": 'www.fess.ro', "data": '25.05.2021', "message": 'Test pentru schedule zilnic la 8 am'}) 
 
-    text_content = render_to_string('receipt_email_answer.txt', context)
-    html_content = render_to_string('receipt_email_answer.html', context)
+    text_content = render_to_string('remainder_email.txt', context)
+    html_content = render_to_string('remainder_email.html', context)
     
     try:
         #I used EmailMultiAlternatives because I wanted to send both text and html
-        emailMessage = EmailMultiAlternatives(subject='Schedule TEST', body=text_content, from_email='Testing Schedule', to=['sorinace@gmail.com',], reply_to=[replay,])
+        emailMessage = EmailMultiAlternatives(subject='Sa nu uitati de TEST', body=text_content, from_email='Testing Schedule', to=['sorinace@gmail.com',], reply_to=[replay,])
         emailMessage.attach_alternative(html_content, "text/html")
         emailMessage.send(fail_silently=False)
     except SMTPException as e:

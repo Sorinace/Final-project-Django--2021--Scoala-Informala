@@ -1,0 +1,4 @@
+Buna ziua,
+Va rog sa nu uitati ca va fost atribuit testul {{addres}} si va rog sa-l completati pina la data de {{data}}</h4>
+<h2>{{message}}</h2>
+O zi minunata!

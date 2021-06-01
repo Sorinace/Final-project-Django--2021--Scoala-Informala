@@ -100,10 +100,10 @@ img {
     animation: down 0.5s 1;
 }
 
-@keyframes down {
+/* @keyframes down {
     0%   {bottom: 0px;  opacity: 1;}
     100% {bottom: 100px; opacity: 0;}
-}
+} */
 
 .question {
     margin: 0 auto;

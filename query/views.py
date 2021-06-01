@@ -1,7 +1,7 @@
 import datetime
 
 from rest_framework.decorators import api_view
-from django.contrib import messages #import messages
+from django.contrib import messages 
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -30,9 +30,10 @@ def query(request, id='1'):
   try:
     assigned = AssignedTest.objects.get(id=id)
     psihotest = assigned.psihotest
-    # check if the test is completed or not
+    # check if the test is in time
     if(assigned.data < datetime.date.today()):
       toLate()
+    # check if the test is completed or not
     elif (len(assigned.answer.all()) > 0):
       done()
     paginator = Paginator(psihotest.questions.all(), 1) 

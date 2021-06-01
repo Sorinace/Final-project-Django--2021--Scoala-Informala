@@ -15,3 +15,7 @@ def toLate():
 
 def done():
     raise MyException('Acest test a fost deja completat!')
+
+def sendError(e):
+    raise MyException(e)
+ 

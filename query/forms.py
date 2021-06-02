@@ -1,13 +1,13 @@
-from query.models import PsihoTest
+from query.models import PsihoTest, UserProfile
 from django import forms
 import datetime
     
 class AssignPsihoTest(forms.Form):
     tests = []
-    # incarc denumirea testelor, aduc doar denumirea nu tot obiectul
-    psTests = PsihoTest.objects.all().values('text')
+    # incarc doar denumirea testelor nu tot obiectul
+    psTests = UserProfile.objects.all().values('user')
     for item in psTests:
-        tests.append(item['text'])
+        tests.append(item)
     
     psihotest = forms.ChoiceField(label='Se atribuie testul', choices=tuple([(name, name) for name in tests]))
     name = forms.CharField(label='Pentru', max_length=100) 

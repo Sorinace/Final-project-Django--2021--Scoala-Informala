@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
+from django.contrib.auth.models import User
+
 class Answer(models.Model):
   text = models.CharField(max_length=200)
   score = models.IntegerField()
@@ -47,3 +49,11 @@ class AssignedTest(models.Model):
         return f"{self.psihotest.text} - a fost atribuit lui {self.name}, si este valid pana in {self.data} "
   class Meta:
     ordering = ['-data']
+
+class UserProfile(models.Model):
+  user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+  user_test = models.ManyToManyField(PsihoTest, blank=True)
+  user_assign = models.ManyToManyField(AssignedTest, blank=True) 
+
+  def __str__(self):
+      return f"{self.user}"

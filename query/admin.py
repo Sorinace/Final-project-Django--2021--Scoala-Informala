@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
-from .models import PsihoTest, AssignedTest, Question, Answer, AnswerTest
+from .models import PsihoTest, AssignedTest, Question, Answer, AnswerTest, UserProfile
 
 # ModelAdmin Class # DataFlair
 class AnswerC(admin.ModelAdmin):
@@ -11,7 +11,6 @@ class AnswerC(admin.ModelAdmin):
     list_filter = ('text', )
 
 class QuestionC(admin.ModelAdmin):
-    # exclude = ('score', )
     list_display = ('id', 'text', 'raspunsuri')
 
     def raspunsuri(self, obj):
@@ -19,7 +18,6 @@ class QuestionC(admin.ModelAdmin):
 
 
 class AssignedC(admin.ModelAdmin):
-    # exclude = ('score', )
     list_display = ('id', 'completat', 'name', 'data', 'psihotest', 'email', 'message')
     # filters
     list_filter = ('data', 'name', 'email')
@@ -28,7 +26,6 @@ class AssignedC(admin.ModelAdmin):
         return 'Da' if obj.answer.all() else 'Nu'
 
 class PsihoC(admin.ModelAdmin):
-    # exclude = ('score', )
     list_display = ('id', 'text', 'intrebari')
     # filters
     list_filter = ('text', )
@@ -36,12 +33,21 @@ class PsihoC(admin.ModelAdmin):
     def intrebari(self, obj):
         return " | ".join([q.text for q in obj.questions.all()])
 
+class UserProfileC(admin.ModelAdmin):
+    list_display = ('user', 'teste')
+    # filters
+    #list_filter = ('first_name', )
+
+    def teste(self, obj):
+        return " | ".join([q.text for q in obj.user_test.all()])
+
 # Registred models.
 admin.site.register(AssignedTest, AssignedC)
 admin.site.register(PsihoTest, PsihoC)
 admin.site.register(AnswerTest)
 admin.site.register(Question, QuestionC)
 admin.site.register(Answer, AnswerC)
+admin.site.register(UserProfile, UserProfileC)
 
 admin.site.unregister(Group)
 

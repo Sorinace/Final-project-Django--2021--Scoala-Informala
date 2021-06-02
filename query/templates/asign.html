@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
 {% block body_block %}
 {% if user.is_authenticated %}
-{% load static %}
+    {% load static %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <div class="shadow">
+        <div class="alert alert-danger" >
+            <h3><strong>Eroare:</strong></h3>
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        </div>
+        </div> 
+        {% endfor %}
+    </ul>
+    {% else %}
     <div class="shadow">
         <h3 class="test">{{ title }}</h3>
         <img src = "{% static 'images/image5.jpg' %}">
@@ -21,16 +33,24 @@
             </div>
         </div>
         </form>
+        <!-- <script>var option = document.createElement("option");</script>
+        {% for test in psihotest %}
+        <script>
+            option.text = "{{ test.text }}"
+            document.getElementById('id_psihotest').add(option);
+        </script>
+        {% endfor %} -->
     </div>
     <br/>
+    {% endif %} 
 {% else %}
-  <div class="shadow">
-    <h3>Pentru a putea atribui teste, trebuie sa fiti inregistrati</h3>
-    <a class="login" href="{% url 'login' %}">Log In</a>
-  </div>
+    <div class="shadow">
+        <h3>Pentru a putea atribui teste, trebuie sa fiti inregistrati</h3>
+        <a class="login" href="{% url 'login' %}">Log In</a>
+    </div>
 {% endif %}   
 <script>
-    // add data to form
+// add data to form
     if ("{{ model.name }}") {
         document.getElementById('id_psihotest').value = "{{ model.psihotest.text }}";
         document.getElementById('id_name').value = "{{ model.name }}";

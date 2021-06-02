@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer
+from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer, UserProfile
 from .forms import AssignPsihoTest
 from .email import sendEmail, sendEmailAnswer, sendEmailRemainder
 from .errors import MyException, notValid, notCopleted, notSaved, toLate, done, sendError
@@ -76,12 +76,16 @@ def asign(request):
         sendError(e)
       return render(request, 'save.html')
     else:
-      notValid()    
+      # notValid()
+      pass    
   # if is GET
   else:
     form = AssignPsihoTest()
+
     title = 'Atribuie test!'
-  return render(request, 'asign.html', {'form': form, 'title': title, 'model': None, 'id': -1})
+    user = UserProfile.objects.get(user = request.user)
+    psihotest = user.user_test.all()
+  return render(request, 'asign.html', {'form': form, 'title': title, 'model': None, 'id': -1, 'psihotest': psihotest})
 
 @api_view(['GET', 'POST'])
 def asigned(request):
@@ -109,7 +113,9 @@ def asigned(request):
       
   else:
     text = ''
-  assigned = AssignedTest.objects.prefetch_related('psihotest').all()
+  user = UserProfile.objects.get(user = request.user)
+  assigned = user.user_assign.all()
+  # assigned = AssignedTest.objects.prefetch_related('psihotest').all()
   paginator = Paginator(assigned, 10) 
   page_number = request.GET.get('page')
   page_obj = paginator.get_page(page_number)

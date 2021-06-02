@@ -60,13 +60,16 @@ def asign(request):
         asignTest = AssignedTest()
       else:
         asignTest = get_object_or_404(AssignedTest, id=request.POST['id'])
-      asignTest.psihotest = PsihoTest.objects.get(text=form.cleaned_data['psihotest'])
+      asignTest.psihotest = get_object_or_404(PsihoTest, text = form.cleaned_data['psihotest'].text)
       asignTest.name =  form.cleaned_data['name']
       asignTest.email =  form.cleaned_data['email']
       asignTest.data = form.cleaned_data['data']
       asignTest.message = form.cleaned_data['message']
       try:
         asignTest.save()
+        # add test to user
+        user = UserProfile.objects.get(user = request.user)
+        user.user_test.add(asignTest)
         if (asignTest.id):
           base = "{0}://{1}".format(request.scheme, request.get_host())
           sendEmail(request, 'Atribuire test', asignTest.email, f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)

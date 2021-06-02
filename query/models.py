@@ -27,7 +27,7 @@ class PsihoTest(models.Model):
   total_score = ArrayField(ArrayField(models.IntegerField()), null=True, blank=True)
   
   def __str__(self):
-        return f"{self.id} - {self.text} " 
+        return f"{self.text} " 
 
 class AnswerTest(models.Model):
   question = models.ForeignKey(Question, on_delete=models.DO_NOTHING, null=True, blank=True)

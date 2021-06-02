@@ -5,11 +5,11 @@ import datetime
 class AssignPsihoTest(forms.Form):
     tests = []
     # incarc doar denumirea testelor nu tot obiectul
-    psTests = UserProfile.objects.all().values('user')
-    for item in psTests:
-        tests.append(item)
+    # psTests = UserProfile.objects.all().values('user')
+    # for item in psTests:
+    #     tests.append(item)
     
-    psihotest = forms.ChoiceField(label='Se atribuie testul', choices=tuple([(name, name) for name in tests]))
+    psihotest = forms.ModelChoiceField(label='Se atribuie testul', queryset=PsihoTest.objects.all() , empty_label=" -- Selecteaza un test --")
     name = forms.CharField(label='Pentru', max_length=100) 
     email = forms.EmailField(label='Cu adresa de e-mail') 
     # data dupa care testul nu mai poate fi accesat, de obicei 14 zile de la atribuire, security reason!

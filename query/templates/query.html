@@ -53,7 +53,7 @@
         <div class="pagination">
           <span class="step-links">
               {% if page_obj.has_previous %}
-                  <a href="?page={{ page_obj.previous_page_number }}">&laquo; anteriora | </a>
+                  <a href="?page={{ page_obj.previous_page_number }}">&laquo; anteriora</a>
               {% endif %}
       
               <span class="current">
@@ -61,13 +61,13 @@
               </span>
       
               {% if page_obj.has_next %}
-                  <a href="?page={{ page_obj.next_page_number }}"> | urmatoarea &raquo;</a>
+                  <a href="?page={{ page_obj.next_page_number }}">urmatoarea &raquo;</a>
               {% endif %}
           </span>
         </div>
         {% if not page_obj.has_next %}
         <div class="btn_center">
-          <input class="btn_submit" type="submit" value="Trimite">
+          <input class="btn_submit" type="submit" value="Finalizat">
         </div>
         {% endif %}
       </div>

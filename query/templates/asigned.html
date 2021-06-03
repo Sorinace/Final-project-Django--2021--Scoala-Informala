@@ -19,15 +19,25 @@
     <img src = "{% static 'images/image3.jpg' %}">
       <form action="/asigned/" method="post">
       {% csrf_token %}
+      <table class="assign-table">
+        <tr>
+          <th>Atribuit pentru</th>
+          <th>Numele testului</th>
+          <th>Expira la data</th>
+        </tr>
       {% for item in page_obj %}
-          <div class="assign">
-            <input class="form-check-input" type="radio" name="assign" value={{item.id}}>
-            <label class="form-check-label">
-              {{item}}
-            </label>
-          </div>
+            <tr>
+              <td>
+                  <input class="form-check-input" type="radio" name="assign" value={{item.id}}>
+                  <label class="form-check-label">
+                  {{item.name}}
+                  </label>
+              </td>
+              <td>{{item.psihotest.text}}</td>
+              <td>{{item.data}}</td>
+            </tr>
         {% endfor %}
-
+      </table>
         <div class="pagination">
           <span class="step-links">
               {% if page_obj.has_previous %}

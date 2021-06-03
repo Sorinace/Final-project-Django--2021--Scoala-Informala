@@ -136,6 +136,20 @@ img {
     font-size:1em;   
 }
 
+/* Formular cu ce s-a atribuit */
+.assign-table {
+    margin-left: 35px;
+    width: 993px;
+    font-size:1em; 
+    color: #89302c;
+}
+
+.assign-table table, 
+.assign-table th, 
+.assign-table td {
+    border: 1px solid #89302c;
+    padding: 1px 15px;
+  }
 /* Formular de atribuire */
 
 th {

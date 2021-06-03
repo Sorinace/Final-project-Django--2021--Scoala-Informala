@@ -125,7 +125,7 @@ def asigned(request):
     paginator = Paginator(assigned, 10) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-  return render(request, 'asigned.html', {'page_obj': page_obj, 'text': text})
+  return render(request, 'asigned.html', {'page_obj': page_obj, 'text': text, 'date': datetime.date.today()})
 
 @api_view(['POST'])
 def asigned_delete(request):

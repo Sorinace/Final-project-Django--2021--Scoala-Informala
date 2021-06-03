@@ -150,6 +150,10 @@ img {
     border: 1px solid #89302c;
     padding: 1px 15px;
   }
+
+  .assign-table th {
+      text-align: center;
+  }
 /* Formular de atribuire */
 
 th {

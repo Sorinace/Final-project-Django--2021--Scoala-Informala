@@ -23,7 +23,9 @@
         <tr>
           <th>Atribuit pentru</th>
           <th>Numele testului</th>
-          <th>Expira la data</th>
+          <th>e-mail</th>
+          <th>Expira in data de</th>
+          <th>Stadiu</th>
         </tr>
       {% for item in page_obj %}
             <tr>
@@ -34,7 +36,17 @@
                   </label>
               </td>
               <td>{{item.psihotest.text}}</td>
-              <td>{{item.data}}</td>
+              <td>{{item.email}}</td>
+              <td style="text-align: center;">{{item.data}}</td>
+              {% if item.answer.count == 0 %}
+                {% if item.data < date %}
+                <td style="color:red; text-align: center;">Expirat</td>
+                {% else %}
+                <td style="text-align: center;">In lucru</td> 
+                {% endif %}
+              {% else %}
+              <td style="color:green; text-align: center;">Finalizat</td>
+              {% endif %}
             </tr>
         {% endfor %}
       </table>

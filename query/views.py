@@ -85,10 +85,14 @@ def asign(request):
   # if is GET
   else:
     form = AssignPsihoTest()
-
+    # Assign the choices based on User
+    form.fields['psihotest'].queryset = UserProfile.objects.get(user = request.user).user_test.all()
     title = 'Atribuie test!'
-    user = UserProfile.objects.get(user = request.user)
-    psihotest = user.user_test.all()
+    if (request.user.is_anonymous):
+      psihotest = None
+    else:
+      user = UserProfile.objects.get(user = request.user)
+      psihotest = user.user_test.all()
   return render(request, 'asign.html', {'form': form, 'title': title, 'model': None, 'id': -1, 'psihotest': psihotest})
 
 @api_view(['GET', 'POST'])
@@ -117,12 +121,14 @@ def asigned(request):
       
   else:
     text = ''
-  user = UserProfile.objects.get(user = request.user)
-  assigned = user.user_assign.all()
-  # assigned = AssignedTest.objects.prefetch_related('psihotest').all()
-  paginator = Paginator(assigned, 10) 
-  page_number = request.GET.get('page')
-  page_obj = paginator.get_page(page_number)
+  if (request.user.is_anonymous):
+    page_obj = None
+  else:
+    user = UserProfile.objects.get(user = request.user)
+    assigned = user.user_assign.all()
+    paginator = Paginator(assigned, 10) 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
   return render(request, 'asigned.html', {'page_obj': page_obj, 'text': text})
 
 @api_view(['POST'])

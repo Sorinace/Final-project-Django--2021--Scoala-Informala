@@ -18,4 +18,9 @@ def scheduled_job():
     sendEmailRemainder()
     print('This send e-mail every weekday at 8am.')
 
+@sched.scheduled_job('interval', minutes=20)
+def timed_job():
+    sendEmailRemainder()
+    
+
 sched.start()

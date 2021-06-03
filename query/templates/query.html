@@ -2,7 +2,7 @@
 {% block body_block %}
 {% load static %}
 {% if messages %}
-<div class="shadow">
+<div class="main shadow">
   <ul class="messages">
       {% for message in messages %}
       <div class="alert alert-danger" >
@@ -13,7 +13,7 @@
   </ul>
 </div>
 {% else %}
-<div class="shadow">
+<div class="main shadow">
     <h3>Va rog sa raspundeti la intrebarile de mai jos:</h3>
     <img src = "{% static 'images/quiz.jpg' %}">
   <div class="alert alert-warning" role="alert"> 
@@ -34,7 +34,7 @@
         {% for question in psihotest.questions.all %}
         <div class="shadow">
           <div class="card-header">
-            <p> {{question.text}}</p>
+            <li> {{question.text}}</li>
           </div>
           <ul class="list-group list-group-flush">
             {% for answer in question.answers.all %}

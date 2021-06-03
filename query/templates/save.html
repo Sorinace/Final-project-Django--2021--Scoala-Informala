@@ -2,16 +2,17 @@
 {% block body_block %}
 {% load static %}
 {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <div class="shadow">
+<div class="main shadow">
+  <ul class="messages">
+      {% for message in messages %}
       <div class="alert alert-danger" >
         <h3><strong>Eroare:</strong></h3>
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
       </div>
-    </div> 
-    {% endfor %}
-</ul>
+      {% endfor %}
+  </ul>
+</div>
+{% endfor %}
 {% else %}
   <div class="shadow">
     <img src = "{% static 'images/image2-1.jpg' %}">

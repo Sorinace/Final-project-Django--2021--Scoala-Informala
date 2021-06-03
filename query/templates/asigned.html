@@ -2,17 +2,19 @@
 {% block body_block %}
 {% if user.is_authenticated %}
 {% if messages %}
+<div class="main shadow">
   <ul class="messages">
       {% for message in messages %}
       <div class="alert alert-danger" >
         <h3><strong>Eroare:</strong></h3>
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
       </div>
       {% endfor %}
   </ul>
+</div>
 {% else %}
 {% load static %}
-  <div class="shadow">
+  <div class="main shadow">
     <h3>Aceste teste au fost atribuite:</h3>
     <img src = "{% static 'images/image3.jpg' %}">
       <form action="/asigned/" method="post">
@@ -51,7 +53,7 @@
             <option value="3">Retrimite e-mail</option>
           </select>
         </div>
-        <div class="flex-container">
+        <div class="btn_center flex-container">
           <input class="btn_submit" type="submit" value="Aplica">
         </div>
         </form>

@@ -3,18 +3,18 @@
 {% if user.is_authenticated %}
     {% load static %}
     {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <div class="shadow">
-        <div class="alert alert-danger" >
-            <h3><strong>Eroare:</strong></h3>
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        </div>
-        </div> 
-        {% endfor %}
-    </ul>
+    <div class="main shadow">
+        <ul class="messages">
+            {% for message in messages %}
+            <div class="alert alert-danger" >
+              <h3><strong>Eroare:</strong></h3>
+              <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            </div>
+            {% endfor %}
+        </ul>
+      </div>
     {% else %}
-    <div class="shadow">
+    <div class="main shadow">
         <h3 class="test">{{ title }}</h3>
         <img src = "{% static 'images/image5.jpg' %}">
         <div >
@@ -33,13 +33,6 @@
             </div>
         </div>
         </form>
-        <!-- <script>var option = document.createElement("option");</script>
-        {% for test in psihotest %}
-        <script>
-            option.text = "{{ test.text }}"
-            document.getElementById('id_psihotest').add(option);
-        </script>
-        {% endfor %} -->
     </div>
     <br/>
     {% endif %} 

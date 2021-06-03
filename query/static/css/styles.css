@@ -98,16 +98,6 @@ img {
     margin: 30px auto;
 }
 
-.move_right {
-    position: relative;
-    animation: down 0.5s 1;
-}
-
-@keyframes down {
-    0%   { opacity: 1;}
-    100% { opacity: 0;}
-}
-
 .question {
     margin: 0 auto;
     padding: 1px 40px 20px 40px;
@@ -223,25 +213,20 @@ table {
 }
 
 .pagination {
-    color:#89302c;
+    /* color:#89302c; */
     margin: 5px;
     position: relative;
     display: block;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1em;
 }
 
 .pagination .step-links a {
-    background-color: #89302c;
-    color: white;
-    padding: 5px 15px;
-    text-decoration: none;
+    color:#89302c;
     display: inline-block;
-    border-radius: 13px;
-    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12);
 }
 
-.pagination .step-links a:hover {
-    background-color: #a64942;
-    box-shadow: none
+.current{
+    font-weight: bold;
+    font-size: 1em;
 }

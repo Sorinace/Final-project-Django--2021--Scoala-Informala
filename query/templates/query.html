@@ -17,10 +17,10 @@
     <h3>Va rog sa raspundeti la intrebarile de mai jos:</h3>
     <img src = "{% static 'images/quiz.jpg' %}">
   <div class="alert alert-warning" role="alert"> 
-    <h3> {{name}}</h3>
+    <h3> {{psihotest.text}}</h3>
     <p>
         {% autoescape off %}
-        {{story}}
+        {{psihotest.story}}
         {% endautoescape %} 
       </p>
   </div>
@@ -29,12 +29,12 @@
       <div style="display: none;"><!--  hidden data -->
           <input type="text" name="id" value={{id}}></p>
       </div>
+      <ol>
       <div class="card">
-        <ul>
-        {% for question in page_obj %}
-        <div class="shadow move_right">
+        {% for question in psihotest.questions.all %}
+        <div class="shadow">
           <div class="card-header">
-            <li >{{question.text}}</li>
+            <p> {{question.text}}</p>
           </div>
           <ul class="list-group list-group-flush">
             {% for answer in question.answers.all %}
@@ -46,30 +46,13 @@
               </div>
             {% endfor %}
             <br/>
-          </ul>
         </div>
         {% endfor %}
         </ul>   
-        <div class="pagination">
-          <span class="step-links">
-              {% if page_obj.has_previous %}
-                  <a href="?page={{ page_obj.previous_page_number }}">&laquo; anteriora</a>
-              {% endif %}
-      
-              <span class="current">
-                  Intrebarea {{ page_obj.number }} din {{ page_obj.paginator.num_pages }}.
-              </span>
-      
-              {% if page_obj.has_next %}
-                  <a href="?page={{ page_obj.next_page_number }}">urmatoarea &raquo;</a>
-              {% endif %}
-          </span>
-        </div>
-        {% if not page_obj.has_next %}
+      </ol>
         <div class="btn_center">
           <input class="btn_submit" type="submit" value="Finalizat">
         </div>
-        {% endif %}
       </div>
   </form>
 </div>

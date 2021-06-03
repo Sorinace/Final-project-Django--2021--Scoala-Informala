@@ -36,10 +36,7 @@ def query(request, id='1'):
     # check if the test is completed or not
     elif (len(assigned.answer.all()) > 0):
       done()
-    paginator = Paginator(psihotest.questions.all(), 1) 
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'query.html', {'page_obj': page_obj, 'story': psihotest.story, 'name': psihotest.text, 'id': id})
+    return render(request, 'query.html', {'psihotest': psihotest, 'id': id})
   except  Exception as e:
     messages.info(request, e)
   return render(request, 'query.html', {'page_obj': None, 'story': '', 'name': '', 'id': id})

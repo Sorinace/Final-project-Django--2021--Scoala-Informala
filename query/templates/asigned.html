@@ -14,7 +14,7 @@
 </div>
 {% else %}
 {% load static %}
-  <div class="main shadow">
+  <div class="shadow">
     <h3>Aceste teste au fost atribuite:</h3>
     <img src = "{% static 'images/image3.jpg' %}">
       <form action="/asigned/" method="post">
@@ -62,7 +62,7 @@
 {% endif %}
 {% else %}
   <div class="shadow">
-    <h3>Pentru a putea vedea testele deja atribuite, trebuie sa fiti inregistrati</h3>
+    <h3>Pentru a putea vedea testele atribuite, trebuie sa fiti inregistrati</h3>
     <a class="login" href="{% url 'login' %}">Log In</a>
   </div>
 {% endif %}

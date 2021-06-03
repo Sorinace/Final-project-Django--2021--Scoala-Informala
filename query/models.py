@@ -46,7 +46,7 @@ class AssignedTest(models.Model):
   answer = models.ManyToManyField(AnswerTest, blank=True)
   
   def __str__(self):
-        return f"{self.psihotest.text} - a fost atribuit lui {self.name}, si este valid pana in {self.data} "
+        return f" {self.name} completeaza: {self.psihotest.text} pana in {self.data} "
   class Meta:
     ordering = ['-data']
 

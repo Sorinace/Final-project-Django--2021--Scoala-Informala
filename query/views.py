@@ -77,17 +77,16 @@ def asign(request):
         sendError(e)
       return render(request, 'save.html')
     else:
-      # notValid()
-      pass    
+      notValid()
   # if is GET
   else:
     form = AssignPsihoTest()
-    # Assign the choices based on User
-    form.fields['psihotest'].queryset = UserProfile.objects.get(user = request.user).user_test.all()
     title = 'Atribuie test!'
     if (request.user.is_anonymous):
       psihotest = None
     else:
+      # Assign the choices based on User
+      form.fields['psihotest'].queryset = UserProfile.objects.get(user = request.user).user_test.all()
       user = UserProfile.objects.get(user = request.user)
       psihotest = user.user_test.all()
   return render(request, 'asign.html', {'form': form, 'title': title, 'model': None, 'id': -1, 'psihotest': psihotest})

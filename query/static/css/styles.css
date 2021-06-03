@@ -96,28 +96,23 @@ img {
 }
 
 .shadow {
-    margin: 21px auto;
+    margin: 50px auto;
+    padding: 1px 40px 35px;
+    background-color: white;
+    border-radius: 13px;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12);
+}
+
+.question {
+    margin: 25px auto;
     padding: 0 40px;
     background-color: white;
     border-radius: 13px;
     box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12);
 }
 
-.main {
-    margin-top: 50px;
-}
-
-
 .alert {
     margin: 30px auto;
-}
-
-.question {
-    margin: 0 auto;
-    padding: 1px 40px 20px 40px;
-    background-color: white;
-    border-radius: 13px;
-    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12);
 }
 
 /* intrebari */

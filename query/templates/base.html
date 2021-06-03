@@ -15,7 +15,7 @@
           <li><a id="home" class="" href="{% url 'home' %}">Acasa</a></li>
           <li><a id="asigned"class="" href="{% url 'asigned' %}">In lucru</a></li>
           <li><a id="asign"class="" href="{% url 'asign' %}">Atribuie</a></li>
-          <li><a id="about"class="" href="{% url 'about' %}">Despre</a></li>
+          <li><a id="about"class="" href="{% url 'about' %}">Contact</a></li>
           <li style="float:right"><a class="" href="{% url 'admin:index' %}">Admin</a></li>
           {% if user.is_authenticated %}
             <li style="float:right"><a class="" href="{% url 'logout' %}"> {{ user.first_name }} {{ user.last_name }} - Log Out</a></li>

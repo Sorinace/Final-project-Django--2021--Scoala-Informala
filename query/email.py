@@ -25,7 +25,8 @@ def sendEmail(request, subject, email, addres, data, message):
         raise serializers.ValidationError(error)
 
 def sendEmailAnswer(request, answer):
-    replay = request.user.email
+    replay = answer
+    print("replay")
 
     total = 0
     for item in answer.answer.all():
@@ -38,9 +39,9 @@ def sendEmailAnswer(request, answer):
     
     try:
         #I used EmailMultiAlternatives because I wanted to send both text and html
-        emailMessage = EmailMultiAlternatives(subject='Raspuns la test', body=text_content, from_email='Testing WEB Server', to=['sorinace@gmail.com',], reply_to=[replay,])
+        emailMessage = EmailMultiAlternatives(subject='Raspuns la test', body=text_content, from_email='Testing WEB Server', to=[replay,], reply_to=['sorinace@gmail.com',])
         emailMessage.attach_alternative(html_content, "text/html")
-        emailMessage.send(fail_silently=False)
+        #emailMessage.send(fail_silently=False)
     except SMTPException as e:
         print('There was an error sending an email: ', e) 
         error = {'message': ",".join(e.args) if len(e.args) > 0 else 'Unknown Error'}

@@ -66,7 +66,6 @@ def asign(request):
         asignTest.save()
         # add test to user
         user = UserProfile.objects.get(user = request.user)
-        print(user.user_test.all())
         user.user_assign.add(asignTest)
         if (asignTest.id):
           base = "{0}://{1}".format(request.scheme, request.get_host())

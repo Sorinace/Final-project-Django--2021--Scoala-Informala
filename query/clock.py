@@ -1,8 +1,8 @@
-from apscheduler.schedulers.blocking import BackgroundScheduler
+from apscheduler import schedulers
 
 from .email import sendEmailRemainder
 
-sched = BackgroundScheduler()
+sched = schedulers()
 
 # @sched.scheduled_job('interval', minutes=3)
 # def timed_job():
@@ -13,14 +13,18 @@ sched = BackgroundScheduler()
 # def scheduled_job():
 #     print('This job is run every weekday at 5pm.')
 
-@sched.scheduled_job('cron', day_of_week='mon-fri', hour=7)
+@sched.cron_schedule(day_of_week='mon-sun', hour=16, minute=0)
 def scheduled_job():
     sendEmailRemainder()
-    print('This send e-mail every weekday at 7am.')
+    print('This send e-mail every weekday at 16pm.')
 
-@sched.scheduled_job('interval', minutes=10)
-def timed_job():
-    sendEmailRemainder()
+# @sched.scheduled_job('interval', minutes=10)
+# def timed_job():
+#     sendEmailRemainder()
     
 
 sched.start()
+print("Scheduler started")
+
+while __name__ == '__main__':
+  pass

@@ -33,11 +33,11 @@ sched = BlockingScheduler()
 # def scheduled_job():
 #     print('This job is run every weekday at 5pm.')
 
-@sched.scheduled_job('cron', day_of_week='mon-fri', hour=18, minutes=25)
-def scheduled_job():
-    print('This job is run every weekday at 5pm.')
+@sched.scheduled_job('interval', minutes= 5)
+def timed_job():
+    print('Mere tat la 5 minute.')
 
-@sched.scheduled_job('cron', day_of_week='mon-fri', hour=18, minutes=26)
+@sched.scheduled_job('cron', day_of_week='mon-fri', hour=19)
 def scheduled_job():
     sendEmailRemainder()
 

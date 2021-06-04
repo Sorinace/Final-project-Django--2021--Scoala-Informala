@@ -44,7 +44,7 @@ def sendEmailAnswer(request, answer, email):
         # I used EmailMultiAlternatives because I wanted to send both text and html
         emailMessage = EmailMultiAlternatives(subject='Raspuns la test', body=text_content, from_email='Testing WEB Server', to=[email,], reply_to=[replay,])
         emailMessage.attach_alternative(html_content, "text/html")
-        #emailMessage.send(fail_silently=False)
+        emailMessage.send(fail_silently=False)
     except SMTPException as e:
         print('There was an error sending an email: ', e) 
         error = {'message': ",".join(e.args) if len(e.args) > 0 else 'Unknown Error'}

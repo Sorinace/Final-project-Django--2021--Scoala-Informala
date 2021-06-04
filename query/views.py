@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from django.contrib import messages 
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
 
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer, UserProfile
 from .forms import AssignPsihoTest
@@ -18,7 +19,12 @@ def saveAnswer(request, answers):
         score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
         score.save()
         assigned.answer.add(score)
-      sendEmailAnswer(request, assigned)
+      
+      # get the user who assigned the test
+      assign_user = assigned.userprofile_set.all()[0]
+      # get his/her e-mail address
+      email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
+      sendEmailAnswer(request, assigned, email)
     else:
       return notCopleted()
   except MyException:
@@ -39,7 +45,7 @@ def query(request, id='1'):
     return render(request, 'query.html', {'psihotest': psihotest, 'id': id})
   except  Exception as e:
     messages.info(request, e)
-  return render(request, 'query.html', {'page_obj': None, 'story': '', 'name': '', 'id': id})
+  return render(request, 'query.html', {'psihotest': None, 'id': id})
 
 def home(request):
   # sendEmailRemainder()
@@ -93,26 +99,47 @@ def asign(request):
 @api_view(['GET', 'POST'])
 def asigned(request):
   if request.method == 'POST':
-    if ('assign' in request.POST and 'option' in request.POST):
-      text_option = ['Nu ai selectat nimic', 'Modifica', 'Sterge', 'Retrimite e-mail']
-      text = f"{text_option[int(request.POST['option'])]} pentru ID: {request.POST['assign']}"
+    text_option = ['Nu ai selectat nici o actiune', 'Vezi test', 'Trimite rezultat pe e-mail', 'Retrimite e-mail', 'Modifica', 'Sterge',]
+    if ('assign' in request.POST and (int(request.POST['option']) > 0)):
       if (int(request.POST['assign']) > 0):
         assigned = []
         assigned.append( AssignedTest.objects.get(id=request.POST['assign']) )
+        selected = get_object_or_404(AssignedTest, id=request.POST['assign'])
         if (request.POST['option'] == '1'):
-          form = AssignPsihoTest()
-          model = get_object_or_404(AssignedTest, id=request.POST['assign'])
-          title = 'Modifica atribuire test!'
-          return render(request, 'asign.html', {'form': form, 'title': title, 'model': model, 'id': request.POST['assign']})
+          answer = selected.answer.all()
+          if (answer.count() > 0):
+            text = ''
+            total = 0
+            for item in answer:
+                total += int(item.choose.score)
+            return render(request, 'view-result.html', {'answers': answer, 'total': total})
+          else:
+            text = 'Testul nu este completat! Nu are rezultate pentru a fi vizualizate!!!'
         elif (request.POST['option'] == '2'):
-          return render(request, 'asigned-delete.html', { 'assigned': assigned[0], 'id': int(request.POST['assign'])})
+          if (selected.answer.count() > 0):
+            email = request.user.email
+            sendEmailAnswer(request, selected, email)
+            text = f"Rezultat trimis cu succes pe e-mail-ul: {email}"
+          else:
+            text = 'Testul nu este completat! Nu are rezultate!!!'
         elif (request.POST['option'] == '3'):
            base = "{0}://{1}".format(request.scheme, request.get_host())
-           asignTest = get_object_or_404(AssignedTest, id=request.POST['assign'])
-           sendEmail(request, 'Nu uita, ai un test atribuit', asignTest.email, f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)
-           text = f"Email trimis pentru {asignTest.name}, la adresa {asignTest.email}"
+           sendEmail(request, 'Nu uita, ai un test atribuit', selected.email, f"{base}/query/{selected.id}" , selected.data, selected.message)
+           text = f"Email trimis pentru {selected.name}, la adresa {selected.email}"
+        elif (request.POST['option'] == '4'):
+          form = AssignPsihoTest()
+          title = 'Modifica atribuire test!'
+          return render(request, 'asign.html', {'form': form, 'title': title, 'model': selected, 'id': request.POST['assign']})
+        elif (request.POST['option'] == '5'):
+          return render(request, 'asigned-delete.html', { 'assigned': assigned[0], 'id': int(request.POST['assign'])})
     else:
-      text = ''
+      if (int(request.POST['option']) > 0):
+        text = f"Nu ai selectat testul pentru care doresti actiunea: {text_option[int(request.POST['option'])]}"
+      elif('assign' in request.POST):
+        text = f"{text_option[int(request.POST['option'])]} pentru ID: {request.POST['assign']}"
+      else:
+        text = 'Nu ai selectat nimic!'
+            
       
   else:
     text = ''

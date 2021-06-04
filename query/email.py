@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 def sendEmail(request, subject, email, addres, data, message):
     replay = request.user.email
+    
 
     from_us = f"{request.user.first_name} {request.user.last_name}"
 
@@ -24,9 +25,11 @@ def sendEmail(request, subject, email, addres, data, message):
         error = {'message': ",".join(e.args) if len(e.args) > 0 else 'Unknown Error'}
         raise serializers.ValidationError(error)
 
-def sendEmailAnswer(request, answer):
-    replay = answer
-    print("replay")
+def sendEmailAnswer(request, answer, email):
+    if (request.user.is_anonymous):
+        replay = 'sorinace@gmail.com'
+    else:
+        replay = request.user.email
 
     total = 0
     for item in answer.answer.all():
@@ -38,8 +41,8 @@ def sendEmailAnswer(request, answer):
     html_content = render_to_string('receipt_email_answer.html', context, request=request)
     
     try:
-        #I used EmailMultiAlternatives because I wanted to send both text and html
-        emailMessage = EmailMultiAlternatives(subject='Raspuns la test', body=text_content, from_email='Testing WEB Server', to=[replay,], reply_to=['sorinace@gmail.com',])
+        # I used EmailMultiAlternatives because I wanted to send both text and html
+        emailMessage = EmailMultiAlternatives(subject='Raspuns la test', body=text_content, from_email='Testing WEB Server', to=[email,], reply_to=[replay,])
         emailMessage.attach_alternative(html_content, "text/html")
         #emailMessage.send(fail_silently=False)
     except SMTPException as e:

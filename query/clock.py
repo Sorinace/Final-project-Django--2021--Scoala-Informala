@@ -1,6 +1,6 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from .query.email import sendEmailRemainder
+from .email import sendEmailRemainder
 
 sched = BlockingScheduler()
 
@@ -12,11 +12,11 @@ sched = BlockingScheduler()
 # def scheduled_job():
 #     print('This job is run every weekday at 5pm.')
 
-@sched.scheduled_job('cron', day_of_week='mon-fri', hour=18, minutes=5)
+@sched.scheduled_job('cron', day_of_week='mon-fri', hour=18, minutes=20)
 def scheduled_job():
     print('This job is run every weekday at 5pm.')
 
-@sched.scheduled_job('cron', day_of_week='mon-fri', hour=18, minutes=10)
+@sched.scheduled_job('cron', day_of_week='mon-fri', hour=18, minutes=21)
 def scheduled_job():
     sendEmailRemainder()
 

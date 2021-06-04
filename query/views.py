@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from django.contrib import messages 
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
 
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer, UserProfile
 from .forms import AssignPsihoTest
@@ -18,7 +19,12 @@ def saveAnswer(request, answers):
         score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
         score.save()
         assigned.answer.add(score)
-      sendEmailAnswer(request, assigned)
+      
+      # get the user who assigned the test
+      assign_user = assigned.userprofile_set.all()[0]
+      # get his/her e-mail address
+      email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
+      sendEmailAnswer(request, assigned, email)
     else:
       return notCopleted()
   except MyException:
@@ -66,7 +72,6 @@ def asign(request):
         asignTest.save()
         # add test to user
         user = UserProfile.objects.get(user = request.user)
-        print(user.user_test.all())
         user.user_assign.add(asignTest)
         if (asignTest.id):
           base = "{0}://{1}".format(request.scheme, request.get_host())

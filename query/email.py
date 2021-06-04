@@ -53,7 +53,7 @@ def sendEmailAnswer(request, answer, email):
 def sendEmailRemainder():
     replay = 'sorinace@gmail.com'
 
-    context = ({"addres": 'www.fess.ro', "data": '25.05.2021', "message": 'Test pentru schedule zilnic la 8 am'}) 
+    context = ({"addres": 'www.fess.ro', "data": '25.05.2021', "message": 'Test pentru ENAIL SO'}) 
 
     text_content = render_to_string('remainder_email.txt', context)
     html_content = render_to_string('remainder_email.html', context)

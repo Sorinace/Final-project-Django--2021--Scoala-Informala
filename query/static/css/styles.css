@@ -153,6 +153,8 @@ img {
 
   .assign-table th {
       text-align: center;
+      background-color: #89302c;
+      color: white;
   }
 /* Formular de atribuire */
 

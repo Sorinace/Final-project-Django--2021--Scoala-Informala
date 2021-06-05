@@ -13,27 +13,59 @@ from .errors import MyException, notValid, notCopleted, notSaved, toLate, done, 
 
 # HOME ______________________________________________________________________________________________________
 def home(request):
-  # sendEmailRemainder()
   return render(request, 'index.html')
 
 # QUERY ____________________________________________________________________________________________________
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def query(request, id='1'):
-  try:
-    assigned = AssignedTest.objects.get(id=id)
-    psihotest = assigned.psihotest
-    # check if the test is in time
-    if(assigned.data < datetime.date.today()):
-      toLate()
-    # check if the test is completed or not
-    elif (len(assigned.answer.all()) > 0):
-      done()
-    return render(request, 'query.html', {'psihotest': psihotest, 'id': id})
-  except  Exception as e:
-    messages.info(request, e)
-  return render(request, 'query.html', {'psihotest': None, 'id': id})
+  if request.method == 'POST':
+    item = {}
+    answers= {}
+    answer=[]
+    for i in request.POST:
+      if i == 'id':
+        answers['id'] = int(request.POST[i])
+      elif i != 'csrfmiddlewaretoken':
+        item['question'] = int(i)
+        item['choose'] = int(request.POST[i])
+        answer.append(item)
+        item = {}
+    answers["answers"] = answer
+    try:
+      assigned = AssignedTest.objects.get(id=answers['id'])
+      if(len(answers['answers']) == len(assigned.psihotest.questions.all())):
+        for ans in answers['answers']:
+          score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
+          score.save()
+          assigned.answer.add(score)
 
-# QUERY ____________________________________________________________________________________________________
+        # get the user who assigned the test
+        assign_user = assigned.userprofile_set.all()[0]
+        # get his/her e-mail address
+        email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
+        sendEmailAnswer(request, assigned, email)
+      else:
+        return notCopleted()
+    except MyException:
+      return notCopleted()
+    return render(request, 'save.html')
+  else: # for GET
+    try:
+      assigned = AssignedTest.objects.get(id=id)
+      psihotest = assigned.psihotest
+      # check if the test is in time
+      if(assigned.data < datetime.date.today()):
+        toLate() # it is expired
+      # check if the test is completed or not
+      elif (len(assigned.answer.all()) > 0):
+        done() # It is alredy compleated
+      return render(request, 'query.html', {'psihotest': psihotest, 'id': id})
+    except  Exception as e:
+      messages.info(request, e)
+    return render(request, 'query.html', {'psihotest': None, 'id': id})
+
+
+# ASSIGN ____________________________________________________________________________________________________
 @api_view(['GET', 'POST'])
 def asign(request):
   if request.method == 'POST':
@@ -145,40 +177,6 @@ def asigned_delete(request):
   remove.delete()
   return redirect('asigned')
 
-
-# ANSWER ______________________________________________________________________________________________________________
-@api_view(['POST'])
-def answer(request):
-  item = {}
-  answers= {}
-  answer=[]
-  for i in request.POST:
-    if i == 'id':
-      answers['id'] = int(request.POST[i])
-    elif i != 'csrfmiddlewaretoken':
-      item['question'] = int(i)
-      item['choose'] = int(request.POST[i])
-      answer.append(item)
-      item = {}
-  answers["answers"] = answer
-  try:
-    assigned = AssignedTest.objects.get(id=answers['id'])
-    if(len(answers['answers']) == len(assigned.psihotest.questions.all())):
-      for ans in answers['answers']:
-        score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
-        score.save()
-        assigned.answer.add(score)
-
-      # get the user who assigned the test
-      assign_user = assigned.userprofile_set.all()[0]
-      # get his/her e-mail address
-      email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
-      sendEmailAnswer(request, assigned, email)
-    else:
-      return notCopleted()
-  except MyException:
-    return notCopleted()
-  return render(request, 'save.html')
 
 # CONTACT ____________________________________________________________________________________________________
 def about(request):

@@ -1,4 +1,5 @@
 import datetime
+from django.contrib.postgres import fields
 
 from rest_framework.decorators import api_view
 from django.contrib import messages 
@@ -69,22 +70,15 @@ def query(request, id='1'):
 @api_view(['GET', 'POST'])
 def asign(request):
   if request.method == 'POST':
-    # create a form instance and populate it with data from the request:
-    form = FormAssignTest(request.POST)
+    if (int(request.POST['id']) < 1):
+      asignTest = AssignedTest()
+    else:
+      asignTest = get_object_or_404(AssignedTest, id=request.POST['id'])
+    form = FormAssignTest(request.POST, instance=asignTest)
     # check whether it's valid:
     if form.is_valid():
-      # process the data in form.cleaned_data as require
-      if (int(request.POST['id']) < 1):
-        asignTest = AssignedTest()
-      else:
-        asignTest = get_object_or_404(AssignedTest, id=request.POST['id'])
-      asignTest.psihotest = get_object_or_404(PsihoTest, text = form.cleaned_data['psihotest'].text)
-      asignTest.name =  form.cleaned_data['name']
-      asignTest.email =  form.cleaned_data['email']
-      asignTest.data = form.cleaned_data['data']
-      asignTest.message = form.cleaned_data['message']
       try:
-        asignTest.save()
+        form.save()
         # add test to user
         user = UserProfile.objects.get(user = request.user)
         user.user_assign.add(asignTest)
@@ -145,9 +139,9 @@ def asigned(request):
            sendEmail(request, 'Nu uita, ai un test atribuit', selected.email, f"{base}/query/{selected.id}" , selected.data, selected.message)
            text = f"Email trimis pentru {selected.name}, la adresa {selected.email}"
         elif (request.POST['option'] == '4'):
-          form = FormAssignTest()
+          form = FormAssignTest(instance=selected)
           title = 'Modifica atribuire test!'
-          return render(request, 'asign.html', {'form': form, 'title': title, 'model': selected, 'id': request.POST['assign']})
+          return render(request, 'asign.html', {'form': form, 'title': title, 'id': request.POST['assign']})
         elif (request.POST['option'] == '5'):
           return render(request, 'asigned-delete.html', { 'assigned': assigned[0], 'id': int(request.POST['assign'])})
     else:

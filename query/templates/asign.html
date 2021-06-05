@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} {{ block.super }} - Assign {% endblock %}
-{% block body %}
+{% block body_block %}
 {% if user.is_authenticated %}
     {% load static %}
     {% if messages %}

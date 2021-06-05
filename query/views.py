@@ -7,8 +7,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 
 from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer, UserProfile
-from .forms import AssignPsihoTest
-from .email import sendEmail, sendEmailAnswer, sendEmailRemainder
+from .forms import FormAssignTest
+from .email import sendEmail, sendEmailAnswer
 from .errors import MyException, notValid, notCopleted, notSaved, toLate, done, sendError
 
 # HOME ______________________________________________________________________________________________________
@@ -55,10 +55,10 @@ def query(request, id='1'):
       psihotest = assigned.psihotest
       # check if the test is in time
       if(assigned.data < datetime.date.today()):
-        toLate() # it is expired
+        toLate() 
       # check if the test is completed or not
       elif (len(assigned.answer.all()) > 0):
-        done() # It is alredy compleated
+        done() 
       return render(request, 'query.html', {'psihotest': psihotest, 'id': id})
     except  Exception as e:
       messages.info(request, e)
@@ -70,7 +70,7 @@ def query(request, id='1'):
 def asign(request):
   if request.method == 'POST':
     # create a form instance and populate it with data from the request:
-    form = AssignPsihoTest(request.POST)
+    form = FormAssignTest(request.POST)
     # check whether it's valid:
     if form.is_valid():
       # process the data in form.cleaned_data as require
@@ -100,13 +100,14 @@ def asign(request):
       notValid()
   # if is GET
   else:
-    form = AssignPsihoTest()
+    form = FormAssignTest()
     title = 'Atribuie test!'
     if (request.user.is_anonymous):
       psihotest = None
     else:
       # Assign the choices based on User
       form.fields['psihotest'].queryset = UserProfile.objects.get(user = request.user).user_test.all()
+      form.fields['data'].initial = datetime.date.today() + datetime.timedelta(days=14) # The default expire date will be 14 days from now
       user = UserProfile.objects.get(user = request.user)
       psihotest = user.user_test.all()
   return render(request, 'asign.html', {'form': form, 'title': title, 'model': None, 'id': -1, 'psihotest': psihotest})
@@ -144,7 +145,7 @@ def asigned(request):
            sendEmail(request, 'Nu uita, ai un test atribuit', selected.email, f"{base}/query/{selected.id}" , selected.data, selected.message)
            text = f"Email trimis pentru {selected.name}, la adresa {selected.email}"
         elif (request.POST['option'] == '4'):
-          form = AssignPsihoTest()
+          form = FormAssignTest()
           title = 'Modifica atribuire test!'
           return render(request, 'asign.html', {'form': form, 'title': title, 'model': selected, 'id': request.POST['assign']})
         elif (request.POST['option'] == '5'):

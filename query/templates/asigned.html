@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} {{ block.super }} - Assigned {% endblock %}
-{% block body %}
+{% block body_block %}
 {% if user.is_authenticated %}
 {% if messages %}
 <div class="main shadow">

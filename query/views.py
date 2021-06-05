@@ -11,26 +11,12 @@ from .forms import AssignPsihoTest
 from .email import sendEmail, sendEmailAnswer, sendEmailRemainder
 from .errors import MyException, notValid, notCopleted, notSaved, toLate, done, sendError
 
-def saveAnswer(request, answers):
-  try:
-    assigned = AssignedTest.objects.get(id=answers['id'])
-    if(len(answers['answers']) == len(assigned.psihotest.questions.all())):
-      for ans in answers['answers']:
-        score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
-        score.save()
-        assigned.answer.add(score)
-      
-      # get the user who assigned the test
-      assign_user = assigned.userprofile_set.all()[0]
-      # get his/her e-mail address
-      email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
-      sendEmailAnswer(request, assigned, email)
-    else:
-      return notCopleted()
-  except MyException:
-    return notCopleted()
-  return True
+# HOME ______________________________________________________________________________________________________
+def home(request):
+  # sendEmailRemainder()
+  return render(request, 'index.html')
 
+# QUERY ____________________________________________________________________________________________________
 @api_view(['GET'])
 def query(request, id='1'):
   try:
@@ -47,10 +33,7 @@ def query(request, id='1'):
     messages.info(request, e)
   return render(request, 'query.html', {'psihotest': None, 'id': id})
 
-def home(request):
-  # sendEmailRemainder()
-  return render(request, 'base.html')
-
+# QUERY ____________________________________________________________________________________________________
 @api_view(['GET', 'POST'])
 def asign(request):
   if request.method == 'POST':
@@ -96,6 +79,8 @@ def asign(request):
       psihotest = user.user_test.all()
   return render(request, 'asign.html', {'form': form, 'title': title, 'model': None, 'id': -1, 'psihotest': psihotest})
 
+
+# ASSIGNED ____________________________________________________________________________________________________
 @api_view(['GET', 'POST'])
 def asigned(request):
   if request.method == 'POST':
@@ -140,7 +125,6 @@ def asigned(request):
       else:
         text = 'Nu ai selectat nimic!'
             
-      
   else:
     text = ''
   if (request.user.is_anonymous):
@@ -153,12 +137,16 @@ def asigned(request):
     page_obj = paginator.get_page(page_number)
   return render(request, 'asigned.html', {'page_obj': page_obj, 'text': text, 'date': datetime.date.today()})
 
+
+# DELETE - Assign ____________________________________________________________________________________________________
 @api_view(['POST'])
 def asigned_delete(request):
   remove = get_object_or_404(AssignedTest, id=request.POST['id'])
   remove.delete()
   return redirect('asigned')
 
+
+# ANSWER ______________________________________________________________________________________________________________
 @api_view(['POST'])
 def answer(request):
   item = {}
@@ -174,12 +162,24 @@ def answer(request):
       item = {}
   answers["answers"] = answer
   try:
-    saveAnswer(request, answers)
-  except MyException as e:
-    print(e)
-    messages.info(request, e)
+    assigned = AssignedTest.objects.get(id=answers['id'])
+    if(len(answers['answers']) == len(assigned.psihotest.questions.all())):
+      for ans in answers['answers']:
+        score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
+        score.save()
+        assigned.answer.add(score)
+
+      # get the user who assigned the test
+      assign_user = assigned.userprofile_set.all()[0]
+      # get his/her e-mail address
+      email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
+      sendEmailAnswer(request, assigned, email)
+    else:
+      return notCopleted()
+  except MyException:
+    return notCopleted()
   return render(request, 'save.html')
 
-
+# CONTACT ____________________________________________________________________________________________________
 def about(request):
   return render(request, 'about.html')

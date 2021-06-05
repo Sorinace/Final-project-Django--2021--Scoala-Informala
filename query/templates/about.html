@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
-{% block body_block %}
 {% load static %}
+{% block title %} {{ block.super }} - Contact {% endblock %}
+{% block body %}
     <div class="shadow">
         <h3>Acest site este creat cu Python in framework-ul Django</h3>
         <img src = "{% static 'images/image4.jpg' %}">

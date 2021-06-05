@@ -1,8 +1,9 @@
+{% load static %}
+    
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PsihoTest</title>
-    {% load static %}
+    <title>{% block title %} PsihoTest {% endblock %}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href='{% static "css/styles.css" %}' rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
@@ -27,21 +28,11 @@
     </nav>
   </center>
     <div class="container">
-      {% block body_block %}
-      <div class="shadow">
-        <h3 >Aceasta este o platforma de testare</h3>
-        <img src = "{% static 'images/image2.jpg' %}">
-        <h4>Cum functioneaza?</h4>
-        <ul>
-        <div class="align-li">
-            <li>Platforma permite sa atribuiti un test pentru o persoana pe baza adresei de e-mail. </li>
-            <li>Persoana testata va primi un e-mail cu linkul testului pe care doriti sa-l realizeze.</li>
-            <li>Dupa testare veti primi un e-mail cu testul completat. </li>
-        </div>
-        </ul>
-      </div>
+      {% block body %}
+      Base template
       {% endblock %}
     </div>
+    <div>copyright 2021</div>
 
     <script>
       // Add active class to the current button (highlight it)

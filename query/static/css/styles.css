@@ -45,6 +45,18 @@ h3 {
     font-size: 1em;
 }
 
+/* bootom bar */
+.fixed-bottom {
+    background-color: #89302c ;
+    color:whitesmoke;
+    min-height: 20px;
+    width: 100%;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12);
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    padding: 5px;
+}
 /* navigation bar */
 .navbar {
     min-height: 10px;

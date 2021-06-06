@@ -84,7 +84,7 @@ def asign(request):
         user.user_assign.add(asignTest)
         if (asignTest.id):
           
-          sendEmail(request, 'Atribuire test', asignTest) #.email, f"{base}/query/{asignTest.id}" , asignTest.data, asignTest.message)
+          sendEmail(request, 'Atribuire test', asignTest) 
         else:
           notSaved()
       except Exception as e:

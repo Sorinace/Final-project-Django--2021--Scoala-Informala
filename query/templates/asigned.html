@@ -18,6 +18,14 @@
     <div class="shadow">
       <h3>Aceste teste au fost atribuite:</h3>
       <img src = "{% static 'images/image3.jpg' %}">
+        {% if text %}
+          <div class="alert alert-danger" role="alert"> 
+            <h4> Atentie: </h4>
+            <ul>
+              <li>{{text}}</li>
+            </ul>
+          </div>
+        {% endif %}
         <form action="/asigned/" method="post">
         {% csrf_token %}
         <table class="assign-table">
@@ -93,10 +101,4 @@
       <a class="login" href="{% url 'login' %}">Log In</a>
     </div>
 {% endif %}
-<script>
-  // If i have a message, print it
-if ("{{text}}") {
-  alert("{{text}}");
-}
-  </script>
 {% endblock %}

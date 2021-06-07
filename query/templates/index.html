@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{ block.super }} - Home {% endblock %}
+  {% block body_block %}
+  <div class="shadow">
+    <h3 >Aceasta este o platforma de testare</h3>
+    <img src = "{% static 'images/image2.jpg' %}">
+    <h4>Cum functioneaza?</h4>
+    <ul>
+    <div class="align-li">
+        <li>Platforma permite sa atribuiti un test pentru o persoana pe baza adresei de e-mail. </li>
+        <li>Persoana testata va primi un e-mail cu linkul testului pe care doriti sa-l realizeze.</li>
+        <li>Dupa testare veti primi un e-mail cu testul completat. </li>
+    </div>
+    </ul>
+  </div>
+  {% endblock %}
+  

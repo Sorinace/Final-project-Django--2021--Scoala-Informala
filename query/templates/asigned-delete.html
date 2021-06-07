@@ -1,19 +1,18 @@
 {% extends 'base.html' %}
-{% block body_block %}
 {% load static %}
-
+{% block title %} {{ block.super }} - Delete assigned {% endblock %}
+{% block body_block %}
 {% if messages %}
-<div class="shadow">
-  <ul class="messages">
-      {% for message in messages %}
-      <div class="alert alert-danger" >
-        <h3><strong>Eroare:</strong></h3>
-        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      </div>
-      {% endfor %}
-  </ul>
-</div>
-  {% endfor %}
+  <div class="shadow">
+    <ul class="messages">
+        {% for message in messages %}
+        <div class="alert alert-danger" >
+          <h3><strong>Eroare:</strong></h3>
+          <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        </div>
+        {% endfor %}
+    </ul>
+  </div>
 {% else %}
   <div class="shadow">
     <img src = "{% static 'images/delete.jpg' %}">
@@ -24,7 +23,7 @@
           <input type="text" name="id" value={{id}}></p>
         </div>
         <h3>Vrei sa stergi?<br></h3>
-        <h4><em>{{ assigned }}</em> </h4>
+        <h4><em>{{ assigned.name }} </em> {{ assigned.psihotest.text }} valabil pana la {{ assigned.data }} cu mesajul: {{ assigned.message }}</h4>
         <div class="flex-container">
           <input class="btn_submit" type="submit" value="Da"/> <a class="btn_submit" href="{% url 'asigned' %}">Nu</a>
         </div>
@@ -32,5 +31,4 @@
     </div>
   </div>
 {% endif %}
-
 {% endblock %}

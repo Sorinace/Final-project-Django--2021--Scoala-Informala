@@ -4,8 +4,10 @@
 <h1>Total: {{total}}</h1>
 
 {% for item in answer %}
-  <h4>{{ item.question.text }}</h4>
-  <h5>{{ item.choose.text }} - {{ item.choose.score }}</h5>
+<ol>
+  <el><h4>{{ item.question.text }}</h4></el>
+</ol>
+  <h5> <b>R:</b> {{ item.choose.text }} - {{ item.choose.score }}</h5>
 {% endfor %}
 
 

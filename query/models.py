@@ -30,8 +30,8 @@ class PsihoTest(models.Model):
         return f"{self.text} " 
 
 class AnswerTest(models.Model):
-  question = models.ForeignKey(Question, on_delete=models.DO_NOTHING, null=True, blank=True)
-  choose = models.ForeignKey(Answer, on_delete=models.DO_NOTHING, null=True, blank=True)
+  question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True, blank=True)
+  choose = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True, blank=True)
 
   def __str__(self):
     return f"{self.id} - {self.question}, {self.choose} " 
@@ -51,7 +51,7 @@ class AssignedTest(models.Model):
     ordering = ['-data']
 
 class UserProfile(models.Model):
-  user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
   user_test = models.ManyToManyField(PsihoTest, blank=True)
   user_assign = models.ManyToManyField(AssignedTest, blank=True) 
 

@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Add the password and Key in os.environ
-load_dotenv(os.path.join(BASE_DIR, '.env'), encoding='utf-16')
+load_dotenv(os.path.join(BASE_DIR, '.env'), encoding='utf-8')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'query.apps.QueryConfig',
     'rest_framework',
     'debug_toolbar',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -159,3 +160,8 @@ INTERNAL_IPS = [
     '127.0.0.1',
     # ...
 ]
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}

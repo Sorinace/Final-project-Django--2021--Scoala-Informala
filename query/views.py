@@ -1,13 +1,13 @@
 import datetime
-from django.contrib.postgres import fields
 
 from rest_framework.decorators import api_view
+from django.forms import Form
 from django.contrib import messages 
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 
-from .models import PsihoTest, AssignedTest, AnswerTest, Question, Answer, UserProfile
+from .models import AssignedTest, AnswerTest, Question, Answer, UserProfile
 from .forms import FormAssignTest
 from .email import sendEmail, sendEmailAnswer
 from .errors import MyException, notValid, notCopleted, notSaved, toLate, done, sendError
@@ -20,47 +20,48 @@ def home(request):
 @api_view(['GET', 'POST'])
 def query(request, id='1'):
   if request.method == 'POST':
-    item = {}
-    answers= {}
-    answer=[]
-    for i in request.POST:
-      if i == 'id':
-        answers['id'] = int(request.POST[i])
-      elif i != 'csrfmiddlewaretoken':
-        item['question'] = int(i)
-        item['choose'] = int(request.POST[i])
-        answer.append(item)
-        item = {}
-    answers["answers"] = answer
-    try:
-      assigned = AssignedTest.objects.get(id=answers['id'])
-      if(len(answers['answers']) == len(assigned.psihotest.questions.all())):
-        for ans in answers['answers']:
-          score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
-          score.save()
-          assigned.answer.add(score)
+    form = Form(request.POST)
+    if form.is_valid():
+      # convert the answer
+      item = {}
+      answer=[]
+      answers= {}
+      for i in request.POST:
+        if i != 'csrfmiddlewaretoken':
+          item['question'] = int(i)
+          item['choose'] = int(request.POST[i])
+          answer.append(item)
+          item = {}
+      answers["answers"] = answer
+      try:
+        assigned = AssignedTest.objects.get(id=id)
+        if(len(answers['answers']) == len(assigned.psihotest.questions.all())):
+          for ans in answers['answers']:
+            score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
+            score.save()
+            assigned.answer.add(score)
 
-        # get the user who assigned the test
-        assign_user = assigned.userprofile_set.all()[0]
-        # get his/her e-mail address
-        email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
-        sendEmailAnswer(request, assigned, email)
-      else:
+          # get the user who assigned the test
+          assign_user = assigned.userprofile_set.all()[0]
+          # get his/her e-mail address
+          email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
+          sendEmailAnswer(request, assigned, email)
+        else:
+          return notCopleted()
+      except MyException:
         return notCopleted()
-    except MyException:
-      return notCopleted()
-    return render(request, 'save.html')
-  else: # for GET
+      return render(request, 'save.html')
+  # for GET method ******************
+  else: 
     try:
-      assigned = AssignedTest.objects.get(id=id)
-      psihotest = assigned.psihotest
+      assigned = get_object_or_404(AssignedTest, id=id)
       # check if the test is in time
       if(assigned.data < datetime.date.today()):
         toLate() 
       # check if the test is completed or not
       elif (len(assigned.answer.all()) > 0):
         done() 
-      return render(request, 'query.html', {'psihotest': psihotest, 'id': id})
+      return render(request, 'query.html', {'psihotest': assigned.psihotest, 'id': id})
     except  Exception as e:
       messages.info(request, e)
     return render(request, 'query.html', {'psihotest': None, 'id': id})
@@ -68,12 +69,12 @@ def query(request, id='1'):
 
 # ASSIGN ____________________________________________________________________________________________________
 @api_view(['GET', 'POST'])
-def asign(request):
+def asign(request, id=-1):
   if request.method == 'POST':
-    if (int(request.POST['id']) < 1):
+    if (int(id) < 1):
       asignTest = AssignedTest()
     else:
-      asignTest = get_object_or_404(AssignedTest, id=request.POST['id'])
+      asignTest = get_object_or_404(AssignedTest, id=id)
     form = FormAssignTest(request.POST, instance=asignTest)
     # check whether it's valid:
     if form.is_valid():
@@ -83,7 +84,6 @@ def asign(request):
         user = UserProfile.objects.get(user = request.user)
         user.user_assign.add(asignTest)
         if (asignTest.id):
-          
           sendEmail(request, 'Atribuire test', asignTest) 
         else:
           notSaved()
@@ -96,15 +96,10 @@ def asign(request):
   else:
     form = FormAssignTest()
     title = 'Atribuie test!'
-    if (request.user.is_anonymous):
-      psihotest = None
-    else:
-      # Assign the choices based on User
-      form.fields['psihotest'].queryset = UserProfile.objects.get(user = request.user).user_test.all()
-      form.fields['data'].initial = datetime.date.today() + datetime.timedelta(days=14) # The default expire date will be 14 days from now
-      user = UserProfile.objects.get(user = request.user)
-      psihotest = user.user_test.all()
-  return render(request, 'asign.html', {'form': form, 'title': title, 'model': None, 'id': -1, 'psihotest': psihotest})
+    # Assign the choices based on User
+    form.fields['psihotest'].queryset = UserProfile.objects.get(user = request.user).user_test.all()
+    form.fields['data'].initial = datetime.date.today() + datetime.timedelta(days=14) # The default expire date will be 14 days from now
+  return render(request, 'asign.html', {'form': form, 'title': title})
 
 
 # ASSIGNED ____________________________________________________________________________________________________

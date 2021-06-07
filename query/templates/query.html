@@ -27,9 +27,9 @@
   </div>
     <form action="" method="POST">
       {% csrf_token %}
-      <div style="display: none;"><!--  hidden data -->
+      <!-- <div style="display: none;"><!--  hidden data
           <input type="text" name="id" value={{id}}></p>
-      </div>
+      </div> -->
       <ol>
       <div class="card">
         {% for question in psihotest.questions.all %}

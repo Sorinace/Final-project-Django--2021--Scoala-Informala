@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'query.apps.QueryConfig',
     'rest_framework',
     'debug_toolbar',
+    'access_tokens', 
 ]
 
 MIDDLEWARE = [

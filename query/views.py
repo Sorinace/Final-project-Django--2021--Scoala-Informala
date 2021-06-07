@@ -53,6 +53,7 @@ def query(request, id='1'):
       return render(request, 'save.html')
   # for GET method ******************
   else: 
+    print(request.GET['token'])
     try:
       assigned = get_object_or_404(AssignedTest, id=id)
       # check if the test is in time

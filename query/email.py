@@ -2,11 +2,14 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from smtplib import SMTPException
 from rest_framework import serializers
+from access_tokens import scope, tokens
 
-def sendEmail(request, subject, assign): 
-
+def sendEmail(request, subject, assign):
+    token = tokens.generate(scope=(), key=request.user.first_name, salt=request.user.last_name) 
+    code = f"?token={token}"
     base = "{0}://{1}".format(request.scheme, request.get_host())
-    context = ({"addres": f"{base}/query/{assign.id}", "data": assign.data, "message": assign.message}) 
+    context = ({"addres": f"{base}/query/{assign.id}{code}", "data": assign.data, "message": assign.message, 'token': token}) 
+
     text_content = render_to_string('receipt_email.txt', context, request=request)
     html_content = render_to_string('receipt_email.html', context, request=request)
     from_us = f"{request.user.first_name} {request.user.last_name}"

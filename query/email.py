@@ -4,8 +4,10 @@ from smtplib import SMTPException
 from rest_framework import serializers
 from access_tokens import scope, tokens
 
+from django.conf import settings
+
 def sendEmail(request, subject, assign):
-    token = tokens.generate(scope=(), key=request.user.first_name, salt=request.user.last_name) 
+    token = tokens.generate(scope=(), key=settings.SECRET_KEY, salt=settings.TOKEN_SALT) 
     code = f"?token={token}"
     base = "{0}://{1}".format(request.scheme, request.get_host())
     context = ({"addres": f"{base}/query/{assign.id}{code}", "data": assign.data, "message": assign.message, 'token': token}) 

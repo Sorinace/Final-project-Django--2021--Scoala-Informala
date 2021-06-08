@@ -1,11 +1,14 @@
 import datetime
 
-from rest_framework.decorators import api_view
-from django.forms import Form
+from access_tokens import scope, tokens
 from django.contrib import messages 
+from django.conf import settings
 from django.core.paginator import Paginator
+from django.forms import Form
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
+from rest_framework.decorators import api_view
 
 from .models import AssignedTest, AnswerTest, Question, Answer, UserProfile
 from .forms import FormAssignTest
@@ -53,19 +56,23 @@ def query(request, id='1'):
       return render(request, 'save.html')
   # for GET method ******************
   else: 
-    print(request.GET['token'])
-    try:
-      assigned = get_object_or_404(AssignedTest, id=id)
-      # check if the test is in time
-      if(assigned.data < datetime.date.today()):
-        toLate() 
-      # check if the test is completed or not
-      elif (len(assigned.answer.all()) > 0):
-        done() 
-      return render(request, 'query.html', {'psihotest': assigned.psihotest, 'id': id})
-    except  Exception as e:
-      messages.info(request, e)
-    return render(request, 'query.html', {'psihotest': None, 'id': id})
+    token = request.GET['token']
+    validate = tokens.validate(token, scope=(), key=settings.SECRET_KEY, salt=settings.TOKEN_SALT, max_age=None)
+    if validate:
+      try:
+        assigned = get_object_or_404(AssignedTest, id=id)
+        # check if the test is in time
+        if(assigned.data < datetime.date.today()):
+          toLate() 
+        # check if the test is completed or not
+        elif (len(assigned.answer.all()) > 0):
+          done() 
+        return render(request, 'query.html', {'psihotest': assigned.psihotest, 'id': id})
+      except  Exception as e:
+        messages.info(request, e)
+    else:
+      raise Http404
+  return render(request, 'query.html', {'psihotest': None, 'id': id})
 
 
 # ASSIGN ____________________________________________________________________________________________________

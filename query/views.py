@@ -114,8 +114,9 @@ def asign(request, id=-1):
     form = FormAssignTest()
     title = 'Atribuie test!'
     # Assign the choices based on User
-    form.fields['psihotest'].queryset = UserProfile.objects.get(user = request.user).user_test.all()
-    form.fields['data'].initial = datetime.date.today() + datetime.timedelta(days=14) # The default expire date will be 14 days from now
+    if(request.user.is_authenticated):
+      form.fields['psihotest'].queryset = UserProfile.objects.get(user = request.user).user_test.all()
+      form.fields['data'].initial = datetime.date.today() + datetime.timedelta(days=14) # The default expire date will be 14 days from now
   return render(request, 'asign.html', {'form': form, 'title': title})
 
 

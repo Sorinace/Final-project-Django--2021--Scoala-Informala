@@ -59,20 +59,29 @@ def query(request, id='1'):
     token = request.GET['token']
     validate = tokens.validate(token, scope=(), key=settings.SECRET_KEY, salt=settings.TOKEN_SALT, max_age=None)
     if validate:
-      try:
-        assigned = get_object_or_404(AssignedTest, id=id)
-        # check if the test is in time
-        if(assigned.data < datetime.date.today()):
-          toLate() 
-        # check if the test is completed or not
-        elif (len(assigned.answer.all()) > 0):
-          done() 
-        return render(request, 'query.html', {'psihotest': assigned.psihotest, 'id': id})
-      except  Exception as e:
-        messages.info(request, e)
+      request.session['_query_id'] = id
+      return redirect( 'quiz') # for nice url, without token
     else:
       raise Http404
   return render(request, 'query.html', {'psihotest': None, 'id': id})
+
+  # QUIZ ____________________________________________________________________________________________________
+def quiz(request):
+  if ('_query_id' in request.session):
+    id = request.session['_query_id']
+    try:
+      assigned = get_object_or_404(AssignedTest, id=id)
+      # check if the test is in time
+      if(assigned.data < datetime.date.today()):
+        toLate() 
+      # check if the test is completed or not
+      elif (len(assigned.answer.all()) > 0):
+        done() 
+    except  Exception as e:
+          messages.info(request, e)
+  else:
+      raise Http404
+  return render(request, 'query.html', {'psihotest': assigned.psihotest, 'id': id})
 
 
 # ASSIGN ____________________________________________________________________________________________________

@@ -1,13 +1,19 @@
 <!-- templates/registration/login.html -->
 {% extends 'base.html' %}
-{% block title %}Login{% endblock %}
+{% load static %}
+{% block title %} {{ block.super }} - Autentificare {% endblock %}
 {% block body_block %}
 <div class="shadow">
-  <h2>Log In</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Log In</button>
-  </form>
+  <h3>Autentificare:</h3>
+  <img src = "{% static 'images/login.jpg' %}">
+  <div class="align">
+    <form method="post">
+      {% csrf_token %}
+      <table>
+        {{ form.as_table }}
+      </table> 
+      <button class="btn_submit" type="submit">Autentifica</button>
+    </form>
+  </div>
 </div>
 {% endblock %}

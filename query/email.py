@@ -10,7 +10,7 @@ def sendEmail(request, subject, assign):
     token = tokens.generate(scope=(), key=settings.SECRET_KEY, salt=settings.TOKEN_SALT) 
     code = f"?token={token}"
     base = "{0}://{1}".format(request.scheme, request.get_host())
-    context = ({"addres": f"{base}/query/{assign.id}{code}", "data": assign.data, "message": assign.message, 'token': token}) 
+    context = ({"addres": f"{base}/query/{assign.id}{code}", "data": assign.data, "message": assign.message}) 
 
     text_content = render_to_string('receipt_email.txt', context, request=request)
     html_content = render_to_string('receipt_email.html', context, request=request)

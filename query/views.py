@@ -20,8 +20,20 @@ def home(request):
   return render(request, 'index.html')
 
 # QUERY ____________________________________________________________________________________________________
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def query(request, id='1'):
+  token = request.GET['token']
+  validate = tokens.validate(token, scope=(), key=settings.SECRET_KEY, salt=settings.TOKEN_SALT, max_age=None)
+  if validate:
+    request.session['_query_id'] = id
+    return redirect( 'quiz') # for nice url, without token
+  else:
+    raise Http404
+
+# QUIZ ____________________________________________________________________________________________________
+@api_view(['GET', 'POST'])
+def quiz(request):
+  print(request.POST)
   if request.method == 'POST':
     form = Form(request.POST)
     if form.is_valid():
@@ -30,7 +42,9 @@ def query(request, id='1'):
       answer=[]
       answers= {}
       for i in request.POST:
-        if i != 'csrfmiddlewaretoken':
+        if (i == 'id'):
+          id = int(request.POST[i])
+        elif i != 'csrfmiddlewaretoken':
           item['question'] = int(i)
           item['choose'] = int(request.POST[i])
           answer.append(item)
@@ -56,38 +70,28 @@ def query(request, id='1'):
       return render(request, 'save.html')
   # for GET method ******************
   else: 
-    token = request.GET['token']
-    validate = tokens.validate(token, scope=(), key=settings.SECRET_KEY, salt=settings.TOKEN_SALT, max_age=None)
-    if validate:
-      request.session['_query_id'] = id
-      return redirect( 'quiz') # for nice url, without token
+    if ('_query_id' in request.session):
+      id = request.session['_query_id']
+      try:
+        assigned = get_object_or_404(AssignedTest, id=id)
+        # check if the test is in time
+        if(assigned.data < datetime.date.today()):
+          toLate() 
+        # check if the test is completed or not
+        elif (len(assigned.answer.all()) > 0):
+          done() 
+      except  Exception as e:
+            messages.info(request, e)
     else:
-      raise Http404
-  return render(request, 'query.html', {'psihotest': None, 'id': id})
-
-  # QUIZ ____________________________________________________________________________________________________
-def quiz(request):
-  if ('_query_id' in request.session):
-    id = request.session['_query_id']
-    try:
-      assigned = get_object_or_404(AssignedTest, id=id)
-      # check if the test is in time
-      if(assigned.data < datetime.date.today()):
-        toLate() 
-      # check if the test is completed or not
-      elif (len(assigned.answer.all()) > 0):
-        done() 
-    except  Exception as e:
-          messages.info(request, e)
-  else:
-      raise Http404
+        raise Http404
   return render(request, 'query.html', {'psihotest': assigned.psihotest, 'id': id})
 
 
 # ASSIGN ____________________________________________________________________________________________________
 @api_view(['GET', 'POST'])
-def asign(request, id=-1):
+def asign(request):
   if request.method == 'POST':
+    id = (request.POST['id'])
     if (int(id) < 1):
       asignTest = AssignedTest()
     else:
@@ -130,6 +134,7 @@ def asigned(request):
         assigned = []
         assigned.append( AssignedTest.objects.get(id=request.POST['assign']) )
         selected = get_object_or_404(AssignedTest, id=request.POST['assign'])
+        # OP Vezi test ______________________________________________
         if (request.POST['option'] == '1'):
           answer = selected.answer.all()
           if (answer.count() > 0):
@@ -140,6 +145,7 @@ def asigned(request):
             return render(request, 'view-result.html', {'answers': answer, 'total': total})
           else:
             text = 'Testul nu este completat! Nu are rezultate pentru a fi vizualizate!!!'
+        # OP Trimite rezultat pe e-mail ______________________________________________    
         elif (request.POST['option'] == '2'):
           if (selected.answer.count() > 0):
             email = request.user.email
@@ -147,14 +153,17 @@ def asigned(request):
             text = f"Rezultat trimis cu succes pe e-mail-ul: {email}"
           else:
             text = 'Testul nu este completat! Nu are rezultate!!!'
+        # OP Retrimite e-mail ______________________________________________
         elif (request.POST['option'] == '3'):
            base = "{0}://{1}".format(request.scheme, request.get_host())
-           sendEmail(request, 'Nu uita, ai un test atribuit', selected.email, f"{base}/query/{selected.id}" , selected.data, selected.message)
+           sendEmail(request, 'Nu uita, ai un test atribuit', selected)
            text = f"Email trimis pentru {selected.name}, la adresa {selected.email}"
+        # OP Modifica ______________________________________________
         elif (request.POST['option'] == '4'):
           form = FormAssignTest(instance=selected)
           title = 'Modifica atribuire test!'
           return render(request, 'asign.html', {'form': form, 'title': title, 'id': request.POST['assign']})
+        # OP Sterge ______________________________________________
         elif (request.POST['option'] == '5'):
           return render(request, 'asigned-delete.html', { 'assigned': assigned[0], 'id': int(request.POST['assign'])})
     else:

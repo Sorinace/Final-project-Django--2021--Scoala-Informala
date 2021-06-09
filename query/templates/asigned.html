@@ -19,10 +19,18 @@
       <h3>Aceste teste au fost atribuite:</h3>
       <img src = "{% static 'images/image3.jpg' %}">
         {% if text %}
+          <div class="alert alert-success" role="alert"> 
+            <h4> Felicitari: </h4>
+            <ul>
+              <li>{{text}}</li>
+            </ul>
+          </div>
+        {% endif %}
+        {% if error %}
           <div class="alert alert-danger" role="alert"> 
             <h4> Atentie: </h4>
             <ul>
-              <li>{{text}}</li>
+              <li>{{error}}</li>
             </ul>
           </div>
         {% endif %}

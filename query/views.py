@@ -128,6 +128,8 @@ def asign(request):
 @api_view(['GET', 'POST'])
 def asigned(request):
   if request.method == 'POST':
+    text = ''
+    error = ''
     text_option = ['Nu ai selectat nici o actiune', 'Vezi test', 'Trimite rezultat pe e-mail', 'Retrimite e-mail', 'Modifica', 'Sterge',]
     if ('assign' in request.POST and (int(request.POST['option']) > 0)):
       if (int(request.POST['assign']) > 0):
@@ -138,13 +140,12 @@ def asigned(request):
         if (request.POST['option'] == '1'):
           answer = selected.answer.all()
           if (answer.count() > 0):
-            text = ''
             total = 0
             for item in answer:
                 total += int(item.choose.score)
             return render(request, 'view-result.html', {'answers': answer, 'total': total})
           else:
-            text = 'Testul nu este completat! Nu are rezultate pentru a fi vizualizate!!!'
+            error = 'Testul nu este completat! Nu are rezultate pentru a fi vizualizate!!!'
         # OP Trimite rezultat pe e-mail ______________________________________________    
         elif (request.POST['option'] == '2'):
           if (selected.answer.count() > 0):
@@ -152,7 +153,7 @@ def asigned(request):
             sendEmailAnswer(request, selected, email)
             text = f"Rezultat trimis cu succes pe e-mail-ul: {email}"
           else:
-            text = 'Testul nu este completat! Nu are rezultate!!!'
+            error = 'Testul nu este completat! Nu are rezultate!!!'
         # OP Retrimite e-mail ______________________________________________
         elif (request.POST['option'] == '3'):
            base = "{0}://{1}".format(request.scheme, request.get_host())
@@ -168,14 +169,16 @@ def asigned(request):
           return render(request, 'asigned-delete.html', { 'assigned': assigned[0], 'id': int(request.POST['assign'])})
     else:
       if (int(request.POST['option']) > 0):
-        text = f"Nu ai selectat testul pentru care doresti actiunea: {text_option[int(request.POST['option'])]}"
+        error = f"Nu ai selectat testul pentru care doresti actiunea: {text_option[int(request.POST['option'])]}"
       elif('assign' in request.POST):
-        text = f"{text_option[int(request.POST['option'])]} pentru ID: {request.POST['assign']}"
+        error = f"{text_option[int(request.POST['option'])]} pentru ID: {request.POST['assign']}"
       else:
-        text = 'Nu ai selectat nimic!'
-            
+        error = 'Nu ai selectat nimic!'
+  # GET ___________________________________          
   else:
     text = ''
+    error = ''
+  # GET & POST ___________________________________  
   if (request.user.is_anonymous):
     page_obj = None
   else:
@@ -184,7 +187,7 @@ def asigned(request):
     paginator = Paginator(assigned, 10) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-  return render(request, 'asigned.html', {'page_obj': page_obj, 'text': text, 'date': datetime.date.today()})
+  return render(request, 'asigned.html', {'page_obj': page_obj, 'error': error, 'text': text, 'date': datetime.date.today()})
 
 
 # DELETE - Assign ____________________________________________________________________________________________________

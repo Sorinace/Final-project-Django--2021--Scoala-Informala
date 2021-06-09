@@ -1,5 +1,4 @@
 import datetime
-
 from access_tokens import scope, tokens
 from django.contrib import messages 
 from django.conf import settings
@@ -17,6 +16,7 @@ from .errors import MyException, notValid, notCopleted, notSaved, toLate, done, 
 
 # HOME ______________________________________________________________________________________________________
 def home(request):
+
   return render(request, 'index.html')
 
 # QUERY ____________________________________________________________________________________________________
@@ -121,7 +121,7 @@ def asign(request):
     if(request.user.is_authenticated):
       form.fields['psihotest'].queryset = UserProfile.objects.get(user = request.user).user_test.all()
       form.fields['data'].initial = datetime.date.today() + datetime.timedelta(days=14) # The default expire date will be 14 days from now
-  return render(request, 'asign.html', {'form': form, 'title': title})
+  return render(request, 'asign.html', {'form': form, 'title': title, 'id':-1})
 
 
 # ASSIGNED ____________________________________________________________________________________________________

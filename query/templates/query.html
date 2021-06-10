@@ -21,7 +21,9 @@
       <div class="alert alert-success" role="alert"> 
         <h4> Felicitari: </h4>
         <ul>
+          {% autoescape off %}
           <li>{{text}}</li>
+          {% autoescape %}
         </ul>
       </div>
     {% else %}

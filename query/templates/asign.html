@@ -49,7 +49,10 @@
 {% else %}
     <div class="shadow">
         <h3>Pentru a putea atribuii teste, trebuie sa fiti inregistrati</h3>
-        <a class="login" href="{% url 'login' %}">Log In</a>
+        <img src = "{% static 'images/denied.png' %}">
+        <div class="btn_center">
+            <a class="btn_submit" href="{% url 'login' %}">Log In</a>
+        </div>    
     </div>
 {% endif %}   
 {% endblock %}

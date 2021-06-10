@@ -223,6 +223,8 @@ table {
 
 .btn_submit:hover {
     background-color: #a64942;
+    color: white;
+    text-decoration: none;
     box-shadow: none;
 }
 

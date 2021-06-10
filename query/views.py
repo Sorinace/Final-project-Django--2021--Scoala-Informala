@@ -67,7 +67,7 @@ def quiz(request):
           return notCopleted()
       except MyException:
         return notCopleted()
-      text= "Acest chestionar a fost salvat si trimis!\n Multumesc!"
+      text= "Acest chestionar a fost trimis si salvat cu succes!\n Multumesc!"
   # for GET method ******************
   else: 
     text=''

@@ -67,9 +67,10 @@ def quiz(request):
           return notCopleted()
       except MyException:
         return notCopleted()
-      return render(request, 'save.html')
+      text= "Acest chestionar a fost salvat si trimis!\n Multumesc!"
   # for GET method ******************
   else: 
+    text=''
     if ('_query_id' in request.session):
       id = request.session['_query_id']
       try:
@@ -84,7 +85,7 @@ def quiz(request):
             messages.info(request, e)
     else:
         raise Http404
-  return render(request, 'query.html', {'psihotest': assigned.psihotest, 'id': id})
+  return render(request, 'query.html', {'psihotest': assigned.psihotest, 'id': id, 'text': text})
 
 
 # ASSIGN ____________________________________________________________________________________________________
@@ -110,18 +111,19 @@ def asign(request):
           notSaved()
       except Exception as e:
         sendError(e)
-      return render(request, 'save.html')
+      text = f"Testul pentru {asignTest.name} a fost atribuit cu succes!"
     else:
       notValid()
   # if is GET
   else:
-    form = FormAssignTest()
-    title = 'Atribuie test!'
-    # Assign the choices based on User
-    if(request.user.is_authenticated):
-      form.fields['psihotest'].queryset = UserProfile.objects.get(user = request.user).user_test.all()
-      form.fields['data'].initial = datetime.date.today() + datetime.timedelta(days=14) # The default expire date will be 14 days from now
-  return render(request, 'asign.html', {'form': form, 'title': title, 'id':-1})
+    text = ''
+  form = FormAssignTest()
+  title = 'Atribuie test!'
+  # Assign the choices based on User
+  if(request.user.is_authenticated):
+    form.fields['psihotest'].queryset = UserProfile.objects.get(user = request.user).user_test.all()
+    form.fields['data'].initial = datetime.date.today() + datetime.timedelta(days=14) # The default expire date will be 14 days from now
+  return render(request, 'asign.html', {'form': form, 'title': title, 'id':-1, 'text': text})
 
 
 # ASSIGNED ____________________________________________________________________________________________________

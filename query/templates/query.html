@@ -17,14 +17,22 @@
 <div class="shadow">
     <h3>Va rog sa raspundeti la intrebarile de mai jos:</h3>
     <img src = "{% static 'images/quiz.jpg' %}">
-  <div class="alert alert-warning" role="alert"> 
-    <h3> {{psihotest.text}}</h3>
-    <p>
-        {% autoescape off %}
-        {{psihotest.story}}
-        {% endautoescape %} 
-      </p>
-  </div>
+    {% if text %}
+      <div class="alert alert-success" role="alert"> 
+        <h4> Felicitari: </h4>
+        <ul>
+          <li>{{text}}</li>
+        </ul>
+      </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert"> 
+      <h3> {{psihotest.text}}</h3>
+      <p>
+          {% autoescape off %}
+          {{psihotest.story}}
+          {% endautoescape %} 
+        </p>
+    </div>
     <form action="" method="POST">
       {% csrf_token %}
       <!--hidden data -->
@@ -58,6 +66,7 @@
         </div>
       </div>
   </form>
+  {% endif %}
 </div>
 {% endif %}
 {% endblock %}

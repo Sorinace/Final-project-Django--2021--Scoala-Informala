@@ -33,8 +33,8 @@ def query(request, id='1'):
 # QUIZ ____________________________________________________________________________________________________
 @api_view(['GET', 'POST'])
 def quiz(request):
-  print(request.POST)
   if request.method == 'POST':
+    time = int((datetime.datetime.now().timestamp() - request.session['start_time']) / 60)
     form = Form(request.POST)
     if form.is_valid():
       # convert the answer
@@ -62,12 +62,12 @@ def quiz(request):
           assign_user = assigned.userprofile_set.all()[0]
           # get his/her e-mail address
           email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
-          sendEmailAnswer(request, assigned, email)
+          sendEmailAnswer(request, assigned, email, time ) # 
         else:
           return notCopleted()
       except MyException:
         return notCopleted()
-      text= "Acest chestionar a fost trimis si salvat cu succes!\n Multumesc!"
+      text= "Acest chestionar a fost trimis si salvat cu succes!<br />Multumesc!"
   # for GET method ******************
   else: 
     text=''
@@ -85,6 +85,7 @@ def quiz(request):
             messages.info(request, e)
     else:
         raise Http404
+    request.session['start_time'] = datetime.datetime.now().timestamp()
   return render(request, 'query.html', {'psihotest': assigned.psihotest, 'id': id, 'text': text})
 
 

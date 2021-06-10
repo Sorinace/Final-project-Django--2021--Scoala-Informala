@@ -28,7 +28,7 @@ def sendEmail(request, subject, assign):
         raise serializers.ValidationError(error)
 
 
-def sendEmailAnswer(request, answer, email):
+def sendEmailAnswer(request, answer, email, time):
     if (request.user.is_anonymous):
         replay = 'sorinace@gmail.com'
     else:
@@ -38,7 +38,7 @@ def sendEmailAnswer(request, answer, email):
     for item in answer.answer.all():
         total += int(item.choose.score)
 
-    context = ({"answer": answer.answer.all(), "name": answer.name, "total": total}) 
+    context = ({"answer": answer.answer.all(), "name": answer.name, "total": total, "time": time}) 
 
     text_content = render_to_string('receipt_email_answer.txt', context, request=request)
     html_content = render_to_string('receipt_email_answer.html', context, request=request)

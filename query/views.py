@@ -67,10 +67,9 @@ def quiz(request):
           return notCopleted()
       except MyException:
         return notCopleted()
-      text= "Acest chestionar a fost trimis si salvat cu succes!\n Multumesc!"
+      messages.info(request, "Acest chestionar a fost trimis si salvat cu succes!\n Multumesc!")
   # for GET method ******************
   else: 
-    text=''
     if ('_query_id' in request.session):
       id = request.session['_query_id']
       try:
@@ -85,7 +84,7 @@ def quiz(request):
             messages.info(request, e)
     else:
         raise Http404
-  return render(request, 'query.html', {'psihotest': assigned.psihotest, 'id': id, 'text': text})
+  return render(request, 'query.html', {'psihotest': assigned.psihotest, 'id': id})
 
 
 # ASSIGN ____________________________________________________________________________________________________

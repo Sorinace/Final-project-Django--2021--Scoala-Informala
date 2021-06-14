@@ -3,37 +3,24 @@
 {% block title %} {{ block.super }} - Assigned {% endblock %}
 {% block body_block %}
 {% if user.is_authenticated %}
-  {% if messages %}
-    <div class="main shadow">
-      <ul class="messages">
-          {% for message in messages %}
-          <div class="alert alert-danger" >
-            <h3><strong>Eroare:</strong></h3>
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-          </div>
-          {% endfor %}
-      </ul>
-    </div>
-  {% else %}
     <div class="shadow">
       <h3>Aceste teste au fost atribuite:</h3>
       <img src = "{% static 'images/image3.png' %}">
-        {% if text %}
-          <div class="alert alert-success" role="alert"> 
-            <h4> Felicitari: </h4>
+
+        {% for message in messages %}
+          {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class="alert alert-danger" role="alert"> 
+              <h4> Atentie: </h4>
+          {% else %}
+            <div class="alert alert-success" role="alert"> 
+              <h4> Felicitari: </h4>
+          {% endif %}
             <ul>
-              <li>{{text}}</li>
+              <li>{{ message }}</li>
             </ul>
-          </div>
-        {% endif %}
-        {% if error %}
-          <div class="alert alert-danger" role="alert"> 
-            <h4> Atentie: </h4>
-            <ul>
-              <li>{{error}}</li>
-            </ul>
-          </div>
-        {% endif %}
+         </div>
+        {% endfor %}
+
         <form action="/asigned/" method="post">
         {% csrf_token %}
         <table class="assign-table">
@@ -101,7 +88,7 @@
           </div>
           </form>
       </div>
-    {% endif %}
+
 {% else %}
     <div class="shadow">
       <h3>Pentru a putea vedea testele atribuite, trebuie sa fiti inregistrati</h3>

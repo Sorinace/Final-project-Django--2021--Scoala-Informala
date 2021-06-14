@@ -9,26 +9,49 @@ class AnswerC(admin.ModelAdmin):
     list_display = ('id', 'text', 'score')
     # filters
     list_filter = ('text', )
+    fieldsets = (
+        (None, {
+            'fields': ( ('text', 'score'),)
+        }),)
 
 class QuestionC(admin.ModelAdmin):
     list_display = ('id', 'text', 'raspunsuri')
+    filter_vertical = ('answers',)
 
     def raspunsuri(self, obj):
         return " | ".join([f"{q.text} - {q.score}" for q in obj.answers.all()])
 
 
 class AssignedC(admin.ModelAdmin):
-    list_display = ('id', 'completat', 'name', 'data', 'psihotest', 'email', 'message')
+    list_display = ('id', 'name', 'completat', 'data', 'psihotest', 'email', 'message')
+    search_fields = ('name', )
+    list_display_links = ['name']
     # filters
-    list_filter = ('data', 'name', 'email')
+    list_filter = ('data', 'email')
 
     def completat(self, obj):
         return 'Da' if obj.answer.all() else 'Nu'
 
 class PsihoC(admin.ModelAdmin):
+    list_per_page = 10
+    search_fields = ('text', )
     list_display = ('id', 'text', 'intrebari')
+    list_display_links = ['text']
+    filter_vertical = ('questions',)
     # filters
-    list_filter = ('text', )
+    # list_filter = ('text', 'questions')
+
+
+    fieldsets = [
+        ('Test', {
+            'fields': ['text', 'story']
+         }
+        ),
+        ('Intrebari', {
+            'fields': ['questions', ],
+            'classes': ['collapse']
+        })
+    ]
 
     def intrebari(self, obj):
         return " | ".join([q.text for q in obj.questions.all()])

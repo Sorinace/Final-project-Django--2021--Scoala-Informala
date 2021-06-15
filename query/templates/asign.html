@@ -4,29 +4,24 @@
 {% block body_block %}
 {% if user.is_authenticated %}
     {% load static %}
-    {% if messages %}
-    <div class="shadow">
-        <ul class="messages">
-            {% for message in messages %}
-            <div class="alert alert-danger" >
-              <h3><strong>Eroare:</strong></h3>
-              <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            </div>
-            {% endfor %}
-        </ul>
-      </div>
-    {% else %}
     <div class="shadow">
         <h3 class="test">{{ title }}</h3>
         <img src = "{% static 'images/image5.jpg' %}">
-        {% if text %}
-          <div class="alert alert-success" role="alert"> 
-            <h4> Felicitari: </h4>
+
+        {% for message in messages %}
+          {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class="alert alert-danger" role="alert"> 
+              <h4> Atentie: </h4>
+          {% else %}
+            <div class="alert alert-success" role="alert"> 
+              <h4> Felicitari: </h4>
+          {% endif %}
             <ul>
-              <li>{{text}}</li>
+              <li>{{ message }}</li>
             </ul>
-          </div>
-        {% endif %}
+         </div>
+        {% endfor %}
+
         <div >
         <form action="/asign/" method="POST">
             {% csrf_token %}
@@ -45,7 +40,6 @@
         </form>
     </div>
     <br/>
-    {% endif %} 
 {% else %}
     <div class="shadow">
         <h3>Pentru a putea atribuii teste, trebuie sa fiti inregistrati</h3>

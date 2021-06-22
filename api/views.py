@@ -1,7 +1,17 @@
 from rest_framework import viewsets
 
-from .serializers import AssignedSerializers
-from query.models import AssignedTest
+from .serializers import AssignedSerializers, PsihoTestSerializers, AnswerSerializers
+from query.models import AssignedTest, PsihoTest, AnswerTest
+
+class AnswerTestViewSets(viewsets.ModelViewSet):
+    queryset = AnswerTest.objects.all()
+    serializer_class = AnswerSerializers
+
+
+class PsihoTestViewSets(viewsets.ModelViewSet):
+    queryset = PsihoTest.objects.all()
+    serializer_class = PsihoTestSerializers
+
 
 class AssignViewSets(viewsets.ModelViewSet):
     queryset = AssignedTest.objects.all()

@@ -33,9 +33,9 @@ class PsihoTestSerializers(serializers.HyperlinkedModelSerializer):
         fields = '__all__' # ('id', 'text', 'story', 'questions', )
 
 
-class AssignedSerializers(serializers.HyperlinkedModelSerializer):
-    psihotest = PsihoTestSerializers()
+class AssignedSerializers(serializers.ModelSerializer):
+    # psihotest = PsihoTestSerializers()
 
     class Meta:
         model = AssignedTest
-        fields = '__all__'
+        fields = ('id', 'data', 'message', 'email',)

@@ -7,7 +7,6 @@ from django.forms import Form
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from rest_framework.decorators import api_view
 
 from .models import AssignedTest, AnswerTest, Question, Answer, UserProfile
 from .forms import FormAssignTest
@@ -20,7 +19,6 @@ def home(request):
   return render(request, 'index.html')
 
 # QUERY ____________________________________________________________________________________________________
-@api_view(['GET'])
 def query(request, id='1'):
   token = request.GET['token']
   validate = tokens.validate(token, scope=(), key=settings.SECRET_KEY, salt=settings.TOKEN_SALT, max_age=None)
@@ -31,7 +29,6 @@ def query(request, id='1'):
     raise Http404
 
 # QUIZ ____________________________________________________________________________________________________
-@api_view(['GET', 'POST'])
 def quiz(request):
   if request.method == 'POST':
     time = int((datetime.datetime.now().timestamp() - request.session['start_time']) / 60)
@@ -88,7 +85,6 @@ def quiz(request):
 
 
 # ASSIGN ____________________________________________________________________________________________________
-@api_view(['GET', 'POST'])
 def asign(request):
   if request.method == 'POST':
     id = (request.POST['id'])
@@ -126,7 +122,6 @@ def asign(request):
 
 
 # ASSIGNED ____________________________________________________________________________________________________
-@api_view(['GET', 'POST'])
 def asigned(request):
   if request.method == 'POST':
     text_option = ['Nu ai selectat nici o actiune', 'Vezi test', 'Trimite rezultat pe e-mail', 'Retrimite e-mail', 'Modifica', 'Sterge',]
@@ -188,7 +183,6 @@ def asigned(request):
 
 
 # DELETE - Assign ____________________________________________________________________________________________________
-@api_view(['POST'])
 def asigned_delete(request):
   remove = get_object_or_404(AssignedTest, id=request.POST['id'])
   remove.delete()

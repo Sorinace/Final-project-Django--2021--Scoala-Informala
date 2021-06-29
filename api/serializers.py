@@ -38,4 +38,4 @@ class AssignedSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = AssignedTest
-        fields = ('id', 'data', 'message', 'email',)
+        fields = '__all__'# ('id', 'data', 'message', 'email',)

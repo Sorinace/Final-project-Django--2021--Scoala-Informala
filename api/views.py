@@ -2,6 +2,7 @@ from rest_framework import viewsets
 
 from .serializers import AssignedSerializers, PsihoTestSerializers, AnswerSerializers
 from query.models import AssignedTest, PsihoTest, AnswerTest
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class AnswerTestViewSets(viewsets.ModelViewSet):
     queryset = AnswerTest.objects.all()
@@ -16,6 +17,7 @@ class PsihoTestViewSets(viewsets.ModelViewSet):
 class AssignViewSets(viewsets.ModelViewSet):
     queryset = AssignedTest.objects.all()
     serializer_class = AssignedSerializers
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         qs = super().get_queryset()

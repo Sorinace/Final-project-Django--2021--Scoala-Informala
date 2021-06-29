@@ -22,8 +22,8 @@ class AssignViewSets(viewsets.ModelViewSet):
         qs = super().get_queryset()
         search = self.request.query_params.get('search')
         
-        qs = qs.filter(data__gte=date.today())
-        qs = qs.filter(answer__exact=None)
+        qs = qs.filter(data__gte=date.today()) # valid data, in time
+        qs = qs.filter(answer__exact=None) # not completed
         if search:
-            qs = qs.filter(email__iexact=search)
+            qs = qs.filter(email__iexact=search) # user e-mail
         return qs

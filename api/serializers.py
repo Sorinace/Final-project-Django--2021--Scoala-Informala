@@ -11,7 +11,7 @@ class AnswerTestSerializers(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-class AnswerSerializers(serializers.ModelSerializer):
+class AnswerSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Answer
         fields = ('text', )
@@ -25,17 +25,17 @@ class QuestionSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PsihoTestSerializers(serializers.HyperlinkedModelSerializer):
+class PsihoTestSerializers(serializers.ModelSerializer):
     questions = QuestionSerializers(many = True)
 
     class Meta:
         model = PsihoTest
-        fields = '__all__' # ('id', 'text', 'story', 'questions', )
+        fields = ('id', 'text', 'story', 'questions', )
 
 
-class AssignedSerializers(serializers.ModelSerializer):
+class AssignedSerializers(serializers.HyperlinkedModelSerializer):
     # psihotest = PsihoTestSerializers()
 
     class Meta:
         model = AssignedTest
-        fields = ('id', 'data', 'message', )
+        fields = ('id', 'data', 'message', 'email', )

@@ -5,7 +5,7 @@ from .views import AssignViewSets, PsihoTestViewSets, AnswerTestViewSets
 
 router = routers.DefaultRouter()
 router.register('assigned', AssignViewSets)
-# router.register('psiho_test', PsihoTestViewSets)
+router.register('psiho_test', PsihoTestViewSets)
 # router.register('answer_test', AnswerTestViewSets)
 
 urlpatterns = [

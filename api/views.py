@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from .serializers import AssignedSerializers, PsihoTestSerializers, AnswerSerializers
 from query.models import AssignedTest, PsihoTest, AnswerTest
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class AnswerTestViewSets(viewsets.ModelViewSet):
     queryset = AnswerTest.objects.all()

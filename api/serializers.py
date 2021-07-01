@@ -14,7 +14,7 @@ class AnswerTestSerializers(serializers.HyperlinkedModelSerializer):
 class AnswerSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Answer
-        fields = ('text', )
+        fields = ('text', 'score')
 
 
 class QuestionSerializers(serializers.ModelSerializer):

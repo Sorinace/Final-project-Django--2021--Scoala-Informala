@@ -38,4 +38,4 @@ class AssignedSerializers(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = AssignedTest
-        fields = ('id', 'data', 'message', 'email', )
+        fields = ('id', 'data', 'message', 'email', 'psihotest',)

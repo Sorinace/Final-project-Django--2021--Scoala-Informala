@@ -28,9 +28,9 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 TOKEN_SALT = os.getenv("TOKEN_SALT")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['psihotest-app.herokuapp.com',]
 
 
 # Application definition
@@ -175,4 +175,4 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
         'http://localhost:8080',
         'https://psihotest-app.herokuapp.com',
-    ]
+    ],

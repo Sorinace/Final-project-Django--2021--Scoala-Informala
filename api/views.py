@@ -23,7 +23,7 @@ class AssignViewSets(viewsets.ModelViewSet):
     queryset = AssignedTest.objects.all()
     serializer_class = AssignedSerializers
     authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes =[IsAuthenticatedOrReadOnly]
+    permission_classes =[]
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -41,3 +41,7 @@ class AssignViewSets(viewsets.ModelViewSet):
             'auth': str(request.auth),  # None
         }
         return Response(content)
+
+    def retrieve(self, request, pk=None):
+        print(request.answer)
+        pass

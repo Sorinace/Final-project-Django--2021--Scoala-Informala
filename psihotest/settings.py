@@ -34,16 +34,20 @@ ALLOWED_HOSTS = ['*']
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-# # GET acces
+CORS_ORIGIN_WHITELIST = (
+  'http://localhost:8080',
+)
+
+# GET acces
 # CORS_ALLOWED_ORIGINS = [
-#         'http://localhost',
+#         'http://localhost:8080',
 #         'https://psihotest-app.herokuapp.com',
 #         'https://www.fess.ro',
 #     ]
 
 # # POST acces
 # CSRF_TRUSTED_ORIGINS = [
-#         'http://localhost',
+#         'http://localhost:8080',
 #         'https://psihotest-app.herokuapp.com',
 #         'https://www.fess.ro',
 #     ],

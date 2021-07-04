@@ -30,7 +30,23 @@ TOKEN_SALT = os.getenv("TOKEN_SALT")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG")
 
-ALLOWED_HOSTS = ['psihotest-app.herokuapp.com', '.fess.ro',]
+ALLOWED_HOSTS = ['*']
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+# # GET acces
+# CORS_ALLOWED_ORIGINS = [
+#         'http://localhost',
+#         'https://psihotest-app.herokuapp.com',
+#         'https://www.fess.ro',
+#     ]
+
+# # POST acces
+# CSRF_TRUSTED_ORIGINS = [
+#         'http://localhost',
+#         'https://psihotest-app.herokuapp.com',
+#         'https://www.fess.ro',
+#     ],
 
 
 # Application definition
@@ -164,17 +180,3 @@ INTERNAL_IPS = [
     '127.0.0.1',
     # ...
 ]
-
-# GET acces
-CORS_ALLOWED_ORIGINS = [
-        'localhost',
-        'psihotest-app.herokuapp.com',
-        '.fess.ro',
-    ]
-
-# POST acces
-CSRF_TRUSTED_ORIGINS = [
-        'localhost',
-        'psihotest-app.herokuapp.com',
-        '.fess.ro',
-    ],

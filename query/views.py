@@ -59,7 +59,7 @@ def quiz(request):
           assign_user = assigned.userprofile_set.all()[0]
           # get his/her e-mail address
           email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
-          sendEmailAnswer(request, assigned, email, time ) # 
+          sendEmailAnswer(request, assigned, email, time ) 
         else:
           return notCopleted()
       except MyException:

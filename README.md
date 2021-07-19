@@ -7,7 +7,7 @@ The  final project from Python Django training, Scoala Informala  07.2021
 * A registered user will upload the quiz to the system (DB)
 * A registered user will assign the quiz to one or more people 
 * The person will receive an email with a link to perform the quiz assigned
-* After completing the quiz the result will be stored on the server, where it can be consulted by the registered user who assigned it to you.
+* After completing the quiz the result will be stored on the server, where it can be consulted by the registered user who assigned it.
 * The registered user will obtain the rated quiz
 
 ## Technical documentation
@@ -25,7 +25,7 @@ Implemented it and describe its input and output in your application:
 [x] Install djangorestframework -  for REST API \
 [x] Get the test nr in /query/nr \
 [x] Add the /answer option \
-[] Create my first view  \
+[x] Create my first view  \
 [] Validator
 
 

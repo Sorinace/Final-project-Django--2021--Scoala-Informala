@@ -28,7 +28,7 @@ def sendEmail(request, subject, assign):
         # raise serializers.ValidationError(error)
 
 
-def sendEmailAnswer(request, answer, email, time):
+def sendEmailAnswer(request, answer, email):
     if (request.user.is_anonymous):
         replay = 'sorinace@gmail.com'
     else:
@@ -38,7 +38,7 @@ def sendEmailAnswer(request, answer, email, time):
     for item in answer.answer.all():
         total += int(item.choose.score)
 
-    context = ({"answer": answer.answer.all(), "name": answer.name, "total": total, "time": time}) 
+    context = ({"answer": answer.answer.all(), "name": answer.name, "total": total}) 
 
     text_content = render_to_string('receipt_email_answer.txt', context, request=request)
     html_content = render_to_string('receipt_email_answer.html', context, request=request)
@@ -49,5 +49,5 @@ def sendEmailAnswer(request, answer, email, time):
         emailMessage.send(fail_silently=False)
     except SMTPException as e:
         print('There was an error sending an email: ', e) 
-        error = {'message': ",".join(e.args) if len(e.args) > 0 else 'Unknown Error'}
-        raise serializers.ValidationError(error)
+        # error = {'message': ",".join(e.args) if len(e.args) > 0 else 'Unknown Error'}
+        # raise serializers.ValidationError(error)

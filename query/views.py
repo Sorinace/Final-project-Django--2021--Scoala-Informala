@@ -31,7 +31,7 @@ def query(request, id='1'):
 # QUIZ ____________________________________________________________________________________________________
 def quiz(request):
   if request.method == 'POST':
-    time = int((datetime.datetime.now().timestamp() - request.session['start_time']) / 60)
+    # time = int((datetime.datetime.now().timestamp() - request.session['start_time']) / 60)
     form = Form(request.POST)
     if form.is_valid():
       # convert the answer
@@ -59,7 +59,7 @@ def quiz(request):
           assign_user = assigned.userprofile_set.all()[0]
           # get his/her e-mail address
           email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
-          sendEmailAnswer(request, assigned, email, time ) 
+          sendEmailAnswer(request, assigned, email) 
         else:
           return notCopleted()
       except MyException:
@@ -77,6 +77,7 @@ def quiz(request):
         # check if the test is completed or not
         elif (len(assigned.answer.all()) > 0):
           done() 
+        # request.session['start_time'] = datetime.datetime.now().timestamp()
       except  Exception as e:
             messages.info(request, e)
     else:

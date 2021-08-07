@@ -17,5 +17,5 @@ def done():
     raise MyException('Acest test a fost deja completat!')
 
 def sendError(e):
-    raise MyException(e)
+    raise MyException(str(e))
  

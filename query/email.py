@@ -24,8 +24,8 @@ def sendEmail(request, subject, assign):
 
     except SMTPException as e:
         print('There was an error sending an email: ', e) 
-        error = {'message': ",".join(e.args) if len(e.args) > 0 else 'Unknown Error'}
-        raise serializers.ValidationError(error)
+        # error = {'message': ",".join(e.args) if len(e.args) > 0 else 'Unknown Error'}
+        # raise serializers.ValidationError(error)
 
 
 def sendEmailAnswer(request, answer, email, time):

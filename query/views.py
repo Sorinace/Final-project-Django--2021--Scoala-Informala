@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from .models import AssignedTest, AnswerTest, Question, Answer, UserProfile
 from .forms import FormAssignTest
 from .email import sendEmail, sendEmailAnswer
-from .errors import MyException, notValid, notCopleted, notSaved, toLate, done, sendError
+from .errors import MyException,  notCopleted, notSaved, sendError
 
 # HOME ______________________________________________________________________________________________________
 def home(request):
@@ -60,11 +60,13 @@ def quiz(request):
           # get his/her e-mail address
           email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
           sendEmailAnswer(request, assigned, email) 
+          messages.info(request, "Acest chestionar a fost trimis si salvat cu succes!\n Multumesc!")
         else:
-          return notCopleted()
+          messages.error(request,'Nu ati completat toate raspunsurile!')
+          # return notCopleted()
       except MyException:
         return notCopleted()
-      messages.info(request, "Acest chestionar a fost trimis si salvat cu succes!\n Multumesc!")
+      
   # for GET method ******************
   else: 
     if ('_query_id' in request.session):
@@ -73,10 +75,10 @@ def quiz(request):
         assigned = get_object_or_404(AssignedTest, id=id)
         # check if the test is in time
         if(assigned.data < datetime.date.today()):
-          toLate() 
+          messages.error(request, 'Testul nu mai poate fi completat, a expirat!')
         # check if the test is completed or not
         elif (len(assigned.answer.all()) > 0):
-          done() 
+          messages.error(request, 'Acest test a fost deja completat!')
         # request.session['start_time'] = datetime.datetime.now().timestamp()
       except  Exception as e:
             messages.info(request, e)
@@ -109,7 +111,7 @@ def asign(request):
         sendError(e)
       messages.info(request, f"Testul pentru {asignTest.name} a fost atribuit cu succes!")
     else:
-      notValid()
+      messages.error(request, 'Testul nu are date valide!')
   # if is GET
   else:
     pass

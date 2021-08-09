@@ -22,7 +22,7 @@ In this section, please provide a brief overview of the design of your applicati
 Implemented it and describe its input and output in your application:
 
 [x] Setting up the Python, Django and ProgeSQL  \
-[x] Install djangorest framework -  for REST API \
+[x] Install "djangorestframework" -  for REST API \
 [x] Get the test nr in /query/nr \
 [x] Add the /answer option \
 [x] Create my first view  \

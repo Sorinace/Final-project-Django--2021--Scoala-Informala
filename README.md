@@ -18,6 +18,9 @@ In this section, please describe the main entities you managed to identify, the 
 In this section, please provide a brief overview of the design of your application and highlight the main components and the interaction between them.
 
 ###  Implementation
+You need to install python and to install all the necesary library, run the command:
+  pip install -r requirements.txt
+
 ##### Functionalities
 Implemented it and describe its input and output in your application:
 

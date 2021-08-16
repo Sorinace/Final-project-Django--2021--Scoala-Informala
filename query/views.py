@@ -49,21 +49,24 @@ def quiz(request):
       answers["answers"] = answer
       try:
         assigned = AssignedTest.objects.get(id=id)
-        if(len(answers['answers']) == len(assigned.psihotest.questions.all())):
-          for ans in answers['answers']:
-            score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
-            score.save()
-            assigned.answer.add(score)
+        if ( assigned.answer.count() == 0):
+          if(len(answers['answers']) == len(assigned.psihotest.questions.all())):
+            for ans in answers['answers']:
+              score = AnswerTest(question = Question.objects.get(id=ans['question']), choose = Answer.objects.get(id=ans['choose']))
+              score.save()
+              assigned.answer.add(score)
 
-          # get the user who assigned the test
-          assign_user = assigned.userprofile_set.all()[0]
-          # get his/her e-mail address
-          email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
-          sendEmailAnswer(request, assigned, email) 
-          messages.info(request, "Acest chestionar a fost trimis si salvat cu succes!\n Multumesc!")
+            # get the user who assigned the test
+            assign_user = assigned.userprofile_set.all()[0]
+            # get his/her e-mail address
+            email = User.objects.filter(username=assign_user).values_list('email', flat=True)[0] 
+            sendEmailAnswer(request, assigned, email) 
+            messages.info(request, "Acest chestionar a fost trimis si salvat cu succes!\n Multumesc!")
+          else:
+            messages.error(request,'Nu ati completat toate raspunsurile!')
+            # return notCopleted()
         else:
-          messages.error(request,'Nu ati completat toate raspunsurile!')
-          # return notCopleted()
+          messages.error(request,'Raspunsurile au fost salvante inainte!')
       except MyException:
         return notCopleted()
       

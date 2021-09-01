@@ -8,37 +8,16 @@ The  final project from Python Django training, Scoala Informala  07.2021
 * A registered user will assign the quiz to one or more people 
 * The person will receive an email with a link to perform the quiz assigned
 * After completing the quiz the result will be stored on the server, where it can be consulted by the registered user who assigned it.
-* The registered user will obtain the rated quiz
+* The registered user will obtain the rated quiz by e-mail
 
 ## Technical documentation
-### Data and Domain model
-In this section, please describe the main entities you managed to identify, the relationships between them and how you mapped them in the database.
 
-### Application architecture
-In this section, please provide a brief overview of the design of your application and highlight the main components and the interaction between them.
+### Application DB architecture
+![image](https://user-images.githubusercontent.com/9262528/131713102-10f751a2-4df0-4331-ab40-431e5111b401.png)
 
-###  Implementation
-You need to install python and to install all the necesary library, run the command:
+###  Installation localy
+You need to install python first and to install all the necesary library, run the command:
   pip install -r requirements.txt
-
-##### Functionalities
-Implemented it and describe its input and output in your application:
-
-[x] Setting up the Python, Django and ProgeSQL  \
-[x] Install "djangorestframework" -  for REST API \
-[x] Get the test nr in /query/nr \
-[x] Add the /answer option \
-[x] Create my first view  \
-[x] Validator
-
-
-##### Business rules
-Please highlight all the validations and mechanisms you identified as necessary in order to avoid inconsistent states and apply the business logic in your application.
-
-
-##### 3rd party libraries (if applicable)
-Please give a brief review of the 3rd party libraries you used and how/ why you've integrated them into your project.
-
 
 ##### Environment
 Please fill in the following table with the technologies you used in order to work at your application. Feel free to add more rows if you want us to know about anything else you used.
